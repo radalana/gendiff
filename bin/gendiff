@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+
+<?php
+
+// Путь для локальной работы с проектом
+$autoloadPath = __DIR__ . '/../vendor/autoload.php';
+require_once $autoloadPath;
+
+//нужно ли это в модуль?
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  genfiff (-h | --help)
+  gendiff (-v | --version)
+
+
+Options:
+  -h --help     Show this screen.
+  -v --version  Show version.
+
+DOC;
+
+$args = Docopt::handle($doc, array('version' => 'Generate diff 1.0'));
+foreach ($args as $key => $value)
+    echo $key . ': ' . json_encode($value).PHP_EOL;
