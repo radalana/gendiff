@@ -4,9 +4,7 @@
       "bin/gendiff"
      ],
     "autoload": {
-        "psr-4": {
-            "Hexlet\\Code\\": "src/"
-        }
+        "files": ["src/gendiff.php"]
     },
     "authors": [
         {
@@ -15,6 +13,7 @@
         }
     ],
     "require": {
+        "wp-cli/php-cli-tools": "^0.11.21",
         "docopt/docopt": "^1.0"
     }
 }

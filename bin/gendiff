@@ -3,28 +3,56 @@
 <?php
 
 // Путь для локальной работы с проектом
-$autoloadPath = __DIR__ . '/../vendor/autoload.php';
-require_once $autoloadPath;
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+
+
+
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1; //global
+} else {
+    require_once $autoloadPath2; //local
+}
+use function Code\Differ\gendiff;
+
 
 //нужно ли это в модуль?
 $doc = <<<DOC
 Generate diff
 
+
 Usage:
   genfiff (-h | --help)
   gendiff (-v | --version)
-  gendiff [--format <fmt>] <firstFile> <secondFile>
-
+  gendiff [--format <fmt>] <firstFile> <secondFile> 
 
 Options:
-  -h --help            Show this screen.
-  -v --version         Show version.
-  --format <fmt>       Report format [default: stylish].
-
+    -h --help       Show this screen
+    -v --version    Show version
+    --format <fmt>  Report format [default: stylish]
+ 
 DOC;
 
-$args = Docopt::handle($doc, array('version' => 'Generate diff 1.0'));
-foreach ($args as $key => $value)
-    echo $key . ': ' . json_encode($value).PHP_EOL;
+
+if (count($argv) === 3) {
+    $param = array('action' => print_r(gendiff($argv[1], $argv[2])), 'help' =>  false);
+    //после вызова handle код ниже не выполгяется
+ }else {
+    $param = array('version' => 'Generate diff 1.0');
+    
+ }
+
+ $result = Docopt::handle($doc, $param);
 
 
+foreach ($result as $k=>$v){
+    echo $k.': '.json_encode($v).PHP_EOL;
+}
+
+   
+#print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
+
+
+
+#gendiff($result['<firstFile>'], $result['<secondFile>']);
+#/home/sveta/Documents/file1.json  /home/sveta/Documents/file2.json*/
