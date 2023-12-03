@@ -20,34 +20,37 @@ use function Code\Differ\gendiff;
 $doc = <<<DOC
 Generate diff
 
-
 Usage:
-  genfiff (-h | --help)
+  gendiff (-h | --help)
   gendiff (-v | --version)
-  gendiff [--format <fmt>] <firstFile> <secondFile> 
+  gendiff [--format <fmt>] (<firstFile> <secondFile>) 
 
 Options:
-    -h --help       Show this screen
-    -v --version    Show version
-    --format <fmt>  Report format [default: stylish]
+  -h --help       Show this screen
+  -v --version    Show version
+  --format <fmt>  Report format [default: stylish]
  
 DOC;
 
 
 if (count($argv) === 3) {
-    $param = array('action' => print_r(gendiff($argv[1], $argv[2])), 'help' =>  false);
+    $param = array('action' => (gendiff($argv[1], $argv[2])));
+    
     //после вызова handle код ниже не выполгяется
  }else {
     $param = array('version' => 'Generate diff 1.0');
     
  }
+$result = Docopt::handle($doc, $param);
+print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
 
- $result = Docopt::handle($doc, $param);
 
 
+/*
 foreach ($result as $k=>$v){
     echo $k.': '.json_encode($v).PHP_EOL;
 }
+*/
 
    
 #print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
