@@ -100,7 +100,4 @@ function gendiff(string $pathTofile1, string $pathTofile2)
     return convertDataToString($result);
 }
 
-$path1 = '/home/sveta/Documents/file1.json';
-$path2 = '../file2.json';
-print_r(gendiff($path1, $path2));*/
 
