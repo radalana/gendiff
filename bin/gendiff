@@ -13,7 +13,7 @@ if (file_exists($autoloadPath1)) {
 } else {
     require_once $autoloadPath2; //local
 }
-use function Code\Differ\gendiff;
+use function Code\Gendiff\gendiff;
 
 
 //нужно ли это в модуль?
@@ -44,18 +44,3 @@ if (count($argv) === 3) {
 $result = Docopt::handle($doc, $param);
 print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
 
-
-
-/*
-foreach ($result as $k=>$v){
-    echo $k.': '.json_encode($v).PHP_EOL;
-}
-*/
-
-   
-#print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
-
-
-
-#gendiff($result['<firstFile>'], $result['<secondFile>']);
-#/home/sveta/Documents/file1.json  /home/sveta/Documents/file2.json*/
