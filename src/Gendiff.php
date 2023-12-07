@@ -44,8 +44,9 @@ function defineSign(array $data, string $sign, array $commonKeys, array $diffVal
     return $result;
 }
 
+//преобразает в требуемый формат
 function convertDataToString(array $data)
-{ //преобразает в требумую форму
+{
     $parts = [];
     foreach ($data as $key => $value) {
         $parts[] = "{$value} {$key}";
@@ -69,10 +70,9 @@ function gendiff(string $pathTofile1, string $pathTofile2)
 
     $arrayOfData1 = json_decode($data1, true);
     $arrayOfData2 = json_decode($data2, true);
-    
-    $commonValues = array_intersect_assoc($arrayOfData1, $arrayOfData2); //["host"]=>"hexlet.io"
-    $commonKeys = array_intersect_key($arrayOfData1, $arrayOfData2); //["host"]=>"hexlet.io",["timeout"]=>50
-    $diffValues = array_diff_assoc($commonKeys, $commonValues); //["timeout"]=>50  
+    $commonValues = array_intersect_assoc($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io"
+    $commonKeys = array_intersect_key($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io",["timeout"]=>50
+    $diffValues = array_diff_assoc($commonKeys, $commonValues);//["timeout"]=>50  
     
     $result = defineSign($arrayOfData1, '-', $commonKeys, $diffValues)
     + defineSign($arrayOfData2, '+', $commonKeys, $diffValues);
