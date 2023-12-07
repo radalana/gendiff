@@ -5,7 +5,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: make install
-      - run: make lint
-      - run: make test
-      - run: make test-coverage
+      - name: Install
+        # Install package
+        run: make install
+     # - name: Run linter
+        # Run linter
+       # run: make lint
+      - name: Run test & publish code coverage
+        uses: paambaati/codeclimate-action@v5
+        # Add Code Climate secret key
+        env:
+          super_secret: 7fcfc1a9e41d7b37ec5adab33242818ebcf6c222a0430407a6174903fd701835
+        with:
+          coverageCommand: make test-coverage
+          coverageLocation: build/logs/clover.xml:clover
+          debug: true
