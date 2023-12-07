@@ -72,15 +72,13 @@ function gendiff(string $pathTofile1, string $pathTofile2)
     $arrayOfData2 = json_decode($data2, true);
     $commonValues = array_intersect_assoc($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io"
     $commonKeys = array_intersect_key($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io",["timeout"]=>50
-    $diffValues = array_diff_assoc($commonKeys, $commonValues);//["timeout"]=>50  
-    
+    $diffValues = array_diff_assoc($commonKeys, $commonValues);//["timeout"]=>50
     $result = defineSign($arrayOfData1, '-', $commonKeys, $diffValues)
     + defineSign($arrayOfData2, '+', $commonKeys, $diffValues);
-    
     uksort(
         $result,
         function ($a, $b) use ($result) {
-            if (strcmp(strstr($a, ':', true), strstr($b, ':', true)) === 0) { //если значения данных совпадают
+            if (strcmp(strstr($a, ':', true), strstr($b, ':', true)) === 0) {//если значения данных совпадают
                 if ($result[$a] === '-' && $result[$b] === '+') {
                     return -1;
                 } elseif ($result[$a] === '+' && $result[$b] === '-') {
