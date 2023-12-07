@@ -1,6 +1,7 @@
 <?php
 
 namespace Code\Gendiff;
+use Exception;
 
 /*
 $data1 = '{
@@ -59,7 +60,11 @@ function convertDataToString(array $data)
 function readFromFile(string $pathTofile)
 {
     $file = fopen($pathTofile, "r") or die("Unable to open file!");
-    $data = fread($file, filesize($pathTofile));
+    $fileSize = filesize($pathTofile);
+    if (!$fileSize) {
+        throw new Exception("{$pathTofile} is empty!");
+    }
+    $data = fread($file, $fileSize);
     fclose($file);
     return $data;
 }
