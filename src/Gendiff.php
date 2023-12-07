@@ -44,7 +44,8 @@ function defineSign(array $data, string $sign, array $commonKeys, array $diffVal
     return $result;
 }
 
-function convertDataToString(array $data) { //преобразает в требумую форму
+function convertDataToString(array $data)
+{ //преобразает в требумую форму
     $parts = [];
     foreach ($data as $key => $value) {
         $parts[] = "{$value} {$key}";
@@ -53,11 +54,9 @@ function convertDataToString(array $data) { //преобразает в треб
     $string = implode("\n", $parts);
     $string = $string . "\n";
     return "{\n{$string}}\n";
-    
 }
 function readFromFile(string $pathTofile)
 {
-    
     $file = fopen($pathTofile, "r") or die("Unable to open file!");
     $data = fread($file, filesize($pathTofile));
     fclose($file);
@@ -71,13 +70,12 @@ function gendiff(string $pathTofile1, string $pathTofile2)
     $arrayOfData1 = json_decode($data1, true);
     $arrayOfData2 = json_decode($data2, true);
     
-
     $commonValues = array_intersect_assoc($arrayOfData1, $arrayOfData2); //["host"]=>"hexlet.io"
     $commonKeys = array_intersect_key($arrayOfData1, $arrayOfData2); //["host"]=>"hexlet.io",["timeout"]=>50
     $diffValues = array_diff_assoc($commonKeys, $commonValues); //["timeout"]=>50  
     
-
-    $result = defineSign($arrayOfData1, '-', $commonKeys, $diffValues) + defineSign($arrayOfData2, '+', $commonKeys, $diffValues);
+    $result = defineSign($arrayOfData1, '-', $commonKeys, $diffValues)
+    + defineSign($arrayOfData2, '+', $commonKeys, $diffValues);
     
     uksort(
         $result,
@@ -85,7 +83,7 @@ function gendiff(string $pathTofile1, string $pathTofile2)
             if (strcmp(strstr($a, ':', true), strstr($b, ':', true)) === 0) { //если значения данных совпадают
                 if ($result[$a] === '-' && $result[$b] === '+') {
                     return -1;
-                } else if ($result[$a] === '+' && $result[$b] === '-') {
+                } elseif ($result[$a] === '+' && $result[$b] === '-') {
                     return 1;
                 } else {
                     return 0;
@@ -93,11 +91,8 @@ function gendiff(string $pathTofile1, string $pathTofile2)
             } else {
                 return strcmp($a, $b);
             }
-
         }
     );
     #print_r($result);
     return convertDataToString($result);
 }
-
-
