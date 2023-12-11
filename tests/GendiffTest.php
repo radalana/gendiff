@@ -4,7 +4,7 @@ namespace Code\Phpunit\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use SebastianBergmann\Type\VoidType;
+
 use function Code\Gendiff\gendiff;
 
 class GendiffTest extends TestCase {
