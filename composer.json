@@ -5,6 +5,7 @@
      ],
     "autoload": {
         "files": ["src/Gendiff.php",
+        	  "src/Parsers.php",
         	  "tests/GendiffTest.php"]
     },
     "authors": [
