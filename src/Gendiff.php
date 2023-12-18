@@ -1,8 +1,7 @@
 <?php
-
 namespace Code\Gendiff;
-use Exception;
 
+use function Code\Parsers\getData;
 /*
 $data1 = '{
     "host": "hexlet.io",
@@ -19,7 +18,7 @@ $data2 = '{
     "proxy": "123.234.53.20"
   }';
 */
-
+/*
 function toString(mixed $value): string
 {
     if (is_bool($value)) {
@@ -57,24 +56,12 @@ function convertDataToString(array $data)
     $string = $string . "\n";
     return "{\n{$string}}\n";
 }
-function readFromFile(string $pathTofile)
-{
-    $file = fopen($pathTofile, "r") or die("Unable to open file!");
-    $fileSize = filesize($pathTofile);
-    if (!$fileSize) {
-        throw new Exception("{$pathTofile} is empty!");
-    }
-    $data = fread($file, $fileSize);
-    fclose($file);
-    return $data;
-}
+
 function gendiff(string $pathTofile1, string $pathTofile2)
 {
-    $data1 = readFromFile($pathTofile1);
-    $data2 = readFromFile($pathTofile2);
-
-    $arrayOfData1 = json_decode($data1, true);
-    $arrayOfData2 = json_decode($data2, true);
+    $arrayOfData1 = getData($pathTofile1);
+    #var_dump($arrayOfData1);
+    $arrayOfData2 = getData($pathTofile2);
     $commonValues = array_intersect_assoc($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io"
     $commonKeys = array_intersect_key($arrayOfData1, $arrayOfData2);//["host"]=>"hexlet.io",["timeout"]=>50
     $diffValues = array_diff_assoc($commonKeys, $commonValues);//["timeout"]=>50
@@ -96,6 +83,6 @@ function gendiff(string $pathTofile1, string $pathTofile2)
             }
         }
     );
-    #print_r($result);
     return convertDataToString($result);
 }
+*/

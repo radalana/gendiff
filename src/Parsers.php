@@ -1,20 +1,32 @@
 <?php
 
-use Symfony\Component\Yaml\Yaml;
-
 namespace Code\Parsers;
 
-function getData(string $pathTofile): array
+use Symfony\Component\Yaml\Yaml;
+use Exception;
+
+function readFromFile(string $pathTofile)
 {
-    $pathExtension = pathinfo($pathTofile, PATHINFO_EXTENSION);
-    $data = [];
-    switch ($pathExtension) {
-        case 'json':
-            return #json_decode()
-        case 'yml'
-            return
-        case 'yaml'
-            return
-        default:##    
+    $file = fopen($pathTofile, "r") or die("Unable to open file!");
+    $fileSize = filesize($pathTofile);
+    if (!$fileSize) {
+        throw new Exception("{$pathTofile} is empty!");
     }
+    $data = fread($file, $fileSize);
+    fclose($file);
+    return $data;
+}
+
+function getData(string $pathToFile)//object или array?
+{
+    $dumped = readFromFile($pathToFile);//строковое представление
+    $pathExtension = pathinfo($pathToFile, PATHINFO_EXTENSION);
+    if ($pathExtension === 'json') {
+        return json_decode($dumped, true);
+    }
+    if (($pathExtension === 'yml') || ($pathExtension === 'yaml')) {
+        #return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
+        return Yaml::parseFile($pathToFile);
+    }
+    return [];
 }
