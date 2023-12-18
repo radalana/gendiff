@@ -2,5 +2,5 @@ timeout: 20
 verbose: true
 host: hexlet.io
 api-version: v1
-api-key": 550e
+api-key: 550e
 

@@ -1,5 +1,5 @@
 timeout: 50
-verbose": false
+verbose: false
 host: www.example.com
 api-version: v2
 api-key: 770k
