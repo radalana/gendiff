@@ -7,14 +7,55 @@ use PHPUnit\Framework\TestCase;
 
 use function Code\Gendiff\gendiff;
 
+
 class GendiffTest extends TestCase {
+
+    public function testInternalRepresentation(): void
+    {
+        $jsonFile1 = './tests/fixtures/jsonFiles/file1.json';
+        $jsonFile2 = './tests/fixtures/jsonFiles/file2.json';
+        $expected = [['key' => 'group3', 'status' => 'added', 'value' => ['deep' => ['id' => ['number' => 45]], 'fee' => 100500]],
+            ['key' => 'common', 'children' => [
+            ['key' => 'follow', 'status' => 'added', 'value' => 'false'],
+            ['key' => 'setting4', 'status' => 'added', 'value' => 'blah blah'],
+            ['key' => 'setting5', 'status' => 'added', 'value' => ['key5' => 'value5']],
+            ['key' => 'setting1', 'value' => 'Value 1'],
+            
+            ['key' => 'setting3', 'status' => ['oldValue' => 'true', 'newValue' => 'NULL']],
+            
+            
+            
+            ['key' => 'setting6', 'children' => [
+                ['key' => 'ops', 'status' => 'added', 'value' => 'vops'],
+                ['key' => 'key', 'value' => 'value'],
+                ['key' => 'doge', 'children' => [
+                    ['key' => 'wow', 'status' => ['oldValue' => '', 'newValue' => 'so much']]
+                    ]
+                ]]
+            ],
+
+
+            ['key' => 'setting2', 'value' => 200, 'status' => 'deleted']
+        
+        ]],
+            
+            ['key' => 'group1', 'children' => [
+                ['key' => 'baz', 'status' => ['oldValue' => 'bas', 'newValue' => 'bars']],
+                ['key' => 'foo', 'value' => 'bar'],
+                ['key' => 'nest', 'status' => ['oldValue' => ['key' => 'value'], 'newValue' => 'str']]
+            ]],
+            ['key' => 'group2', 'status' => 'deleted', 'value' => ['abc' => 12345, 'deep' => ['id' => 45]]]
+            
+            ];
+            $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
+    }
+    /*
     public function testGendiffJson(): void {
         $jsonFile1 = './tests/fixtures/jsonFiles/file1.json';
         $jsonFile2 = './tests/fixtures/jsonFiles/file2.json';
         $expected = file_get_contents('./tests/fixtures/expected.json');
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
     }
-
     public function testGendiffYml()
     {
         $jsonFile1 = './tests/fixtures/ymlFiles/file1.json';
@@ -22,7 +63,6 @@ class GendiffTest extends TestCase {
         $expected = file_get_contents('./tests/fixtures/expected.json');
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
     }
-    /*
     public function testGendiff(): void
     {
         $expected = "{\n- follow: false\n  host: hexlet.io\n- proxy: 123.234.53.22\n- timeout: 50\n+ timeout: 20\n+ verbose: true\n}\n";
