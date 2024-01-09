@@ -3,6 +3,8 @@ namespace Code\Gendiff;
 
 
 use function Code\Parsers\getData;
+use function Code\Stylish\style;
+use function Code\Stylish\sign;
 //use function Functional\some;
 /*
 $string = file_get_contents('../tests/fixtures/jsonFiles/file1.json');
@@ -41,7 +43,7 @@ function compare($a, $b)
         if ($a === $b) {
             return ['value'  => toString($a)];
         }else {
-            return ['status' => ['oldValue'  => toString($a), 'newValue'  => toString($b)]];
+            return ['value' => ['oldValue'  => toString($a), 'newValue'  => toString($b)], 'status' => 'changed'];
         }
     }
     
@@ -49,8 +51,6 @@ function compare($a, $b)
     $commonData = array_map(function($commonKey) use ($a, $b){
         $iter = compare($a[$commonKey], $b[$commonKey]);
         if (isAssociative($a[$commonKey]) && (isAssociative($b[$commonKey]))) {//original:  (hasChildren($a[$commonKey]) && (hasChildren($b[$commonKey])))
-            var_dump('has children', $a[$commonKey]);
-            var_dump('and has children', $b[$commonKey]);
             return ['key' => $commonKey, 'children' => $iter]; //expected: 'key' => 'doge', 'children' => ['wow': .....]
         }
         return ['key' => $commonKey, ...$iter];
@@ -71,9 +71,11 @@ function gendiff($path1, $path2)
     $data1 = json_decode(file_get_contents($path1), true);
     $data2 = json_decode(file_get_contents($path2), true);
 
-
-    $result = compare($data1, $data2);
-    return $result;
+    $internalRepresentation = compare($data1, $data2);
+    #$result = style($internalRepresentation);
+    return sign($internalRepresentation);
+    #return $internalRepresentation;
+    #return $result;
 }
 
 
