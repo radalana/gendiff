@@ -20,7 +20,8 @@
         "wp-cli/php-cli-tools": "^0.11.21",
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^6.4",
-        "lstrojny/functional-php": "^1.17"
+        "lstrojny/functional-php": "^1.17",
+        "tightenco/collect": "^9.52"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
