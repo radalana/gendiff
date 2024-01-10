@@ -2,6 +2,8 @@
 
 namespace Code\Stylish;
 
+use function Funct\Collection\flatten;
+use function Funct\Collection\flattenAll;
 function toString($value)
 {
      return trim(var_export($value, true), "'");
@@ -78,7 +80,7 @@ function style(array $data)
 
 */
 
-
+/*
 function sign($diff)
 {
     $iter = function($data) use (&$iter){
@@ -102,4 +104,96 @@ function sign($diff)
     };
 
     return array_map(fn($data) => $iter($data), $diff);
+}
+*/
+function isAssociative($data) {
+    if (is_array($data) && array_keys($data) !== range(0, count($data) -1)){
+        return true;
+    }
+    return false;
+}
+
+
+function sign($diff)
+{
+    $iter = function($data) use (&$iter){
+        if (!key_exists('children', $data) && (!key_exists('status', $data))){
+            /*
+            $data[$data['key']] = $data['value'];
+            unset($data['value']);
+            */
+            #return [$data['key'] => $data['value']];
+            $data[$data['key']] = $data['value'];
+            return $data;
+        }
+        if (!key_exists('children', $data) && (key_exists('status', $data))) {
+            //changed not here
+            $status = $data['status'];
+            if ($status !== 'changed') {//can be complex and simple
+                $sign = $status === 'added' ? '+' : '-';
+                $key = "{$sign} {$data['key']}";
+                #$data[$key] = $data['value'];
+                $data[$key] = $data['value'];
+                #return [$key => $data['value']];
+            }else{
+                $data["- {$data['key']}"] = $data['value']['oldValue'];
+                $data["+ {$data['key']}"] = $data['value']['newValue'];
+            }
+            unset($data['key'], $data['value'], $data['status']);
+            #flatten($data);
+        }
+
+        if (key_exists('children', $data) && (!key_exists('status', $data))) {
+            $children = ($data['children']);
+            #var_dump($children);
+            $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
+            #$newChildren = array_merge(array_map(fn($child) => $iter($child), $children)); original среда вечер!!!
+            var_dump($newChildren);
+            $data[$data['key']] = $newChildren;
+            unset($data['key'], $data['value'], $data['status'], $data['children']);
+            
+        }
+        #var_dump($data);
+        return [...$data];
+    };
+
+    return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))]; # вечер среды о этого было: (array_map(fn($data) => $iter($data), $diff)));
+}
+function isOrdered($array)
+{
+    if (is_array($array) && (array_keys($array) === range(0, count($array) -1))){
+        return true;
+    }
+    return false;
+}
+
+/*
+function stringify($data) {
+    {
+        $iter = function ($currentValue, $depth) use (&$iter) {
+            if (!is_array($currentValue)) {
+                return toString($currentValue);
+            }
+            $replacer = ' ';
+            $indentSize = $depth * 4;
+            $currentIndent = str_repeat($replacer, $indentSize);
+            $bracketIndent = str_repeat($replacer, $indentSize - 4);
+            $lines = array_map(function($key, $val) use ($currentIndent, &$iter, &$depth) {
+                return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";  
+            }, array_keys($currentValue), $currentValue);
+            
+                    $result = ['{', ...$lines, "{$bracketIndent}}"];
+                    #$result = [...$lines, "{$bracketIndent}}"];
+            return implode("\n", $result);
+        };
+        
+    
+        return $iter($data, 1);
+    }
+}
+*/
+function style($data)
+{
+    $array = array_values(sign($data));
+    return json_encode($array, JSON_PRETTY_PRINT);
 }
