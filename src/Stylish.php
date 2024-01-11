@@ -105,26 +105,66 @@ function sign($diff)
 
     return array_map(fn($data) => $iter($data), $diff);
 }
+
+uksort(
+        $result,
+        function ($a, $b) use ($result) {
+            if (strcmp(strstr($a, ':', true), strstr($b, ':', true)) === 0) { // тут ключи не могут быть одинаковыми
+                // var_dump($a, $b);
+                if ($result[$a] === '-' && $result[$b] === '+') {
+                    return -1;
+                } else if ($result[$a] === '+' && $result[$b] === '-') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return strcmp($a, $b);
+            }
+
+        }
+    );
 */
-function isAssociative($data) {
-    if (is_array($data) && array_keys($data) !== range(0, count($data) -1)){
-        return true;
-    }
-    return false;
+function hasChildren($data)
+{
+    return key_exists('children', $data);
 }
+function sortAlphabet(&$data)
+{
+    /* 
+    $sortA = fn($data) => usort($data, function ($a, $b) {
+            return strcmp($a['key'], $b['key']);
+           
+    });
 
-
+    $result = array_map(function($val) use (&$sortA) {
+        if (hasChildren($val)){
+            return $sortA($val['children']);
+        }
+    }, $data);
+    */
+    //если есть дети погружаюсь и сортирую в детях
+    //если нет сортирую сам со следующим
+    //беру две записи сортирую если нет детей, если у одного есть дети погружаюсь и сортирую там
+    #var_dump($data);
+    usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
+   #var_dump($data);
+    $result =  array_map(function($val) {
+        #var_dump($val);
+        if (hasChildren($val)) {
+            sortAlphabet($val['children']);
+        }
+        return $val;
+    }, $data);
+    return $result;
+}
 function sign($diff)
 {
+    $diff = sortAlphabet($diff);
+    #print_r($diff);
     $iter = function($data) use (&$iter){
-        if (!key_exists('children', $data) && (!key_exists('status', $data))){
-            /*
-            $data[$data['key']] = $data['value'];
-            unset($data['value']);
-            */
-            #return [$data['key'] => $data['value']];
-            $data[$data['key']] = $data['value'];
-            return $data;
+        if (!key_exists('children', $data) && (!key_exists('status', $data))){        
+            return [$data['key'] => $data['value']];
         }
         if (!key_exists('children', $data) && (key_exists('status', $data))) {
             //changed not here
@@ -140,7 +180,6 @@ function sign($diff)
                 $data["+ {$data['key']}"] = $data['value']['newValue'];
             }
             unset($data['key'], $data['value'], $data['status']);
-            #flatten($data);
         }
 
         if (key_exists('children', $data) && (!key_exists('status', $data))) {
@@ -148,8 +187,8 @@ function sign($diff)
             #var_dump($children);
             $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
             #$newChildren = array_merge(array_map(fn($child) => $iter($child), $children)); original среда вечер!!!
-            var_dump($newChildren);
-            $data[$data['key']] = $newChildren;
+            #var_dump($newChildren);
+            $data[$data['key']] =$newChildren;
             unset($data['key'], $data['value'], $data['status'], $data['children']);
             
         }
@@ -158,13 +197,6 @@ function sign($diff)
     };
 
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))]; # вечер среды о этого было: (array_map(fn($data) => $iter($data), $diff)));
-}
-function isOrdered($array)
-{
-    if (is_array($array) && (array_keys($array) === range(0, count($array) -1))){
-        return true;
-    }
-    return false;
 }
 
 /*
@@ -194,6 +226,7 @@ function stringify($data) {
 */
 function style($data)
 {
-    $array = array_values(sign($data));
-    return json_encode($array, JSON_PRETTY_PRINT);
+    $array = (sign($data));
+    #return array_merge(...$array);
+    return json_encode(array_merge(...$array), JSON_PRETTY_PRINT);
 }
