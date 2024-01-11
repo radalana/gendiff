@@ -149,22 +149,25 @@ function sortAlphabet(&$data)
     #var_dump($data);
     usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
    #var_dump($data);
-    $result =  array_map(function($val) {
+    $data =  array_map(function($val) {
         #var_dump($val);
         if (hasChildren($val)) {
             sortAlphabet($val['children']);
         }
         return $val;
     }, $data);
-    return $result;
+    #var_dump($data);
+    #var_dump($result);
+    return $data;
 }
 function sign($diff)
 {
-    $diff = sortAlphabet($diff);
+    sortAlphabet($diff);
+    #$diff = sortAlphabet($diff);
     #print_r($diff);
     $iter = function($data) use (&$iter){
         if (!key_exists('children', $data) && (!key_exists('status', $data))){        
-            return [$data['key'] => $data['value']];
+            return [$data['key'] => $data['value']]; //простое неизменноное значение 
         }
         if (!key_exists('children', $data) && (key_exists('status', $data))) {
             //changed not here
@@ -199,18 +202,23 @@ function sign($diff)
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))]; # вечер среды о этого было: (array_map(fn($data) => $iter($data), $diff)));
 }
 
-/*
+
 function stringify($data) {
     {
         $iter = function ($currentValue, $depth) use (&$iter) {
             if (!is_array($currentValue)) {
                 return toString($currentValue);
             }
+            $spacesCount=4;
             $replacer = ' ';
-            $indentSize = $depth * 4;
+            $indentSize = $depth * $spacesCount;
             $currentIndent = str_repeat($replacer, $indentSize);
-            $bracketIndent = str_repeat($replacer, $indentSize - 4);
-            $lines = array_map(function($key, $val) use ($currentIndent, &$iter, &$depth) {
+            $signIndent = str_repeat($replacer, ($indentSize-2));
+            $bracketIndent = str_repeat($replacer, $indentSize - $spacesCount);
+            $lines = array_map(function($key, $val) use ($currentIndent, $signIndent, &$iter, &$depth) {
+                if ($key[0] === '+' || $key[0] === '-'){
+                    return "{$signIndent}{$key}: {$iter($val, $depth+1)}";
+                }
                 return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";  
             }, array_keys($currentValue), $currentValue);
             
@@ -223,10 +231,11 @@ function stringify($data) {
         return $iter($data, 1);
     }
 }
-*/
+
 function style($data)
 {
     $array = (sign($data));
+    return stringify(array_merge(...$array)) . "\n";
     #return array_merge(...$array);
-    return json_encode(array_merge(...$array), JSON_PRETTY_PRINT);
+    #return json_encode(array_merge(...$array), JSON_PRETTY_PRINT);
 }
