@@ -1,0 +1,18 @@
+{
+  "config": {
+    "timeout": 5000,
+    "debug": true,
+    "colors": ["red", "green", "blue"]
+  },
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "username": "user1",
+    "password": "password123"
+  },
+  "logging": {
+    "level": "info",
+    "path": "/var/log/app.log"
+  }
+}
+

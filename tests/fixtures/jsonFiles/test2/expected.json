@@ -1,0 +1,23 @@
+{
+    config: {
+      - colors: [red, green, blue]
+      + colors: [red, blue, yellow]
+      - debug: true
+      + debug: false
+      - timeout: 5000
+      + timeout: 8000
+    }
+    database: {
+        host: localhost
+      - password: password123
+      + password: newPassword
+        port: 3306
+      - username: user1
+      + username: user2
+    }
+    logging: {
+      - level: info
+      + level: debug
+        path: /var/log/app.log
+    }
+}

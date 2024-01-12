@@ -54,10 +54,19 @@ class GendiffTest extends TestCase {
     */
     public function testGendiffJson1()
     {
-        $jsonFile1 = './tests/fixtures/jsonFiles/file1.json';
-        $jsonFile2 = './tests/fixtures/jsonFiles/file2.json';
+        $jsonFile1 = './tests/fixtures/jsonFiles/test1/file1.json';
+        $jsonFile2 = './tests/fixtures/jsonFiles/test1/file2.json';
         $expected = file_get_contents('./tests/fixtures/expected.json');
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
+    }
+    //вложенный массив где одним из измененных значений является индексированный массив (список)
+    public function testGendiffJson2()
+    {
+        $jsonFile1 = './tests/fixtures/jsonFiles/test2/file1.json';
+        $jsonFile2 = './tests/fixtures/jsonFiles/test2/file2.json';
+        $expected = file_get_contents('./tests/fixtures/jsonFiles/test2/expected.json');
+        $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
+
     }
 
     public function testGendiffYml()
@@ -67,6 +76,8 @@ class GendiffTest extends TestCase {
         $expected = file_get_contents('./tests/fixtures/expected.json');
         $this->assertEquals($expected, gendiff($ymlFile1, $ymlFile2));
     }
+
+
     /*
     public function testGendiffPlainJson(): void {
         $jsonFile1 = './tests/fixtures/jsonFiles/file1.json';
