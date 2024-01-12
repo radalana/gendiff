@@ -16,12 +16,7 @@ $data2 = json_decode(file_get_contents('../tests/fixtures/jsonFiles/file2.json')
 
 */
 
-function toString($value) {
-    if (is_bool($value) || is_null($value)) {
-        return strtolower(var_export($value, true));
-    }
-    return $value;
-}
+
 /*
 function isAssociative($data) {
     if (is_array($data) && array_keys($data) !== range(0, count($data) -1)){
