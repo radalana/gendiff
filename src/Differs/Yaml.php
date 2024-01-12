@@ -126,12 +126,13 @@ function getChildren($data)
 
 function objectTAarray($data)
 {
+    
     if (!is_object($data) && !is_array($data)) {
         return $data;
     }
     //если массив, фильтруем проверяем значения
     if (is_array($data)) {
-        var_dump($data);
+        #var_dump($data);
             if (key_exists('oldValue', $data) && key_exists('newValue', $data)){
                 return array_map(fn($value) =>objectTAarray($value), $data);
             }
@@ -140,10 +141,12 @@ function objectTAarray($data)
     }
 
     $arrayOfProperties = get_object_vars($data);
-    return array_map(fn($value) => objectTAarray($value), $arrayOfProperties);
+    $result = array_map(fn($value) => objectTAarray($value), $arrayOfProperties);
+    return $result;
 }
 function addSign($diff)
 {
+   
     $iter = function($data) use(&$iter) {
         if (!hasChildren($data)) {
             $status = isChanged($data) ? $data['status'] : '';
@@ -160,12 +163,14 @@ function addSign($diff)
             }else {
                 $sign = getSign($status);
                 $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
-                $data[$key] = $data['value'];
+                #$data[$key] = $data['value'];
+                return [$key => $data['value']];
             }
             unset($data['key'], $data['value'], $data['status']);
+            #return [$data['key'] => $data['value']];;
             return $data;
         } 
-
+       
         $children = getChildren($data);
         $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
         $data[$data['key']] =$newChildren;
@@ -206,8 +211,11 @@ function stringify($data) {
 function diff($a, $b)
 {
     $result = compare($a,$b);
+    
+    sortAlphabet($result);
     #var_dump($result);
     #$result = sign($result);
     $result = addSign($result);
+    $result = stringify(array_merge(...$result)) . "\n";
     return $result;
 }
