@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "name": "Jane Doe",
+    "age": 32,
+    "address": {
+      "city": "San Francisco",
+      "zipcode": "94105"
+    },
+    "languages": ["English", "Spanish"]
+  },
+  "preferences": {
+    "theme": "light",
+    "notifications": {
+      "email": false,
+      "sms": true
+    }
+  }
+}
+

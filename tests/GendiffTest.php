@@ -69,6 +69,14 @@ class GendiffTest extends TestCase {
 
     }
 
+    public function testGendiffJson3()
+    {
+        $jsonFile1 = './tests/fixtures/jsonFiles/test3/file1.json';
+        $jsonFile2 = './tests/fixtures/jsonFiles/test3/file2.json';
+        $expected = file_get_contents('./tests/fixtures/jsonFiles/test3/expected.json');
+        $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
+    }
+
     public function testGendiffYml()
     {
         $ymlFile1 = './tests/fixtures/ymlFiles/file1.yml';

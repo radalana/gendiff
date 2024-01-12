@@ -1,0 +1,26 @@
+{
+    preferences: {
+        notifications: {
+          - email: true
+          + email: false
+          - push: false
+          + sms: true
+        }
+      - theme: dark
+      + theme: light
+    }
+    settings: {
+        address: {
+          - city: New York
+          + city: San Francisco
+          - zipcode: 10001
+          + zipcode: 94105
+        }
+      - age: 30
+      + age: 32
+      - languages: [English, French]
+      + languages: [English, Spanish]
+      - name: John Doe
+      + name: Jane Doe
+    }
+}
