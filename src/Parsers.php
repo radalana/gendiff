@@ -22,11 +22,11 @@ function getData(string $pathToFile)//object или array?
     $dumped = readFromFile($pathToFile);//строковое представление
     $pathExtension = pathinfo($pathToFile, PATHINFO_EXTENSION);
     if ($pathExtension === 'json') {
-        return json_decode($dumped, true);
+        return json_decode($dumped);
     }
     if (($pathExtension === 'yml') || ($pathExtension === 'yaml')) {
-        #return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
-        return Yaml::parseFile($pathToFile);
+        return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
+        #return Yaml::parseFile($pathToFile);
     }
     return [];
 }
