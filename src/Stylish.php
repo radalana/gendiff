@@ -336,7 +336,9 @@ function objectTAarray($data)
                 return array_map(fn($value) =>objectTAarray($value), $data);
             }
             
-            return objectTAarray($data);   
+            #return objectTAarray($data);
+            #var_dump($data);
+            return $data;   
     }
 
     $arrayOfProperties = get_object_vars($data);
@@ -378,27 +380,40 @@ function addSign($diff)
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
-
+function isIndexedArray($array)
+{
+        return array_values($array) === $array;
+}
 function stringify($data) {
     {
         $iter = function ($currentValue, $depth) use (&$iter) {
             if (!is_array($currentValue)) {
+                #var_dump($currentValue);
                 return toString($currentValue);
             }
+            
             $spacesCount=4;
             $replacer = ' ';
             $indentSize = $depth * $spacesCount;
             $currentIndent = str_repeat($replacer, $indentSize);
             $signIndent = str_repeat($replacer, ($indentSize-2));
             $bracketIndent = str_repeat($replacer, $indentSize - $spacesCount);
+            if (isIndexedArray($currentValue)) { //для обвчного массива
+                $string = implode(', ', $currentValue);
+                return "[{$string}]";
+            }
             $lines = array_map(function($key, $val) use ($currentIndent, $signIndent, &$iter, &$depth) {
-                if ($key[0] === '+' || $key[0] === '-'){
+                if (is_string($key) && ($key[0] === '+' || $key[0] === '-')) {
                     return "{$signIndent}{$key}: {$iter($val, $depth+1)}";
+                }
+                if (is_int($key)) {
+                    return "{$currentIndent}{$iter($val, $depth+1)}";
                 }
                 return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";  
             }, array_keys($currentValue), $currentValue);
-            
-                    $result = ['{', ...$lines, "{$bracketIndent}}"];
+                    //если индексированный массив добавить здесь условие квадратных скобок
+                     $result = ['{', ...$lines, "{$bracketIndent}}"];
+
                     #$result = [...$lines, "{$bracketIndent}}"];
             return implode("\n", $result);
         };
@@ -412,5 +427,7 @@ function style($ast)
 {
     sortAlphabet($ast);
     $arrayWithSigns = addSign($ast);
+    #return json_encode($arrayWithSigns, JSON_PRETTY_PRINT);
+    #return $arrayWithSigns;
     return stringify(array_merge(...$arrayWithSigns)) . "\n";
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Code\Gendiff;
 
-use function Functional\select_keys;
+use function Code\Stylish\toString;
 use function Code\Parsers\getData;
 use function Code\Stylish\style;
 use function Code\Stylish\sign;
@@ -130,14 +130,10 @@ function gendiff($path1, $path2)
     #$internalRepresentation = compare($data1, $data2);
     #$internalYml = diff($data1, $data2);
     $ast = compare($data1, $data2);
+    #eturn $ast;
     return style($ast);
-    #return $internalYml;
-    #return style($internalRepresentation);
-    #return sign($internalRepresentation);
-    #return $internalRepresentation;
-    #return style($internalYml);
+    
 }
-
 #тест со списком как отсортирует, только по ключам
 
 
