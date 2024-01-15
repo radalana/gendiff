@@ -7,7 +7,9 @@
         "files": ["src/Gendiff.php",
         	  "tests/GendiffTest.php",
         	  "src/Parsers.php",
-        	  "src/Stylish.php",
+        	  "src/Formatters/Stylish.php",
+        	  "src/Formatters/Plain.php",
+        	  "src/Formatter.php",
         	  "src/Differs/Yaml.php"
         	 ]
     },
