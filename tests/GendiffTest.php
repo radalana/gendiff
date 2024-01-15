@@ -101,6 +101,13 @@ class GendiffTest extends TestCase {
         $this->assertEquals($expected, gendiff($ymlFile1, $ymlFile2));
     }
 
+    public function testGendiffPlainFormat()
+    {
+        $jsonFile1 = './tests/fixtures/jsonFiles/test1/file1.json';
+        $jsonFile2 = './tests/fixtures/jsonFiles/test1/file2.json';
+        $expected = file_get_contents('./tests/fixtures/jsonFiles/test1/expectedPlain');
+        $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2, 'plain'));
+    }
 
     /*
     public function testGendiffPlainJson(): void {
