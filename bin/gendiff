@@ -32,18 +32,19 @@ Options:
  
 DOC;
 
-
 if (count($argv) === 3) {
     $param = array('action' => (gendiff($argv[1], $argv[2])));
-    
-
  }else if (count($argv) === 4) {
-    $param = array('action' => (gendiff($argv[2], $argv[3], $argv[1])));
+  #var_dump('sss');
+    $param = array('format'=> $argv[1],'action' => (gendiff($argv[2], $argv[3], $argv[1])));
  }else {
     $param = array('version' => 'Generate diff 1.0');
-    
  }
+ 
+
  //после вызова handle код ниже не выполгяется
+
 $result = Docopt::handle($doc, $param);
-print_r(gendiff($result['<firstFile>'], $result['<secondFile>']));
+#var_dump($result);
+print_r(gendiff($result['<firstFile>'], $result['<secondFile>'], $result['--format']));
 
