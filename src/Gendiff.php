@@ -96,6 +96,7 @@ function compare($a, $b) //whicht type?
         if ($a === $b) {
             return ['value'  => ($a)];
         }else {
+            #var_dump($b);
             return ['value' => ['oldValue'  => ($a), 'newValue'  => ($b)], 'status' => 'changed'];
         }
     }
@@ -116,10 +117,12 @@ function compare($a, $b) //whicht type?
         }, []);
 
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
-    $deletedData = array_map(fn($deletedKey) => ['key' => $deletedKey, 'value' => toString($properiesOfa[$deletedKey]), 'status' => 'deleted'], $deletedKeys);
+    $deletedData = array_map(fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'], $deletedKeys);
 
     $addedKeys = array_keys(array_diff_key($properiesOfb, $commonProperties));
-    $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => toString($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
+    
+    $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
+    #var_dump($addedData);
     return array_merge($addedData, $commonData, $deletedData);
 }
 

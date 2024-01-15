@@ -231,9 +231,12 @@ function style($data)
 
 //jan 12
 function toString($value) {
+    
     if (is_bool($value) || is_null($value)) {
         return strtolower(var_export($value, true));
     }
+    
+    #$result = var_export($value, true);
     return $value;
 }
 
