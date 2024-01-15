@@ -120,7 +120,7 @@ function compare($a, $b) //whicht type?
     $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => toString($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
     return array_merge($addedData, $commonData, $deletedData);
 }
-function gendiff($path1, $path2)
+function gendiff($path1, $path2, $formatter = 'stylish')
 {
     #$data1 = json_decode(file_get_contents($path1), true);
     #$data2 = json_decode(file_get_contents($path2), true);
@@ -131,6 +131,7 @@ function gendiff($path1, $path2)
     #$internalYml = diff($data1, $data2);
     $ast = compare($data1, $data2);
     #eturn $ast;
+    //if ($formatter !== 'stylish')...
     return style($ast);
     
 }
