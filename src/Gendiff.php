@@ -1,10 +1,12 @@
 <?php
 namespace Code\Gendiff;
 
-use function Code\Stylish\toString;
+use function Code\Formatters\Stylish\toString;
 use function Code\Parsers\getData;
 use function Code\Stylish\style;
 use function Code\Stylish\sign;
+
+use function Code\Formatters\format;
 
 use function Code\Differs\Yaml\compare as compareYml;
 use function Code\Differs\Yaml\diff;
@@ -92,9 +94,9 @@ function compare($a, $b) //whicht type?
 {
     if (!is_object($a) || !is_object($b)) {
         if ($a === $b) {
-            return ['value'  => toString($a)];
+            return ['value'  => ($a)];
         }else {
-            return ['value' => ['oldValue'  => toString($a), 'newValue'  => toString($b)], 'status' => 'changed'];
+            return ['value' => ['oldValue'  => ($a), 'newValue'  => ($b)], 'status' => 'changed'];
         }
     }
     $properiesOfa = get_object_vars($a);
@@ -120,7 +122,27 @@ function compare($a, $b) //whicht type?
     $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => toString($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
     return array_merge($addedData, $commonData, $deletedData);
 }
-function gendiff($path1, $path2, $formatter = 'stylish')
+
+function hasChildren($data)
+{
+    return key_exists('children', $data);
+}
+function sortAlphabet(&$data)
+{
+    usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
+   #var_dump($data);
+    $data =  array_map(function($val) {
+        #var_dump($val);
+        if (hasChildren($val)) {
+            sortAlphabet($val['children']);
+        }
+        return $val;
+    }, $data);
+    #var_dump($data);
+    #var_dump($result);
+    return $data;  
+}
+function gendiff($path1, $path2, $formatName = 'stylish')
 {
     #$data1 = json_decode(file_get_contents($path1), true);
     #$data2 = json_decode(file_get_contents($path2), true);
@@ -130,9 +152,10 @@ function gendiff($path1, $path2, $formatter = 'stylish')
     #$internalRepresentation = compare($data1, $data2);
     #$internalYml = diff($data1, $data2);
     $ast = compare($data1, $data2);
-    #eturn $ast;
-    //if ($formatter !== 'stylish')...
-    return style($ast);
+    sortAlphabet($ast);
+    #return $ast;
+    //if ($formatter !== 'stylish')
+    return format($formatName, $ast);
     
 }
 #тест со списком как отсортирует, только по ключам

@@ -1,6 +1,8 @@
 <?php
 
-namespace Code\Stylish;
+namespace Code\Formatters\Stylish;
+
+use function Code\Gendiff\hasChildren;
 /*
 function toString($value)
 {
@@ -234,26 +236,8 @@ function toString($value) {
     }
     return $value;
 }
-function hasChildren($data)
-{
-    return key_exists('children', $data);
-}
-function sortAlphabet(&$data)
-{
-    usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
-   #var_dump($data);
-    $data =  array_map(function($val) {
-        #var_dump($val);
-        if (hasChildren($val)) {
-            sortAlphabet($val['children']);
-        }
-        return $val;
-    }, $data);
-    #var_dump($data);
-    #var_dump($result);
-    return $data;
-    
-}
+
+
 /*
 function sign($diff)
 {
@@ -425,7 +409,7 @@ function stringify($data) {
 
 function style($ast)
 {
-    sortAlphabet($ast);
+    #sortAlphabet($ast);
     $arrayWithSigns = addSign($ast);
     #return json_encode($arrayWithSigns, JSON_PRETTY_PRINT);
     #return $arrayWithSigns;

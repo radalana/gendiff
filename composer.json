@@ -9,7 +9,7 @@
         	  "src/Parsers.php",
         	  "src/Formatters/Stylish.php",
         	  "src/Formatters/Plain.php",
-        	  "src/Formatter.php",
+        	  "src/Formatters.php",
         	  "src/Differs/Yaml.php"
         	 ]
     },
