@@ -6,7 +6,7 @@ use function Code\Gendiff\hasChildren;
 
 const SPACES_COUNT = 4;
 const REPLACER = ' ';
-function toString(mixed $value):mixed
+function toString(mixed $value): mixed
 {
 
     if (is_bool($value) || is_null($value)) {
@@ -112,7 +112,7 @@ function stringify(array $data): string
                     return "{$currentIndent}{$iter($val, $depth+1)}";
                 }
                 return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";
-                }, array_keys($currentValue), $currentValue);
+            }, array_keys($currentValue), $currentValue);
                      $result = ['{', ...$lines, "{$bracketIndent}}"];
 
             return implode("\n", $result);

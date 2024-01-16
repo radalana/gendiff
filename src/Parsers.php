@@ -28,7 +28,7 @@ function getData(string $pathToFile): stdClass
     if (($pathExtension === 'yml') || ($pathExtension === 'yaml')) {
         return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
     }
-    switch($pathExtension) {
+    switch ($pathExtension) {
         case 'json':
             return json_decode($dumped);
         case 'yml':
