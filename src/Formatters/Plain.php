@@ -6,11 +6,13 @@ use function Code\Formatters\Stylish\getChildren;
 use function Code\Gendiff\hasChildren;
 use function Code\Formatters\Stylish\isChanged;
 use function Code\Formatters\Stylish\toString;
+use function Code\Gendiff\getValue;
 
 //In plain text the data of the string type is enclosed in quotation marks.
 function formatString(mixed $value): mixed
 {
-    if (($value === 'true') || ($value === 'null') || ($value === 'false') || (!is_string($value)) || ($value === '[complex value]')) {
+    if (($value === 'true') || ($value === 'null') || ($value === 'false') 
+        || (!is_string($value)) || ($value === '[complex value]')) {
         return $value;
     }
 
@@ -24,15 +26,18 @@ function toPlain(array $data): string
         $newAncestry = (empty($ancestry)) ? "{$name}" : "{$ancestry}.{$name}";
         if (!hasChildren($data)) {
             if (isChanged($data)) {
+                $value = getValue($data);
                 if ($data['status'] === 'added') {
-                    $value = is_object($data['value']) ? '[complex value]' : formatString(toString($data['value']));
-                    return "Property '{$newAncestry}' was added with value: {$value}";
+                    $strValue = is_object($value) ? '[complex value]' : formatString(toString($value));
+                    return "Property '{$newAncestry}' was added with value: {$strValue}";
                 } elseif ($data['status'] === 'deleted') {
                     return "Property '{$newAncestry}' was removed";
                 } else {
-                    $oldValue = is_object($data['value']['oldValue']) ? "[complex value]" : formatString(toString($data['value']['oldValue']));
-                    $newValue = is_object($data['value']['newValue']) ? "[complex value]" : formatString(toString($data['value']['newValue']));
-                    return "Property '{$newAncestry}' was updated. From {$oldValue} to {$newValue}";
+                    $oldVal = getValue($data, 'old');
+                    $newVal = getValue($data, 'new');
+                    $oldValueStr = is_object($oldVal) ? "[complex value]" : formatString(toString($oldVal));
+                    $newValueStr = is_object($newVal) ? "[complex value]" : formatString(toString($newVal));
+                    return "Property '{$newAncestry}' was updated. From {$oldValueStr} to {$newValueStr}";
                 }
             }
             return;

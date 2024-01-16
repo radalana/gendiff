@@ -7,7 +7,9 @@ use stdClass;
 use function Code\Parsers\getData;
 use function Code\Formatters\format;
 
-/**compare 2 datas and  generate ast*/
+/**
+ * compare 2 datas and  generate ast
+ */
 function compare(mixed $a, mixed $b): array
 {
     if (!is_object($a) || !is_object($b)) {
@@ -21,23 +23,32 @@ function compare(mixed $a, mixed $b): array
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
 
-    $commonData = array_reduce(array_keys($commonProperties), function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
-        $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
+    $commonData = array_reduce(
+        array_keys($commonProperties),
+        function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
+            $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
 
-        if (is_object($properiesOfa[$commonProperty]) && (is_object($properiesOfb[$commonProperty]))) {//если
-            $acc[] = ['key' => $commonProperty, 'children' => $iter];
-        } else {
-            $acc[] = ['key' => $commonProperty, ...$iter];
-        }
-        return $acc;
-    }, []);
+            if (is_object($properiesOfa[$commonProperty]) && (is_object($properiesOfb[$commonProperty]))) {//если
+                $acc[] = ['key' => $commonProperty, 'children' => $iter];
+            } else {
+                $acc[] = ['key' => $commonProperty, ...$iter];
+            }
+            return $acc;
+        }, []
+    );
 
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
-    $deletedData = array_map(fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'], $deletedKeys);
+    $deletedData = array_map(
+        fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'],
+        $deletedKeys
+    );
 
     $addedKeys = array_keys(array_diff_key($properiesOfb, $commonProperties));
 
-    $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
+    $addedData = array_map(
+        fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'],
+        $addedKeys
+    );
     return array_merge($addedData, $commonData, $deletedData);
 }
 
@@ -46,15 +57,25 @@ function hasChildren(array $data): bool
     return key_exists('children', $data);
 }
 
+function getValue(array $data, string $oldNew = ''): mixed
+{
+    if (empty($oldNew)) {
+        return $data['value'];
+    }
+    return $oldNew === 'old'? $data['value']['oldValue']: $data['value']['newValue'];
+}
+
 function sortAlphabet(&$data): array
 {
     usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
-    $data =  array_map(function ($val) {
-        if (hasChildren($val)) {
-            sortAlphabet($val['children']);
-        }
-        return $val;
-    }, $data);
+    $data =  array_map(
+        function ($val) {
+            if (hasChildren($val)) {
+                sortAlphabet($val['children']);
+            }
+            return $val;
+        }, $data
+    );
     return $data;
 }
 function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string

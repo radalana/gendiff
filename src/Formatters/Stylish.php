@@ -2,6 +2,7 @@
 
 namespace Code\Formatters\Stylish;
 
+use function Code\Gendiff\getValue;
 use function Code\Gendiff\hasChildren;
 
 const SPACES_COUNT = 4;
@@ -38,7 +39,7 @@ function getChildren(array $data): array
     return $data['children'];
 }
 
-function objectTAarray(mixed $data): array
+function objectTAarray(mixed $data): mixed
 {
     //if data is a primitive data
     if (!is_object($data) && !is_array($data)) {
@@ -60,13 +61,17 @@ function addSign(array $diff): array
 {
 
     $iter = function ($data) use (&$iter) {
+        $val = getValue($data);
         if (!hasChildren($data)) {
             $status = isChanged($data) ? $data['status'] : '';
-            $data['value'] = objectTAarray($data['value']);
+            $data['value'] = objectTAarray($val);
 
             if ($status === 'changed') {
-                $data["- {$data['key']}"] = $data['value']['oldValue'];
-                $data["+ {$data['key']}"] = $data['value']['newValue'];
+                $oldVal = getValue($data, 'old');
+                $newVal = getValue($data, 'new');
+                
+                $data["- {$data['key']}"] = $oldVal;
+                $data["+ {$data['key']}"] = $newVal;
             } else {
                 $sign = getSign($status);
                 $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
