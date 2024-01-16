@@ -11,8 +11,10 @@ jobs:
       - name: Run linter
         # Run linter
         run: make lint
-      - name: Run test & publish code coverage
+      - #Run test
+      - name: test
         run: make test
+      - name: Run test-coverage & publish code coverage
         uses: paambaati/codeclimate-action@v5
         # Add Code Climate secret key
         env:
