@@ -2,13 +2,13 @@
 
 namespace Code\Formatters\Plain;
 
-use function Code\Formatters\format;
 use function Code\Formatters\Stylish\getChildren;
 use function Code\Gendiff\hasChildren;
 use function Code\Formatters\Stylish\isChanged;
 use function Code\Formatters\Stylish\toString;
 
-function formatString($value)
+//In plain text the data of the string type is enclosed in quotation marks.
+function formatString(mixed $value): mixed
 {
     if (($value === 'true') || ($value === 'null') || ($value === 'false') || (!is_string($value)) || ($value === '[complex value]')) {
         return $value;
@@ -17,16 +17,12 @@ function formatString($value)
     return "'{$value}'";
 }
 
-function toPlain(array $data)
+function toPlain(array $data): string
 {
-    #print_r($data);
     $iter = function ($data, $ancestry) use (&$iter) {
         $name = $data['key'];
-        #var_dump($ancestry);
         $newAncestry = (empty($ancestry)) ? "{$name}" : "{$ancestry}.{$name}";
-        #var_dump($newAncestry);
         if (!hasChildren($data)) {
-            #var_dump($data);
             if (isChanged($data)) {
                 if ($data['status'] === 'added') {
                     $value = is_object($data['value']) ? '[complex value]' : formatString(toString($data['value']));
@@ -43,10 +39,7 @@ function toPlain(array $data)
         }
 
         $children = getChildren($data);
-        #var_dump($children);
-        #var_dump($newAncestry);
         $newChildren = array_filter(array_map(fn($child) => $iter($child, $newAncestry), $children));
-        #var_dump($newChildren);
         return implode("\n", $newChildren);
     };
     return implode("\n", array_map(fn($value) => $iter($value, ''), $data)) . "\n";
