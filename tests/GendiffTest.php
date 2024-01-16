@@ -4,12 +4,10 @@ namespace Code\Phpunit\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-
 use function Code\Gendiff\gendiff;
 
-
-class GendiffTest extends TestCase {
-
+class GendiffTest extends TestCase
+{
     /*
     public function testInternalRepresentation(): void
     {
@@ -22,11 +20,11 @@ class GendiffTest extends TestCase {
                 ['key' => 'setting4', 'status' => 'added', 'value' => 'blah blah'],
                 ['key' => 'setting5', 'status' => 'added', 'value' => ['key5' => 'value5']],
                 ['key' => 'setting1', 'value' => 'Value 1'],
-            
+
                 ['key' => 'setting3', 'status' => ['oldValue' => 'true', 'newValue' => 'NULL']],
-            
-            
-            
+
+
+
                 ['key' => 'setting6', 'children' => [
                     ['key' => 'ops', 'status' => 'added', 'value' => 'vops'],
                     ['key' => 'key', 'value' => 'value'],
@@ -38,16 +36,16 @@ class GendiffTest extends TestCase {
 
 
                 ['key' => 'setting2', 'value' => 200, 'status' => 'deleted']
-        
+
             ]],
-            
+
                 ['key' => 'group1', 'children' => [
                     ['key' => 'baz', 'status' => ['oldValue' => 'bas', 'newValue' => 'bars']],
                     ['key' => 'foo', 'value' => 'bar'],
                     ['key' => 'nest', 'status' => ['oldValue' => ['key' => 'value'], 'newValue' => 'str']]
                 ]],
                 ['key' => 'group2', 'status' => 'deleted', 'value' => ['abc' => 12345, 'deep' => ['id' => 45]]]
-            
+
                 ];
             $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
     }
@@ -66,7 +64,6 @@ class GendiffTest extends TestCase {
         $jsonFile2 = './tests/fixtures/jsonFiles/test2/file2.json';
         $expected = file_get_contents('./tests/fixtures/jsonFiles/test2/expected.json');
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
-
     }
 
     public function testGendiffJson3()
@@ -76,7 +73,7 @@ class GendiffTest extends TestCase {
         $expected = file_get_contents('./tests/fixtures/jsonFiles/test3/expected.json');
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
     }
-    //from:  "nest: {key: [value1, value2]}" to "nest: str" 
+    //from:  "nest: {key: [value1, value2]}" to "nest: str"
     public function testGendiffJson4()
     {
         $jsonFile1 = './tests/fixtures/jsonFiles/test4/file1.json';
@@ -148,11 +145,11 @@ class GendiffTest extends TestCase {
     public function testGendiff2(): void
     {
         $expected = "{\n+ api-key: 550e\n+ api-version: v1\n- follow: false\n  host: hexlet.io\n- proxy: 123.234.53.22\n- timeout: 50\n+ timeout: 20\n+ verbose: true\n}\n";
-        
+
         $jsonFile1 = './tests/fixtures/jsonFiles/test2/file1.json';
         $jsonFile2 = './tests/fixtures/jsonFiles/test2/file2.json';
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
-        
+
         $ymlFile1 = './tests/fixtures/ymlFiles/test2/file1.yml';
         $ymlFile2 = './tests/fixtures/ymlFiles/test2/file2.yml';
         $this->assertEquals($expected, gendiff($ymlFile1, $ymlFile2));
@@ -167,12 +164,12 @@ class GendiffTest extends TestCase {
         $jsonFile1 = './tests/fixtures/jsonFiles/test3/file1.json';
         $jsonFile2 = './tests/fixtures/jsonFiles/test3/file2.json';
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
-        
+
         $ymlFile1 = './tests/fixtures/ymlFiles/test3/file1.yml';
         $ymlFile2 = './tests/fixtures/ymlFiles/test3/file2.yml';
         $this->assertEquals($expected, gendiff($ymlFile1, $ymlFile2));
-        
-        
+
+
     }
 
     /** First file is empty*/
@@ -183,12 +180,12 @@ class GendiffTest extends TestCase {
         $jsonFile2 = './tests/fixtures/jsonFiles/test4/file2.json';
         $this->expectExceptionMessage("{$jsonFile1} is empty!");
         gendiff($jsonFile1, $jsonFile2);
-        
+
         $ymlFile1 = './tests/fixtures/ymlFiles/test4/file1.yml';
         $ymlFile2 = './tests/fixtures/ymlFiles/test4/file2.yml';
         $this->expectExceptionMessage("{$ymlFile1} is empty!");
         gendiff($ymlFile1, $ymlFile2);
-        
+
     }
 
     public function testIdenticalFiles(): void
@@ -198,12 +195,11 @@ class GendiffTest extends TestCase {
         $jsonFile1 = './tests/fixtures/jsonFiles/test5/file1.json';
         $jsonFile2 = './tests/fixtures/jsonFiles/test5/file2.json';
         $this->assertEquals($expected, gendiff($jsonFile1, $jsonFile2));
-        
+
         $ymlFile1 = './tests/fixtures/ymlFiles/test5/file1.yml';
         $ymlFile2 = './tests/fixtures/ymlFiles/test5/file2.yml';
         $this->assertEquals($expected, gendiff($ymlFile1, $ymlFile2));
-        
+
     }
     */
-    
 }

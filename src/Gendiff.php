@@ -1,15 +1,15 @@
 <?php
+
 namespace Code\Gendiff;
 
 use function Code\Formatters\Stylish\toString;
 use function Code\Parsers\getData;
 use function Code\Stylish\style;
 use function Code\Stylish\sign;
-
 use function Code\Formatters\format;
-
 use function Code\Differs\Yaml\compare as compareYml;
 use function Code\Differs\Yaml\diff;
+
 //use function Functional\some;
 /*
 $string = file_get_contents('../tests/fixtures/jsonFiles/file1.json');
@@ -47,7 +47,7 @@ function compare($a, $b)
             return ['value' => ['oldValue'  => toString($a), 'newValue'  => toString($b)], 'status' => 'changed'];
         }
     }
-    
+
     $commonKeys = (array_intersect_key($a, $b));
     /*
     $commonData = array_map(function($commonKey) use ($a, $b){
@@ -61,9 +61,9 @@ function compare($a, $b)
         return ['key' => $commonKey, ...$iter];
         #return array_merge(['key' => $commonKey], $iter);
 
-        
+
     }, array_keys($commonKeys));
-    
+
     #var_dump(array_keys($commonKeys));
     */
 
@@ -79,7 +79,7 @@ function compare($a, $b)
         return $acc;
 
     }, []);
-    
+
     $deletedKeys = array_keys(array_diff_key($a, $commonKeys));
     $deletedData = array_map(fn($deletedKey) => ['key' => $deletedKey, 'value' => toString($a[$deletedKey]), 'status' => 'deleted'], $deletedKeys);
 
@@ -95,7 +95,7 @@ function compare($a, $b) //whicht type?
     if (!is_object($a) || !is_object($b)) {
         if ($a === $b) {
             return ['value'  => ($a)];
-        }else {
+        } else {
             #var_dump($b);
             return ['value' => ['oldValue'  => ($a), 'newValue'  => ($b)], 'status' => 'changed'];
         }
@@ -104,23 +104,22 @@ function compare($a, $b) //whicht type?
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
 
-    $commonData = array_reduce(array_keys($commonProperties), function($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
+    $commonData = array_reduce(array_keys($commonProperties), function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
         $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
 
-        if (is_object($properiesOfa[$commonProperty]) && (is_object($properiesOfb[$commonProperty]))) {//если 
-            $acc[]= ['key' => $commonProperty, 'children' => $iter];
-
+        if (is_object($properiesOfa[$commonProperty]) && (is_object($properiesOfb[$commonProperty]))) {//если
+            $acc[] = ['key' => $commonProperty, 'children' => $iter];
         } else {
             $acc[] = ['key' => $commonProperty, ...$iter];
         }
         return $acc;
-        }, []);
+    }, []);
 
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
     $deletedData = array_map(fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'], $deletedKeys);
 
     $addedKeys = array_keys(array_diff_key($properiesOfb, $commonProperties));
-    
+
     $addedData = array_map(fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'], $addedKeys);
     #var_dump($addedData);
     return array_merge($addedData, $commonData, $deletedData);
@@ -134,7 +133,7 @@ function sortAlphabet(&$data)
 {
     usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
    #var_dump($data);
-    $data =  array_map(function($val) {
+    $data =  array_map(function ($val) {
         #var_dump($val);
         if (hasChildren($val)) {
             sortAlphabet($val['children']);
@@ -143,7 +142,7 @@ function sortAlphabet(&$data)
     }, $data);
     #var_dump($data);
     #var_dump($result);
-    return $data;  
+    return $data;
 }
 function gendiff($path1, $path2, $formatName = 'stylish')
 {
@@ -159,8 +158,5 @@ function gendiff($path1, $path2, $formatName = 'stylish')
     #return $ast;
     //if ($formatter !== 'stylish')
     return format($formatName, $ast);
-    
 }
 #тест со списком как отсортирует, только по ключам
-
-

@@ -8,12 +8,12 @@ use function Code\Formatters\Json\toJson;
 
 function format(string $format, array $ast)
 {
-    if ($format === 'plain'){
+    if ($format === 'plain') {
         return toPlain(($ast));
     }
-    if ($format === 'json'){
+    if ($format === 'json') {
         return toJson($ast);
     }
-    
+
     return style($ast);
 }

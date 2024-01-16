@@ -10,7 +10,7 @@ use function Code\Formatters\Stylish\toString;
 
 function formatString($value)
 {
-    if (($value === 'true') || ($value === 'null') || ($value === 'false') || (!is_string($value)) || ($value === '[complex value]')){
+    if (($value === 'true') || ($value === 'null') || ($value === 'false') || (!is_string($value)) || ($value === '[complex value]')) {
         return $value;
     }
 
@@ -20,7 +20,7 @@ function formatString($value)
 function toPlain(array $data)
 {
     #print_r($data);
-    $iter = function($data, $ancestry) use (&$iter) {
+    $iter = function ($data, $ancestry) use (&$iter) {
         $name = $data['key'];
         #var_dump($ancestry);
         $newAncestry = (empty($ancestry)) ? "{$name}" : "{$ancestry}.{$name}";
@@ -31,9 +31,9 @@ function toPlain(array $data)
                 if ($data['status'] === 'added') {
                     $value = is_object($data['value']) ? '[complex value]' : formatString(toString($data['value']));
                     return "Property '{$newAncestry}' was added with value: {$value}";
-                }else if ($data['status'] === 'deleted') {
+                } elseif ($data['status'] === 'deleted') {
                     return "Property '{$newAncestry}' was removed";
-                }else {
+                } else {
                     $oldValue = is_object($data['value']['oldValue']) ? "[complex value]" : formatString(toString($data['value']['oldValue']));
                     $newValue = is_object($data['value']['newValue']) ? "[complex value]" : formatString(toString($data['value']['newValue']));
                     return "Property '{$newAncestry}' was updated. From {$oldValue} to {$newValue}";
@@ -41,7 +41,7 @@ function toPlain(array $data)
             }
             return;
         }
-        
+
         $children = getChildren($data);
         #var_dump($children);
         #var_dump($newAncestry);

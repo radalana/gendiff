@@ -3,6 +3,7 @@
 namespace Code\Formatters\Stylish;
 
 use function Code\Gendiff\hasChildren;
+
 /*
 function toString($value)
 {
@@ -21,12 +22,12 @@ function style(array $data)
         if (key_exists('value', $currentValue) && !is_array($currentValue['value'])) {
             return toString($currentValue['value']);
         }
-        
+
         if (!key_exists('children', $currentValue) && !is_array($currentValue['value'])){
-            
+
             if (key_exists('status', $currentValue)) {
                 $key = $currentValue['key'];
-                
+
                 switch ($currentValue['status']) {
                     case 'added':
                         return "+ {$key}: {$currentValue['value']}";
@@ -38,11 +39,11 @@ function style(array $data)
                         return "{$key}: {$currentValue['value']}";
                 }
             }
-            
+
             return $currentValue['value'];
         }
 
-        
+
         $indentSize = $depth * 4;
         $currentIndent = str_repeat(' ', $indentSize);
         $bracketIndent = str_repeat(' ', $indentSize - 4);
@@ -55,7 +56,7 @@ function style(array $data)
             var_dump($currentValue);
             #$lines = array_map(fn($val) => "{$currentIndent}{$val['key']}: {$iter($val['value'], $depth + 1)}",
             #$currentValue);
-            return  
+            return
         }*/
 /*
         if (key_exists('status', $currentValue) && (is_array($currentValue['value']))) {
@@ -63,13 +64,13 @@ function style(array $data)
             $sign = $currentValue['status'] === 'added' ? '+' : '-';
             $lines = "{$currentIndent}{$sign} {$currentValue['key']}: {$iter($currentValue['value'], $depth + 1)}";
         }
-        
+
         if (!key_exists('key', $currentValue)) {
             var_dump($currentValue);
             $lines = array_map(fn($key, $val) => "{$currentIndent}{$key}: {$iter($val, $depth + 1)}",
             array_keys($currentValue), $currentValue);
         }
-        
+
 
         $result = ['{', $lines, "{$bracketIndent}}"];
         return implode("\n", $result);
@@ -146,7 +147,7 @@ function sortAlphabet(&$data)
     #var_dump($data);
     #var_dump($result);
     return $data;
-    
+
 }
 function sign($diff)
 {
@@ -154,8 +155,8 @@ function sign($diff)
     #$diff = sortAlphabet($diff);
     #print_r($diff);
     $iter = function($data) use (&$iter){
-        if (!key_exists('children', $data) && (!key_exists('status', $data))){        
-            return [$data['key'] => $data['value']]; //простое неизменноное значение 
+        if (!key_exists('children', $data) && (!key_exists('status', $data))){
+            return [$data['key'] => $data['value']]; //простое неизменноное значение
         }
         if (!key_exists('children', $data) && (key_exists('status', $data))) {
             //changed not here
@@ -181,7 +182,7 @@ function sign($diff)
             #var_dump($newChildren);
             $data[$data['key']] =$newChildren;
             unset($data['key'], $data['value'], $data['status'], $data['children']);
-            
+
         }
         #var_dump($data);
         return [...$data];
@@ -207,15 +208,15 @@ function stringify($data) {
                 if ($key[0] === '+' || $key[0] === '-'){
                     return "{$signIndent}{$key}: {$iter($val, $depth+1)}";
                 }
-                return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";  
+                return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";
             }, array_keys($currentValue), $currentValue);
-            
+
                     $result = ['{', ...$lines, "{$bracketIndent}}"];
                     #$result = [...$lines, "{$bracketIndent}}"];
             return implode("\n", $result);
         };
-        
-    
+
+
         return $iter($data, 1);
     }
 }
@@ -230,12 +231,13 @@ function style($data)
 */
 
 //jan 12
-function toString($value) {
-    
+function toString($value)
+{
+
     if (is_bool($value) || is_null($value)) {
         return strtolower(var_export($value, true));
     }
-    
+
     #$result = var_export($value, true);
     return $value;
 }
@@ -248,10 +250,10 @@ function sign($diff)
     #$diff = sortAlphabet($diff);
     #print_r($diff);
     $iter = function($data) use (&$iter){
-        
+
         if (is_object($data['value']) && (!key_exists('status', $data))){ //если класс то значит сложные данные не дети которы могли быть изменены и не изменены
             //поставить знак если требуется и раскраыть в массив
-            
+
             return [$data['key'] => $data['value']]; //group3 например
         }
         if (!key_exists('children', $data) && (key_exists('status', $data))) {
@@ -278,7 +280,7 @@ function sign($diff)
             #var_dump($newChildren);
             $data[$data['key']] =$newChildren;
             unset($data['key'], $data['value'], $data['status'], $data['children']);
-            
+
         }
         #var_dump($data);
         return [...$data];
@@ -294,13 +296,13 @@ function isChanged($data)
 
 function getSign(string $status)
 {
-    switch($status) {
+    switch ($status) {
         case 'added':
             return '+';
         case 'deleted':
             return '-';
         default:
-            return '';    
+            return '';
     }
 }
 
@@ -312,20 +314,20 @@ function getChildren($data)
 
 function objectTAarray($data)
 {
-    
+
     if (!is_object($data) && !is_array($data)) {
         return $data;
     }
     //если массив, фильтруем проверяем значения
     if (is_array($data)) {
         #var_dump($data);
-            if (key_exists('oldValue', $data) && key_exists('newValue', $data)){
-                return array_map(fn($value) =>objectTAarray($value), $data);
-            }
-            
+        if (key_exists('oldValue', $data) && key_exists('newValue', $data)) {
+            return array_map(fn($value) =>objectTAarray($value), $data);
+        }
+
             #return objectTAarray($data);
             #var_dump($data);
-            return $data;   
+            return $data;
     }
 
     $arrayOfProperties = get_object_vars($data);
@@ -334,8 +336,8 @@ function objectTAarray($data)
 }
 function addSign($diff)
 {
-   
-    $iter = function($data) use(&$iter) {
+
+    $iter = function ($data) use (&$iter) {
         if (!hasChildren($data)) {
             $status = isChanged($data) ? $data['status'] : '';
             /*
@@ -344,11 +346,11 @@ function addSign($diff)
             }
             */
             $data['value'] = objectTAarray($data['value']);
-            
+
             if ($status === 'changed') {
                 $data["- {$data['key']}"] = $data['value']['oldValue'];
                 $data["+ {$data['key']}"] = $data['value']['newValue'];
-            }else {
+            } else {
                 $sign = getSign($status);
                 $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
                 #$data[$key] = $data['value'];
@@ -357,11 +359,11 @@ function addSign($diff)
             unset($data['key'], $data['value'], $data['status']);
             #return [$data['key'] => $data['value']];;
             return $data;
-        } 
-       
+        }
+
         $children = getChildren($data);
         $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
-        $data[$data['key']] =$newChildren;
+        $data[$data['key']] = $newChildren;
         unset($data['key'], $data['value'], $data['status'], $data['children']);
         return $data;
     };
@@ -371,32 +373,33 @@ function isIndexedArray($array)
 {
         return array_values($array) === $array;
 }
-function stringify($data) {
+function stringify($data)
+{
     {
         $iter = function ($currentValue, $depth) use (&$iter) {
             if (!is_array($currentValue)) {
                 #var_dump($currentValue);
                 return toString($currentValue);
             }
-            
-            $spacesCount=4;
+
+            $spacesCount = 4;
             $replacer = ' ';
             $indentSize = $depth * $spacesCount;
             $currentIndent = str_repeat($replacer, $indentSize);
-            $signIndent = str_repeat($replacer, ($indentSize-2));
+            $signIndent = str_repeat($replacer, ($indentSize - 2));
             $bracketIndent = str_repeat($replacer, $indentSize - $spacesCount);
             if (isIndexedArray($currentValue)) { //для обвчного массива
                 $string = implode(', ', $currentValue);
                 return "[{$string}]";
             }
-            $lines = array_map(function($key, $val) use ($currentIndent, $signIndent, &$iter, &$depth) {
+            $lines = array_map(function ($key, $val) use ($currentIndent, $signIndent, &$iter, &$depth) {
                 if (is_string($key) && ($key[0] === '+' || $key[0] === '-')) {
                     return "{$signIndent}{$key}: {$iter($val, $depth+1)}";
                 }
                 if (is_int($key)) {
                     return "{$currentIndent}{$iter($val, $depth+1)}";
                 }
-                return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";  
+                return "{$currentIndent}{$key}: {$iter($val, $depth+1)}";
             }, array_keys($currentValue), $currentValue);
                     //если индексированный массив добавить здесь условие квадратных скобок
                      $result = ['{', ...$lines, "{$bracketIndent}}"];
@@ -404,8 +407,8 @@ function stringify($data) {
                     #$result = [...$lines, "{$bracketIndent}}"];
             return implode("\n", $result);
         };
-        
-    
+
+
         return $iter($data, 1);
     }
 }
