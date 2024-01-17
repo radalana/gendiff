@@ -1,6 +1,6 @@
 <?php
 
-namespace Code\Parsers;
+namespace Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 use Exception;

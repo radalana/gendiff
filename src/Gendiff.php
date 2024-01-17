@@ -1,11 +1,11 @@
 <?php
 
-namespace Code\Gendiff;
+namespace Differ\Differ;
 
 use stdClass;
 
-use function Code\Parsers\getData;
-use function Code\Formatters\format;
+use function Differ\Parsers\getData;
+use function Differ\Formatters\format;
 
 /**
  * compare 2 datas and  generate ast

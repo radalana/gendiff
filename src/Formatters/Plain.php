@@ -1,13 +1,13 @@
 <?php
 
-namespace Code\Formatters\Plain;
+namespace Differ\Formatters\Plain;
 
-use function Code\Formatters\Stylish\getChildren;
-use function Code\Gendiff\hasChildren;
-use function Code\Formatters\Stylish\isChanged;
-use function Code\Formatters\Stylish\isIndexedArray;
-use function Code\Formatters\Stylish\toString;
-use function Code\Gendiff\getValue;
+use function Differ\Formatters\Stylish\getChildren;
+use function Differ\Differ\hasChildren;
+use function Differ\Formatters\Stylish\isChanged;
+use function Differ\Formatters\Stylish\isIndexedArray;
+use function Differ\Formatters\Stylish\toString;
+use function Differ\Differ\getValue;
 
 //In plain text the data of the string type is enclosed in quotation marks.
 function formatString(mixed $value): mixed

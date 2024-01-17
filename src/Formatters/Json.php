@@ -1,8 +1,8 @@
 <?php
 
-namespace Code\Formatters\Json;
+namespace Differ\Formatters\Json;
 
-use function Code\Formatters\Stylish\addSign;
+use function Differ\Formatters\Stylish\addSign;
 
 function toJson(array $ast)
 {

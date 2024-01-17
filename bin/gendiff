@@ -13,7 +13,7 @@ if (file_exists($autoloadPath1)) {
 } else {
     require_once $autoloadPath2; //local
 }
-use function Code\Gendiff\gendiff;
+use function Differ\Differ\gendiff;
 
 
 //нужно ли это в модуль?

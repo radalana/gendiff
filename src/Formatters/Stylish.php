@@ -1,9 +1,9 @@
 <?php
 
-namespace Code\Formatters\Stylish;
+namespace Differ\Formatters\Stylish;
 
-use function Code\Gendiff\getValue;
-use function Code\Gendiff\hasChildren;
+use function Differ\Differ\getValue;
+use function Differ\Differ\hasChildren;
 
 const SPACES_COUNT = 4;
 const REPLACER = ' ';
