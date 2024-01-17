@@ -1,0 +1,6 @@
+Property 'config.colors' was updated. From [complex value] to [complex value]
+Property 'config.debug' was updated. From true to false
+Property 'config.timeout' was updated. From 5000 to 8000
+Property 'database.password' was updated. From 'password123' to 'newPassword'
+Property 'database.username' was updated. From 'user1' to 'user2'
+Property 'logging.level' was updated. From 'info' to 'debug'

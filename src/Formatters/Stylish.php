@@ -61,15 +61,15 @@ function addSign(array $diff): array
 {
 
     $iter = function ($data) use (&$iter) {
-        $val = getValue($data);
         if (!hasChildren($data)) {
+            $val = getValue($data);
             $status = isChanged($data) ? $data['status'] : '';
             $data['value'] = objectTAarray($val);
 
             if ($status === 'changed') {
                 $oldVal = getValue($data, 'old');
                 $newVal = getValue($data, 'new');
-                
+
                 $data["- {$data['key']}"] = $oldVal;
                 $data["+ {$data['key']}"] = $newVal;
             } else {
@@ -89,9 +89,12 @@ function addSign(array $diff): array
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
-function isIndexedArray($array)
+function isIndexedArray($value)
 {
-        return array_values($array) === $array;
+    if (is_array($value)) {
+        return array_values($value) === $value;
+    }
+        return false;
 }
 function stringify(array $data): string
 {

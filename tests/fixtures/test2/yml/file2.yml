@@ -1,0 +1,16 @@
+config:
+  timeout: 8000
+  debug: false
+  colors:
+  - red
+  - blue
+  - yellow
+database:
+  host: localhost
+  port: 3306
+  username: user2
+  password: newPassword
+logging:
+  level: debug
+  path: "/var/log/app.log"
+

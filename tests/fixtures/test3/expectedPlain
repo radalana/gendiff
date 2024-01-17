@@ -1,0 +1,9 @@
+Property 'preferences.notifications.email' was updated. From true to false
+Property 'preferences.notifications.push' was removed
+Property 'preferences.notifications.sms' was added with value: true
+Property 'preferences.theme' was updated. From 'dark' to 'light'
+Property 'settings.address.city' was updated. From 'New York' to 'San Francisco'
+Property 'settings.address.zipcode' was updated. From 10001 to 94105
+Property 'settings.age' was updated. From 30 to 32
+Property 'settings.languages' was updated. From [complex value] to [complex value]
+Property 'settings.name' was updated. From 'John Doe' to 'Jane Doe'

@@ -34,7 +34,8 @@ function compare(mixed $a, mixed $b): array
                 $acc[] = ['key' => $commonProperty, ...$iter];
             }
             return $acc;
-        }, []
+        },
+        []
     );
 
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
@@ -62,7 +63,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     if (empty($oldNew)) {
         return $data['value'];
     }
-    return $oldNew === 'old'? $data['value']['oldValue']: $data['value']['newValue'];
+    return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
 
 function sortAlphabet(&$data): array
@@ -74,7 +75,8 @@ function sortAlphabet(&$data): array
                 sortAlphabet($val['children']);
             }
             return $val;
-        }, $data
+        },
+        $data
     );
     return $data;
 }

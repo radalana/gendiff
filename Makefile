@@ -6,7 +6,8 @@ lint:
 lint-fix:
 	composer exec --verbose phpcbf -- --standard=PSR12 src tests
 test:
-	composer exec --verbose phpunit tests
+	#composer exec --verbose phpunit tests
+	composer exec --verbose phpunit -- --display-warnings tests
 test-coverage:
 	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml  --coverage-filter=src
 test-coverage-text:
