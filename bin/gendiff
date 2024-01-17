@@ -42,7 +42,7 @@ if (count($argv) === 3) {
     $param = array('version' => 'Generate diff 1.0');
  }
  */
- $param = array('version' => 'Generate diff 1.0', 'action' => 'gendiff');
+ $param = array('version' => 'Generate diff 1.0');
  
 
  //после вызова handle код ниже не выполгяется
