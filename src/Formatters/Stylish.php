@@ -132,5 +132,5 @@ function stringify(array $data): string
 function style($ast)
 {
     $arrayWithSigns = addSign($ast);
-    return stringify(array_merge(...$arrayWithSigns)) . "\n";
+    return stringify(array_merge(...$arrayWithSigns));
 }
