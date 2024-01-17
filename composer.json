@@ -4,8 +4,8 @@
       "bin/gendiff"
      ],
     "autoload": {
-        "files": ["src/Gendiff.php",
-        	  "tests/GendiffTest.php",
+        "files": ["src/Differ.php",
+        	  "tests/DifferTest.php",
         	  "src/Parsers.php",
         	  "src/Formatters/Stylish.php",
         	  "src/Formatters/Plain.php",
