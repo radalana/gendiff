@@ -53,5 +53,5 @@ function toPlain(array $data): string
         $newChildren = array_filter(array_map(fn($child) => $iter($child, $newAncestry), $children));
         return implode("\n", $newChildren);
     };
-    return implode("\n", array_map(fn($value) => $iter($value, ''), $data)) . "\n";
+    return implode("\n", array_map(fn($value) => $iter($value, ''), $data));
 }
