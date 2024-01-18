@@ -22,7 +22,8 @@ function compare(mixed $a, mixed $b): array
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
-
+    //Should not use of mutating operators 
+    /* 
     $commonData = array_reduce(
         array_keys($commonProperties),
         function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
@@ -36,6 +37,19 @@ function compare(mixed $a, mixed $b): array
             return $acc;
         },
         []
+    );
+    */
+    $commonData = array_map(
+        function ($commonProperty) use ($properiesOfa, $properiesOfb) {
+            $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
+    
+            if (is_object($properiesOfa[$commonProperty]) && is_object($properiesOfb[$commonProperty])) {
+                return ['key' => $commonProperty, 'children' => $iter];
+            } else {
+                return ['key' => $commonProperty, ...$iter];
+            }
+        },
+        array_keys($commonProperties)
     );
 
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
@@ -65,8 +79,8 @@ function getValue(array $data, string $oldNew = ''): mixed
     }
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
-
-function sortAlphabet(&$data): array
+/*
+function sortAlphabet(array &$data): array
 {
     usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
     $data =  array_map(
@@ -80,12 +94,18 @@ function sortAlphabet(&$data): array
     );
     return $data;
 }
+*/
+
+function sortAlphabet(array $ast)
+{
+
+}
 function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
 
     $ast = compare($data1, $data2);
-    sortAlphabet($ast);
-    return format($formatName, $ast);
+    return $ast;
+    #return format($formatName, $ast);
 }
