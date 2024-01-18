@@ -79,7 +79,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     }
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
-/*
+
 function sortAlphabet(array &$data): array
 {
     usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
@@ -94,18 +94,16 @@ function sortAlphabet(array &$data): array
     );
     return $data;
 }
-*/
 
-function sortAlphabet(array $ast)
-{
 
-}
-function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
+function gendiff(string $path1, string $path2, string $formatName = 'stylish')#: string
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
-
+    
     $ast = compare($data1, $data2);
-    return $ast;
-    #return format($formatName, $ast);
+    $copyAst = $ast;
+    $ast = sortAlphabet($copyAst);
+    #return $ast;
+    return format($formatName, $ast);
 }
