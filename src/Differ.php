@@ -22,8 +22,8 @@ function compare(mixed $a, mixed $b): array
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
-    //Should not use of mutating operators 
-    /* 
+    //Should not use of mutating operators
+    /*
     $commonData = array_reduce(
         array_keys($commonProperties),
         function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
@@ -42,7 +42,7 @@ function compare(mixed $a, mixed $b): array
     $commonData = array_map(
         function ($commonProperty) use ($properiesOfa, $properiesOfb) {
             $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
-    
+
             if (is_object($properiesOfa[$commonProperty]) && is_object($properiesOfb[$commonProperty])) {
                 return ['key' => $commonProperty, 'children' => $iter];
             } else {
@@ -100,7 +100,7 @@ function gendiff(string $path1, string $path2, string $formatName = 'stylish')#:
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
-    
+
     $ast = compare($data1, $data2);
     $copyAst = $ast;
     $ast = sortAlphabet($copyAst);
