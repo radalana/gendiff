@@ -76,7 +76,7 @@ function hasChildren(array $data): bool
 
 function getValue(array $data, string $oldNew = ''): mixed
 {
-    if (empty($oldNew)) {
+    if ($oldNew === '') {
         return $data['value'];
     }
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
