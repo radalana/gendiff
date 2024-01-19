@@ -91,9 +91,9 @@ function sortAlphabetic(array $data): array
         $children = getChildren($node);
         $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
 
-
-        $node['children'] = array_map(fn($child) => $iter($child), $sortedChildren);
-        return $node;
+        $newNode = $node;
+        $newNode['$children'] = array_map(fn($child) => $iter($child), $sortedChildren);
+        return $newNode;
     };
     $sortedNodes = array_map(fn($value) => $iter($value), $data);
     #var_dump($sortedNodes);
