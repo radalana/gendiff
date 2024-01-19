@@ -3,8 +3,8 @@
 namespace Differ\Differ;
 
 use stdClass;
-use function Functional\sort as funcSort;
 
+use function Functional\sort as funcSort;
 use function Differ\Parsers\getData;
 use function Differ\Formatters\format;
 use function Differ\Formatters\Stylish\getChildren;
@@ -85,14 +85,14 @@ function getValue(array $data, string $oldNew = ''): mixed
 
 function sortAlphabetic(array $data): array
 {
-    $iter = function($node) use(&$iter){
+    $iter = function ($node) use (&$iter) {
         if (!hasChildren($node)) {
             return $node;
         }
         $children = getChildren($node);
         $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-        
-         
+
+
         $node['children'] = array_map(fn($child) => $iter($child), $sortedChildren);
         return $node;
     };
