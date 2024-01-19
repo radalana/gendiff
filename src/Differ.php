@@ -107,9 +107,6 @@ function gendiff(string $path1, string $path2, string $formatName = 'stylish'): 
     $data2 = getData($path2);
 
     $ast = compare($data1, $data2);
-    #print_r($ast);
-    #print_r("---------------------------------------------------------------------------------------------------");
     $sortedAst = sortAlphabetic($ast);
     return format($formatName, $sortedAst);
-    #return $sortedAst;
 }
