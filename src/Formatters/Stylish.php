@@ -129,7 +129,7 @@ function stringify(array $data): string
     }
 }
 
-function style($ast)
+function style(array $ast): string
 {
     $arrayWithSigns = addSign($ast);
     return stringify(array_merge(...$arrayWithSigns));
