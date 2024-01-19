@@ -26,7 +26,7 @@ function toPlain(array $data): string
 {
     $iter = function ($data, $ancestry) use (&$iter) {
         $name = $data['key'];
-        $newAncestry = (empty($ancestry)) ? "{$name}" : "{$ancestry}.{$name}";
+        $newAncestry = ($ancestry === '') ? "{$name}" : "{$ancestry}.{$name}";
         if (!hasChildren($data)) {
             if (isChanged($data)) {
                 $value = getValue($data);
