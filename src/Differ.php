@@ -114,12 +114,12 @@ function sortAst(array $node): array
 function sortData(array $data): array
 {
     return array_map(fn($val) => sortAst($val), $data);
-} 
+}
 */
 
 function sortAst(array $ast): array
 {
-    $iter = function($node) use (&$iter) {
+    $iter = function ($node) use (&$iter) {
         if (!hasChildren($node)) {
             return $node;
         }
