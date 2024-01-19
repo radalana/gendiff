@@ -81,7 +81,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     }
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
-
+/*
 function sortAlphabetic(array $data): array
 {
     $iter = function ($node) use (&$iter) {
@@ -98,14 +98,55 @@ function sortAlphabetic(array $data): array
     #var_dump($sortedNodes);
     return funcSort($sortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
 }
+*/
 
+/*
+function sortAst(array $node): array
+{
+    if (!hasChildren($node)) {
+        return $node;
+    }
+    $children = getChildren($node);
+    $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
+    return ['key' => $node['key'], 'children' => array_map(fn($child) => sortAst($child), $sortedChildren)];
+}
 
+function sortData(array $data): array
+{
+    return array_map(fn($val) => sortAst($val), $data);
+} 
+*/
+
+function sortAst(array $ast): array
+{
+    $iter = function($node) use (&$iter) {
+        if (!hasChildren($node)) {
+            return $node;
+        }
+        $children = getChildren($node);
+        $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
+        return ['key' => $node['key'], 'children' => array_map(fn($child) => $iter($child), $sortedChildren)];
+    };
+    return array_map(fn($node) => $iter($node), $ast);
+}
+function sortData(array $data): array
+{
+    $dataWithSortedNodes = sortAst($data);
+    #var_dump($dataWithSortedNodes);
+    $sortedData = funcSort($dataWithSortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
+    return $sortedData;
+}
 function gendiff(string $path1, string $path2, string $formatName = 'stylish')
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
 
     $ast = compare($data1, $data2);
-    $sortedAst = sortAlphabetic($ast);
+    #return sortData($ast);
+    #print_r($ast[1]);
+    #print_r("------------------------------");
+    #return sortAst($ast[1]);
+    $sortedAst = sortData($ast);
     return format($formatName, $sortedAst);
+    #return format($formatName, $sortedAst);
 }
