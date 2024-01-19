@@ -8,7 +8,7 @@ use function Differ\Differ\gendiff;
 
 class DifferTest extends TestCase
 {
-    public function testGendiffJson1()
+    public function testGendiffJson1(): void
     {
         $jsonFile1 = './tests/fixtures/test1/json/file1.json';
         $jsonFile2 = './tests/fixtures/test1/json/file2.json';
@@ -23,7 +23,7 @@ class DifferTest extends TestCase
         $expectedJsonFile = './tests/fixtures/test1/expectedJson.json';
         $this->assertJsonStringEqualsJsonFile($expectedJsonFile, gendiff($jsonFile1, $jsonFile2, 'json'));
     }
-    public function testGendiffYml1()
+    public function testGendiffYml1(): void
     {
         $ymlFile1 = './tests/fixtures/test1/yml/file1.yml';
         $ymlFile2 = './tests/fixtures/test1/yml/file2.yml';
@@ -40,7 +40,7 @@ class DifferTest extends TestCase
     }
 
     /**Test data with list as a value */
-    public function testGendiffJson2()
+    public function testGendiffJson2(): void
     {
         $jsonFile1 = './tests/fixtures/test2/json/file1.json';
         $jsonFile2 = './tests/fixtures/test2/json/file2.json';
@@ -56,7 +56,7 @@ class DifferTest extends TestCase
         $this->assertJsonStringEqualsJsonFile($expectedJsonFile, gendiff($jsonFile1, $jsonFile2, 'json'));
     }
 
-    public function testGendiffYml2()
+    public function testGendiffYml2(): void
     {
         $ymlFile1 = './tests/fixtures/test2/yml/file1.yml';
         $ymlFile2 = './tests/fixtures/test2/yml/file2.yml';
@@ -72,7 +72,7 @@ class DifferTest extends TestCase
         $this->assertJsonStringEqualsJsonFile($expectedJsonFile, gendiff($ymlFile1, $ymlFile2, 'json'));
     }
 
-    public function testGendiffJson3()
+    public function testGendiffJson3(): void
     {
         $jsonFile1 = './tests/fixtures/test3/json/file1.json';
         $jsonFile2 = './tests/fixtures/test3/json/file2.json';
@@ -88,7 +88,7 @@ class DifferTest extends TestCase
         $this->assertJsonStringEqualsJsonFile($expectedJsonFile, gendiff($jsonFile1, $jsonFile2, 'json'));
     }
 
-    public function testGendiffYml3()
+    public function testGendiffYml3(): void
     {
         $ymlFile1 = './tests/fixtures/test3/yml/file1.yml';
         $ymlFile2 = './tests/fixtures/test3/yml/file2.yml';
@@ -105,7 +105,7 @@ class DifferTest extends TestCase
     }
 
     /** Test data with a list as a part of complex value */
-    public function testGendiffJson4()
+    public function testGendiffJson4(): void
     {
         $jsonFile1 = './tests/fixtures/test4/json/file1.json';
         $jsonFile2 = './tests/fixtures/test4/json/file2.json';
