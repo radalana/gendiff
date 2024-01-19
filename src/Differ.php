@@ -89,11 +89,11 @@ function sortAlphabetic(array $data): array
             return $node;
         }
         $children = getChildren($node);
+        
         $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-
-        $newNode = $node;
-        $newNode['children'] = array_map(fn($child) => $iter($child), $sortedChildren);
-        return $newNode;
+        $newChildren = array_map(fn($child) => $iter($child), $sortedChildren);
+        $node['children'] = $newChildren;
+        return $node;
     };
     $sortedNodes = array_map(fn($value) => $iter($value), $data);
     #var_dump($sortedNodes);
