@@ -3,9 +3,11 @@
 namespace Differ\Differ;
 
 use stdClass;
+use function Functional\sort as funcSort;
 
 use function Differ\Parsers\getData;
 use function Differ\Formatters\format;
+use function Differ\Formatters\Stylish\getChildren;
 
 /**
  * compare 2 datas and  generate ast
@@ -80,19 +82,23 @@ function getValue(array $data, string $oldNew = ''): mixed
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
 
-function sortAlphabet(array &$data): array
+
+function sortAlphabetic(array $data): array
 {
-    usort($data, fn($a, $b) => strcmp($a['key'], $b['key']));
-    $data =  array_map(
-        function ($val) {
-            if (hasChildren($val)) {
-                sortAlphabet($val['children']);
-            }
-            return $val;
-        },
-        $data
-    );
-    return $data;
+    $iter = function($node) use(&$iter){
+        if (!hasChildren($node)) {
+            return $node;
+        }
+        $children = getChildren($node);
+        $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
+        
+         
+        $node['children'] = array_map(fn($child) => $iter($child), $sortedChildren);
+        return $node;
+    };
+    $sortedNodes = array_map(fn($value) => $iter($value), $data);
+    #var_dump($sortedNodes);
+    return funcSort($sortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
 }
 
 
@@ -102,8 +108,9 @@ function gendiff(string $path1, string $path2, string $formatName = 'stylish')#:
     $data2 = getData($path2);
 
     $ast = compare($data1, $data2);
-    $copyAst = $ast;
-    $ast = sortAlphabet($copyAst);
-    #return $ast;
-    return format($formatName, $ast);
+    #print_r($ast);
+    #print_r("---------------------------------------------------------------------------------------------------");
+    $sortedAst = sortAlphabetic($ast);
+    return format($formatName, $sortedAst);
+    #return $sortedAst;
 }
