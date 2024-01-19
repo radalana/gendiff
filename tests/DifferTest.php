@@ -34,6 +34,7 @@ class DifferTest extends TestCase
         //plain text
         $expectedPlain = file_get_contents('./tests/fixtures/test1/expectedPlain.txt');
         $this->assertEquals($expectedPlain, gendiff($ymlFile1, $ymlFile2, 'plain'));
+
         //json
         $expectedJsonFile = './tests/fixtures/test1/expectedJson.json';
         $this->assertJsonStringEqualsJsonFile($expectedJsonFile, gendiff($ymlFile1, $ymlFile2, 'json'));

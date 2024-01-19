@@ -92,7 +92,7 @@ function sortAlphabetic(array $data): array
         $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
 
         $newNode = $node;
-        $newNode['$children'] = array_map(fn($child) => $iter($child), $sortedChildren);
+        $newNode['children'] = array_map(fn($child) => $iter($child), $sortedChildren);
         return $newNode;
     };
     $sortedNodes = array_map(fn($value) => $iter($value), $data);
@@ -101,7 +101,7 @@ function sortAlphabetic(array $data): array
 }
 
 
-function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
+function gendiff(string $path1, string $path2, string $formatName = 'stylish')
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
