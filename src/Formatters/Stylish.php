@@ -99,7 +99,7 @@ function isIndexedArray($value)
 function stringify(array $data): string
 {
     {
-        $iter = function ($currentValue, $depth) use (&$iter) {
+        $iter = function (mixed $currentValue, int $depth) use (&$iter) {
             if (!is_array($currentValue)) {
                 return toString($currentValue);
             }
