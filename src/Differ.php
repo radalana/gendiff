@@ -82,7 +82,6 @@ function getValue(array $data, string $oldNew = ''): mixed
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
 
-
 function sortAlphabetic(array $data): array
 {
     $iter = function ($node) use (&$iter) {
@@ -102,7 +101,7 @@ function sortAlphabetic(array $data): array
 }
 
 
-function gendiff(string $path1, string $path2, string $formatName = 'stylish')#: string
+function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
