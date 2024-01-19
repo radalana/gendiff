@@ -89,7 +89,6 @@ function sortAlphabetic(array $data): array
             return $node;
         }
         $children = getChildren($node);
-        
         $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
         $newChildren = array_map(fn($child) => $iter($child), $sortedChildren);
         $node['children'] = $newChildren;
