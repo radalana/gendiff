@@ -136,7 +136,7 @@ function sortData(array $data): array
     $sortedData = funcSort($dataWithSortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
     return $sortedData;
 }
-function gendiff(string $path1, string $path2, string $formatName = 'stylish')
+function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
 {
     $data1 = getData($path1);
     $data2 = getData($path2);
@@ -148,5 +148,4 @@ function gendiff(string $path1, string $path2, string $formatName = 'stylish')
     #return sortAst($ast[1]);
     $sortedAst = sortData($ast);
     return format($formatName, $sortedAst);
-    #return format($formatName, $sortedAst);
 }

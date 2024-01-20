@@ -57,39 +57,31 @@ function objectTAarray(mixed $data): mixed
     $result = array_map(fn($value) => objectTAarray($value), $arrayOfProperties);
     return $result;
 }
+
 function addSign(array $diff): array
 {
-
-    $iter = function ($data) use (&$iter) {
+    $iter = function($data) use (&$iter) {
         if (!hasChildren($data)) {
             $val = getValue($data);
             $status = isChanged($data) ? $data['status'] : '';
-            $data['value'] = objectTAarray($val);
+            $arrayVal = objectTAarray($val);
 
             if ($status === 'changed') {
                 $oldVal = getValue($data, 'old');
                 $newVal = getValue($data, 'new');
-
-                $data["- {$data['key']}"] = $oldVal;
-                $data["+ {$data['key']}"] = $newVal;
-            } else {
-                $sign = getSign($status);
-                $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
-                return [$key => $data['value']];
+                return ["- {$data['key']}" => objectTAarray($oldVal), "+ {$data['key']}" => objectTAarray($newVal)];
             }
-            unset($data['key'], $data['value'], $data['status']);
-            return $data;
+            $sign = getSign($status);
+            $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
+            return [$key => $arrayVal];
         }
-
         $children = getChildren($data);
         $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
-        $data[$data['key']] = $newChildren;
-        unset($data['key'], $data['value'], $data['status'], $data['children']);
-        return $data;
+        return [$data['key'] => $newChildren];
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
-function isIndexedArray($value)
+function isIndexedArray(mixed $value): bool
 {
     if (is_array($value)) {
         return array_values($value) === $value;
