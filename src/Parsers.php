@@ -9,11 +9,19 @@ use stdClass;
 function readFromFile(string $pathTofile): string
 {
     $file = fopen($pathTofile, "r");
+    if ($file === false) {
+        throw new Exception("Failed to open file!");
+    }
+
     $fileSize = filesize($pathTofile);
     if ($fileSize === 0) {
         throw new Exception("{$pathTofile} is empty!");
     }
     $data = fread($file, $fileSize);
+    if ($data === false) {
+        throw new Exception("Failed to read file!");
+    }
+
     if (fclose($file) === false) {
         throw new Exception("Failed to close file!");
     };
