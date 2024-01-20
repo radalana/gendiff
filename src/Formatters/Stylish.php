@@ -60,7 +60,7 @@ function objectTAarray(mixed $data): mixed
 
 function addSign(array $diff): array
 {
-    $iter = function($data) use (&$iter) {
+    $iter = function ($data) use (&$iter) {
         if (!hasChildren($data)) {
             $val = getValue($data);
             $status = isChanged($data) ? $data['status'] : '';
