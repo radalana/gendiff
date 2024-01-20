@@ -10,9 +10,11 @@ use function Differ\Formatters\format;
 use function Differ\Formatters\Stylish\getChildren;
 
 /**
- * compare 2 datas and  generate ast
- */
-function compare(mixed $a, mixed $b): array
+* @param mixed $a
+* @param mixed $b
+* @return array<string, mixed> | array<int, array<string, mixed>|string>
+*/
+function compare(mixed $a, mixed $b): mixed
 {
     if (!is_object($a) || !is_object($b)) {
         if ($a === $b) {
@@ -24,25 +26,9 @@ function compare(mixed $a, mixed $b): array
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
-    //Should not use of mutating operators
-    /*
-    $commonData = array_reduce(
-        array_keys($commonProperties),
-        function ($acc, $commonProperty) use ($properiesOfa, $properiesOfb) {
-            $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
-
-            if (is_object($properiesOfa[$commonProperty]) && (is_object($properiesOfb[$commonProperty]))) {//если
-                $acc[] = ['key' => $commonProperty, 'children' => $iter];
-            } else {
-                $acc[] = ['key' => $commonProperty, ...$iter];
-            }
-            return $acc;
-        },
-        []
-    );
-    */
+    
     $commonData = array_map(
-        function ($commonProperty) use ($properiesOfa, $properiesOfb) {
+        function (string $commonProperty) use ($properiesOfa, $properiesOfb): array {
             $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
 
             if (is_object($properiesOfa[$commonProperty]) && is_object($properiesOfb[$commonProperty])) {
@@ -68,12 +54,19 @@ function compare(mixed $a, mixed $b): array
     );
     return array_merge($addedData, $commonData, $deletedData);
 }
-
+/**
+ * @param array<string, mixed> $data
+ * @return bool
+ */
 function hasChildren(array $data): bool
 {
     return key_exists('children', $data);
 }
-
+/**
+ * @param array<string, mixed> $data
+ * @param string $oldNew
+ * @return mixed
+ */
 function getValue(array $data, string $oldNew = ''): mixed
 {
     if ($oldNew === '') {
@@ -81,45 +74,13 @@ function getValue(array $data, string $oldNew = ''): mixed
     }
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
-/*
-function sortAlphabetic(array $data): array
-{
-    $iter = function ($node) use (&$iter) {
-        if (!hasChildren($node)) {
-            return $node;
-        }
-        $children = getChildren($node);
-        $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-        $newChildren = array_map(fn($child) => $iter($child), $sortedChildren);
-        $node['children'] = $newChildren;
-        return $node;
-    };
-    $sortedNodes = array_map(fn($value) => $iter($value), $data);
-    #var_dump($sortedNodes);
-    return funcSort($sortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-}
-*/
-
-/*
-function sortAst(array $node): array
-{
-    if (!hasChildren($node)) {
-        return $node;
-    }
-    $children = getChildren($node);
-    $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-    return ['key' => $node['key'], 'children' => array_map(fn($child) => sortAst($child), $sortedChildren)];
-}
-
-function sortData(array $data): array
-{
-    return array_map(fn($val) => sortAst($val), $data);
-}
-*/
-
+/**
+ * @param array<string, mixed> $ast
+ * @return array<string, mixed>
+ */
 function sortAst(array $ast): array
 {
-    $iter = function ($node) use (&$iter) {
+    $iter = function (array $node) use (&$iter): array {
         if (!hasChildren($node)) {
             return $node;
         }
@@ -129,6 +90,11 @@ function sortAst(array $ast): array
     };
     return array_map(fn($node) => $iter($node), $ast);
 }
+
+/**
+ * @param array<string, mixed> $data
+ * @return array<string, mixed>
+ */
 function sortData(array $data): array
 {
     $dataWithSortedNodes = sortAst($data);
