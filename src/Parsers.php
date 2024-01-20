@@ -8,13 +8,15 @@ use stdClass;
 
 function readFromFile(string $pathTofile): string
 {
-    $file = fopen($pathTofile, "r") or die("Unable to open file!");
+    $file = fopen($pathTofile, "r");
     $fileSize = filesize($pathTofile);
-    if (!$fileSize) {
+    if ($fileSize === 0) {
         throw new Exception("{$pathTofile} is empty!");
     }
     $data = fread($file, $fileSize);
-    fclose($file);
+    if (fclose($file) === false) {
+        throw new Exception("Failed to close file!");
+    };
     return $data;
 }
 
