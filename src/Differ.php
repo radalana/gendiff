@@ -26,7 +26,7 @@ function compare(mixed $a, mixed $b): mixed
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
-    
+
     $commonData = array_map(
         function (string $commonProperty) use ($properiesOfa, $properiesOfb): array {
             $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
