@@ -67,7 +67,7 @@ function objectTAarray(mixed $data): mixed
 }
 
 /**
- * @param array<string, mixed> $diff
+ * @param array<int|string, mixed> $diff
  * @return array<mixed>
  */
 function addSign(array $diff): array
