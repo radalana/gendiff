@@ -93,7 +93,7 @@ function sortAst(array $ast): array
 
 /**
  * @param array<string, mixed> $data
- * @return array<int|string, mixed>
+ * @return array<string, mixed>
  */
 function sortData(array $data): array
 {

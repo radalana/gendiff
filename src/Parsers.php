@@ -17,6 +17,9 @@ function readFromFile(string $pathTofile): string
     if ($fileSize === 0) {
         throw new Exception("{$pathTofile} is empty!");
     }
+    if ($fileSize === false) {
+        throw new Exception("Failed to get file size!");
+    }
     $data = fread($file, $fileSize);
     if ($data === false) {
         throw new Exception("Failed to read file!");
