@@ -22,6 +22,10 @@ function formatString(mixed $value): mixed
     return "'{$value}'";
 }
 
+/**
+ * @param array<string, mixed> $data
+ * @return string
+ */
 function toPlain(array $data): string
 {
     $iter = function ($data, $ancestry) use (&$iter) {
