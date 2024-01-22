@@ -17,6 +17,10 @@ function toString(mixed $value): mixed
 }
 
 /**shows if current data if was added/deleted/changed */
+/**
+ * @param array<string, mixed> $data
+ * @return bool
+ */
 function isChanged(array $data): bool
 {
     return key_exists('status', $data);
@@ -34,6 +38,10 @@ function getSign(string $status): string
     }
 }
 
+/**
+ * @param array<string, mixed> $data
+ * @return array<mixed>
+ */
 function getChildren(array $data): array
 {
     return $data['children'];
@@ -58,6 +66,10 @@ function objectTAarray(mixed $data): mixed
     return $result;
 }
 
+/**
+ * @param array<string, mixed> $diff
+ * @return array<mixed>
+ */
 function addSign(array $diff): array
 {
     $iter = function ($data) use (&$iter) {
@@ -88,6 +100,11 @@ function isIndexedArray(mixed $value): bool
     }
         return false;
 }
+
+/**
+ * @param array<string, mixed> $data
+ * @return string
+ */
 function stringify(array $data): string
 {
     {
@@ -121,6 +138,10 @@ function stringify(array $data): string
     }
 }
 
+/**
+ * @param array<string, mixed> $ast
+ * @return string
+ */
 function style(array $ast): string
 {
     $arrayWithSigns = addSign($ast);
