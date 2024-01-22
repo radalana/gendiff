@@ -75,7 +75,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
 /**
- * @param array<string, mixed> $ast
+ * @param array<int|string, mixed> $ast
  * @return array<string, mixed>
  */
 function sortAst(array $ast): array
@@ -92,7 +92,7 @@ function sortAst(array $ast): array
 }
 
 /**
- * @param  array<string, mixed>$data
+ * @param  array<int|string, mixed>$data
  * @return array<string, mixed>
  */
 function sortData(array $data): array
