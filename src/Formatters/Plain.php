@@ -23,7 +23,7 @@ function formatString(mixed $value): mixed
 }
 
 /**
- * @param array<string, mixed> $data
+ * @param array<int|string, mixed> $data
  * @return string
  */
 function toPlain(array $data): string
