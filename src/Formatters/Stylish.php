@@ -139,7 +139,7 @@ function stringify(array $data): string
 }
 
 /**
- * @param array<string, mixed> $ast
+ * @param array<int|string, mixed> $ast
  * @return string
  */
 function style(array $ast): string

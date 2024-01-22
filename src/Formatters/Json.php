@@ -5,7 +5,7 @@ namespace Differ\Formatters\Json;
 use function Differ\Formatters\Stylish\addSign;
 
 /**
- * @param array<string, mixed> $ast
+ * @param array<int|string, mixed> $ast
  * @return string|false
  */
 function toJson(array $ast): string|false
