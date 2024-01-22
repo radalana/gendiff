@@ -12,7 +12,7 @@ use function Differ\Formatters\Stylish\getChildren;
 /**
 * @param mixed $a
 * @param mixed $b
-* @return array<string, mixed> | array<int, array<string, mixed>|string>
+* @return array<int|string, mixed>
 */
 function compare(mixed $a, mixed $b): mixed
 {
@@ -93,7 +93,7 @@ function sortAst(array $ast): array
 
 /**
  * @param array<string, mixed> $data
- * @return array<string, mixed>
+ * @return array<int|string, mixed>
  */
 function sortData(array $data): array
 {
