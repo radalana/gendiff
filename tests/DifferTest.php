@@ -27,29 +27,18 @@ class DifferTest extends TestCase
     public static function gendiffStylishProvider(): array
     {
         $path = self::PATH;//чтобы линтер не ругался на длинные строки
-        return [["{$path}1/json/file1.json",
-        "{$path}1/json/file2.json", "{$path}1/expected.json"],
-                ["{$path}1/yml/file1.yml",
-                "{$path}1/yml/file2.yml", "{$path}1/expected.json"],
-                ["{$path}2/json/file1.json"
-                , "{$path}2/json/file2.json", "{$path}2/expected.json"],
-                ["{$path}2/yml/file1.yml",
-                "{$path}2/yml/file2.yml", "{$path}2/expected.json"],
-                ["{$path}3/json/file1.json",
-                 "{$path}3/json/file2.json", "{$path}3/expected.json"],
-                ["{$path}3/yml/file1.yml",
-                 "{$path}3/yml/file2.yml", "{$path}3/expected.json"],
-                ["{$path}4/json/file1.json",
-                 "{$path}4/json/file2.json", "{$path}4/expected.json"],
-                ["{$path}4/yml/file1.yml",
-                 "{$path}4/yml/file2.yml", "{$path}4/expected.json"],
-                ["{$path}5/json/file1.json",
-                 "{$path}5/json/file2.json", "{$path}5/expected.json"],
-                ["{$path}5/yml/file1.yml",
-                 "{$path}5/yml/file2.yml", "{$path}5/expected.json"]
+        return [["{$path}1/json/file1.json", "{$path}1/json/file2.json", "{$path}1/expected.json"],
+                ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expected.json"],
+                ["{$path}2/json/file1.json", "{$path}2/json/file2.json", "{$path}2/expected.json"],
+                ["{$path}2/yml/file1.yml", "{$path}2/yml/file2.yml", "{$path}2/expected.json"],
+                ["{$path}3/json/file1.json", "{$path}3/json/file2.json", "{$path}3/expected.json"],
+                ["{$path}3/yml/file1.yml", "{$path}3/yml/file2.yml", "{$path}3/expected.json"],
+                ["{$path}4/json/file1.json", "{$path}4/json/file2.json", "{$path}4/expected.json"],
+                ["{$path}4/yml/file1.yml", "{$path}4/yml/file2.yml", "{$path}4/expected.json"],
+                ["{$path}5/json/file1.json", "{$path}5/json/file2.json", "{$path}5/expected.json"],
+                ["{$path}5/yml/file1.yml", "{$path}5/yml/file2.yml", "{$path}5/expected.json"]
         ];
     }
-
     /**
      * @dataProvider gendiffPlainProvider
      */
@@ -90,9 +79,8 @@ class DifferTest extends TestCase
     public static function gendiffJsonProvider(): array
     {
         $path = self::PATH;
-        return [
-            ["{$path}1/json/file1.json", "{$path}1/json/file2.json", "{$path}1/expectedJson.json"],
-            ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expectedJson.json"],
+        return [["{$path}1/json/file1.json", "{$path}1/json/file2.json", "{$path}1/expectedJson.json"],
+                ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expectedJson.json"],
                 ["{$path}2/json/file1.json", "{$path}2/json/file2.json", "{$path}2/expectedJson.json"],
                 ["{$path}2/yml/file1.yml", "{$path}2/yml/file2.yml", "{$path}2/expectedJson.json"],
                 ["{$path}3/json/file1.json", "{$path}3/json/file2.json", "{$path}3/expectedJson.json"],
