@@ -2,11 +2,9 @@
 
 <?php
 
-// Путь для локальной работы с проектом
+
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
 $autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
-
-
 
 if (file_exists($autoloadPath1)) {
     require_once $autoloadPath1; //global
@@ -15,8 +13,6 @@ if (file_exists($autoloadPath1)) {
 }
 use function Differ\Differ\gendiff;
 
-
-//нужно ли это в модуль?
 $doc = <<<DOC
 Generate diff
 
@@ -32,12 +28,7 @@ Options:
  
 DOC;
 
-$param = array('version' => 'Generate diff 1.0');
-//после вызова handle код ниже не выполгяется
-
+$param = ['version' => 'Generate diff 1.0'];
 $result = Docopt::handle($doc, $param);
-#var_dump($param);
-#var_dump($result);
-#var_dump($result);
 print_r(gendiff($result['<firstFile>'], $result['<secondFile>'], $result['--format']));
 
