@@ -6,11 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\gendiff;
 
-function trim(string $input): string
-{
-    return preg_replace('/[\s\n]+$/', '', $input);
-}
-
 class DifferTest extends TestCase
 {
     public function testGendiffJson1(): void
