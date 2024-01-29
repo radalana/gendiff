@@ -9,16 +9,31 @@ use function Differ\Differ\gendiff;
 class DifferTest extends TestCase
 {
     private const PATH = './tests/fixtures/test';
+    private function getFixturePath(int $testNumber, string $fixtureName)
+    {
+           $directory = self::PATH;
+           $subDir = pathinfo($fixtureName, PATHINFO_EXTENSION);
+           $expected = 'expected';
+
+           if (str_contains($fixtureName, $expected)) {
+            return "{$directory}{$testNumber}/{$fixtureName}";
+           }
+            return "{$directory}{$testNumber}/{$subDir}/{$fixtureName}";
+    }
     /**
      * @dataProvider gendiffStylishProvider
      */
-    public function testGendiffStylish(string $path1, string $path2, string $expectedFile): void
+    public function testGendiffStylish(int $testNumber, string $file1, string $file2, string $expectedFile): void
     {
-        $result = trim((gendiff($path1, $path2, "stylish")));
+        $path1 = $this->getFixturePath($testNumber, $file1);
+        $path2 = $this->getFixturePath($testNumber, $file2);
+        $expectedFile = $this->getFixturePath($testNumber, $expectedFile);
+
+        $result = gendiff($path1, $path2, "stylish");
         $expected =  trim(file_get_contents($expectedFile));
         $this->assertEquals($expected, $result);
 
-        $resultDefault = trim((gendiff($path1, $path2)));
+        $resultDefault = gendiff($path1, $path2);
         $this->assertEquals($expected, $resultDefault);
     }
     /**
@@ -26,69 +41,74 @@ class DifferTest extends TestCase
     */
     public static function gendiffStylishProvider(): array
     {
-        $path = self::PATH;//чтобы линтер не ругался на длинные строки
-        return [["{$path}1/json/file1.json", "{$path}1/json/file2.json", "{$path}1/expected.json"],
-                ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expected.json"],
-                ["{$path}2/json/file1.json", "{$path}2/json/file2.json", "{$path}2/expected.json"],
-                ["{$path}2/yml/file1.yml", "{$path}2/yml/file2.yml", "{$path}2/expected.json"],
-                ["{$path}3/json/file1.json", "{$path}3/json/file2.json", "{$path}3/expected.json"],
-                ["{$path}3/yml/file1.yml", "{$path}3/yml/file2.yml", "{$path}3/expected.json"],
-                ["{$path}4/json/file1.json", "{$path}4/json/file2.json", "{$path}4/expected.json"],
-                ["{$path}4/yml/file1.yml", "{$path}4/yml/file2.yml", "{$path}4/expected.json"],
-                ["{$path}5/json/file1.json", "{$path}5/json/file2.json", "{$path}5/expected.json"],
-                ["{$path}5/yml/file1.yml", "{$path}5/yml/file2.yml", "{$path}5/expected.json"]
+        return [[1, "file1.json", "file2.json", "expected.json"],
+                [1, "file1.yml", "file2.yml", "expected.json"],
+                [2, "file1.json", "file2.json", "expected.json"],
+                [2, "file1.yml", "file2.yml", "expected.json"],
+                [3, "file1.json", "file2.json", "expected.json"],
+                [3, "file1.yml", "file2.yml", "expected.json"],
+                [4, "file1.json", "file2.json", "expected.json"],
+                [4, "file1.yml", "file2.yml", "expected.json"],
+                [5, "file1.json", "file2.json", "expected.json"],
+                [5, "file1.yml", "file2.yml", "expected.json"]
         ];
     }
     /**
      * @dataProvider gendiffPlainProvider
      */
-    public function testGendiffPlain(string $path1, string $path2, string $expectedPath): void
+    
+    public function testGendiffPlain(int $testNumber, string $file1, string $file2, string $expectedFile): void
     {
+        $path1 = $this->getFixturePath($testNumber, $file1);
+        $path2 = $this->getFixturePath($testNumber, $file2);
+        $expectedPath = $this->getFixturePath($testNumber, $expectedFile);
+
         $expected = trim(file_get_contents($expectedPath));
-        $this->assertEquals($expected, trim(gendiff($path1, $path2, "plain")));
+        $this->assertEquals($expected, gendiff($path1, $path2, "plain"));
     }
     /**
     * @return array<array<string>>
     */
     public static function gendiffPlainProvider(): array
     {
-        $path = self::PATH;
-        return [["{$path}1/json/file1.json", "{$path}1/json/file2.json","{$path}1/expectedPlain"],
-                ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expectedPlain"],
-                ["{$path}2/json/file1.json", "{$path}2/json/file2.json", "{$path}2/expectedPlain"],
-                ["{$path}2/yml/file1.yml", "{$path}2/yml/file2.yml", "{$path}2/expectedPlain"],
-                ["{$path}3/json/file1.json", "{$path}3/json/file2.json", "{$path}3/expectedPlain"],
-                ["{$path}3/yml/file1.yml", "{$path}3/yml/file2.yml", "{$path}3/expectedPlain"],
-                ["{$path}4/json/file1.json", "{$path}4/json/file2.json", "{$path}4/expectedPlain"],
-                ["{$path}4/yml/file1.yml", "{$path}4/yml/file2.yml", "{$path}4/expectedPlain"],
-                ["{$path}5/json/file1.json", "{$path}5/json/file2.json", "{$path}5/expectedPlain"],
-                ["{$path}5/yml/file1.yml", "{$path}5/yml/file2.yml","{$path}5/expectedPlain"]
+        return [[1, "file1.json", "file2.json","expectedPlain"],
+                [1, "file1.yml", "file2.yml", "expectedPlain"],
+                [2, "file1.json", "file2.json", "/expectedPlain"],
+                [2, "file1.yml", "file2.yml", "expectedPlain"],
+                [3, "file1.json", "file2.json", "expectedPlain"],
+                [3, "file1.yml", "file2.yml", "expectedPlain"],
+                [4, "file1.json", "file2.json", "expectedPlain"],
+                [4, "file1.yml", "file2.yml", "expectedPlain"],
+                [5, "file1.json", "file2.json", "expectedPlain"],
+                [5, "file1.yml", "file2.yml","expectedPlain"]
         ];
     }
 
     /**
      * @dataProvider gendiffJsonProvider
      */
-    public function testGendiffJson(string $path1, string $path2, string $expectedPath): void
+    public function testGendiffJson(int $testNumber, string $file1, string $file2, string $expectedFile): void
     {
-        $this->assertJsonStringEqualsJsonFile($expectedPath, trim(gendiff($path1, $path2, "json")));
+        $expectedPath = $this->getFixturePath($testNumber, $expectedFile);
+        $path1 = $this->getFixturePath($testNumber, $file1);
+        $path2 = $this->getFixturePath($testNumber, $file2);
+        $this->assertJsonStringEqualsJsonFile($expectedPath, gendiff($path1, $path2, "json"));
     }
     /**
     * @return array<array<string>>
     */
     public static function gendiffJsonProvider(): array
     {
-        $path = self::PATH;
-        return [["{$path}1/json/file1.json", "{$path}1/json/file2.json", "{$path}1/expectedJson.json"],
-                ["{$path}1/yml/file1.yml", "{$path}1/yml/file2.yml", "{$path}1/expectedJson.json"],
-                ["{$path}2/json/file1.json", "{$path}2/json/file2.json", "{$path}2/expectedJson.json"],
-                ["{$path}2/yml/file1.yml", "{$path}2/yml/file2.yml", "{$path}2/expectedJson.json"],
-                ["{$path}3/json/file1.json", "{$path}3/json/file2.json", "{$path}3/expectedJson.json"],
-                ["{$path}3/yml/file1.yml", "{$path}3/yml/file2.yml", "{$path}3/expectedJson.json"],
-                ["{$path}4/json/file1.json", "{$path}4/json/file2.json", "{$path}4/expectedJson.json"],
-                ["{$path}4/yml/file1.yml", "{$path}4/yml/file2.yml", "{$path}4/expectedJson.json"],
-                ["{$path}5/json/file1.json", "{$path}5/json/file2.json", "{$path}5/expectedJson.json"],
-                ["{$path}5/yml/file1.yml", "{$path}5/yml/file2.yml","{$path}5/expectedJson.json"]
+        return [[1, "file1.json", "file2.json", "expectedJson.json"],
+                [1, "file1.yml", "file2.yml", "expectedJson.json"],
+                [2, "file1.json", "file2.json", "expectedJson.json"],
+                [2, "file1.yml", "file2.yml", "expectedJson.json"],
+                [3, "file1.json", "file2.json", "expectedJson.json"],
+                [3, "file1.yml", "file2.yml", "expectedJson.json"],
+                [4, "file1.json", "file2.json", "expectedJson.json"],
+                [4, "file1.yml", "file2.yml", "expectedJson.json"],
+                [5, "file1.json", "file2.json", "expectedJson.json"],
+                [5, "file1.yml", "file2.yml","expectedJson.json"]
         ];
     }
 }
