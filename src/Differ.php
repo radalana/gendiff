@@ -8,6 +8,7 @@ use function Functional\sort as funcSort;
 use function Differ\Parsers\getData;
 use function Differ\Formatters\format;
 use function Differ\Formatters\Stylish\getChildren;
+
 /**
  * @param array<int|string, mixed> $ast
  * @return array<string, mixed>
@@ -61,11 +62,10 @@ function compare(mixed $a, mixed $b): mixed
             } else {
                 return ['key' => $commonProperty, ...$iter];
             }
-            
         },
         array_keys($commonProperties)
     );
-    
+
     $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
     $deletedData = array_map(
         fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'],
@@ -78,7 +78,7 @@ function compare(mixed $a, mixed $b): mixed
         fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'],
         $addedKeys
     );
-    return sortData(array_merge($addedData, $commonData, $deletedData));
+    return sortData(array_merge($addedData, $commonData, $deletedData));//просто сортировать здесь?....
 }
 /**
  * @param array<string, mixed> $data

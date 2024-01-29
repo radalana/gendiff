@@ -9,15 +9,15 @@ use function Differ\Differ\gendiff;
 class DifferTest extends TestCase
 {
     private const PATH = './tests/fixtures/test';
-    private function getFixturePath(int $testNumber, string $fixtureName)
+    private function getFixturePath(int $testNumber, string $fixtureName): string
     {
            $directory = self::PATH;
            $subDir = pathinfo($fixtureName, PATHINFO_EXTENSION);
            $expected = 'expected';
 
-           if (str_contains($fixtureName, $expected)) {
+        if (str_contains($fixtureName, $expected)) {
             return "{$directory}{$testNumber}/{$fixtureName}";
-           }
+        }
             return "{$directory}{$testNumber}/{$subDir}/{$fixtureName}";
     }
     /**
@@ -56,7 +56,7 @@ class DifferTest extends TestCase
     /**
      * @dataProvider gendiffPlainProvider
      */
-    
+
     public function testGendiffPlain(int $testNumber, string $file1, string $file2, string $expectedFile): void
     {
         $path1 = $this->getFixturePath($testNumber, $file1);
