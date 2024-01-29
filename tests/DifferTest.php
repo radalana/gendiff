@@ -27,10 +27,13 @@ class DifferTest extends TestCase
     {
         $path1 = $this->getFixturePath($testNumber, $file1);
         $path2 = $this->getFixturePath($testNumber, $file2);
+
         $expectedFile = $this->getFixturePath($testNumber, $expectedFile);
+        #$content = file_get_contents($expectedFile);
+        #file_put_contents($expectedFile, trim($content));
 
         $result = gendiff($path1, $path2, "stylish");
-        $expected =  trim(file_get_contents($expectedFile));
+        $expected = file_get_contents($expectedFile);
         $this->assertEquals($expected, $result);
 
         $resultDefault = gendiff($path1, $path2);
@@ -63,7 +66,7 @@ class DifferTest extends TestCase
         $path2 = $this->getFixturePath($testNumber, $file2);
         $expectedPath = $this->getFixturePath($testNumber, $expectedFile);
 
-        $expected = trim(file_get_contents($expectedPath));
+        $expected = file_get_contents($expectedPath);
         $this->assertEquals($expected, gendiff($path1, $path2, "plain"));
     }
     /**
