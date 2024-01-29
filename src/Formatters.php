@@ -13,12 +13,14 @@ use function Differ\Formatters\Json\toJson;
  */
 function format(string $format, array $ast): string
 {
-    if ($format === 'plain') {
-        return toPlain(($ast));
+    switch ($format) {
+        case 'plain':
+            return toPlain($ast);
+        case 'json':
+            return toJson($ast);
+        case 'stylish':
+            return style($ast);
+        default:
+            throw new \Exception("Undefinde formatter");
     }
-    if ($format === 'json') {
-        return toJson($ast);
-    }
-
-    return style($ast);
 }
