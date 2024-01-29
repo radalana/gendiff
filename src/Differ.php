@@ -2,13 +2,37 @@
 
 namespace Differ\Differ;
 
-use stdClass;
+use Exception;
 
 use function Functional\sort as funcSort;
-use function Differ\Parsers\getData;
+use function Differ\Parsers\parse;
 use function Differ\Formatters\format;
 use function Differ\Formatters\Stylish\getChildren;
 
+function readFromFile(string $pathTofile): string
+{
+    $file = fopen($pathTofile, "r");
+    if ($file === false) {
+        throw new Exception("Failed to open file!");
+    }
+
+    $fileSize = filesize($pathTofile);
+    if ($fileSize === 0) {
+        throw new Exception("{$pathTofile} is empty!");
+    }
+    if ($fileSize === false) {
+        throw new Exception("Failed to get file size!");
+    }
+    $data = fread($file, $fileSize);
+    if ($data === false) {
+        throw new Exception("Failed to read file!");
+    }
+
+    if (fclose($file) === false) {
+        throw new Exception("Failed to close file!");
+    };
+    return $data;
+}
 /**
  * @param array<int|string, mixed> $ast
  * @return array<string, mixed>
@@ -101,10 +125,23 @@ function getValue(array $data, string $oldNew = ''): mixed
     return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
 }
 
+function getFilesType(string $path1, string $path2): string
+{
+    $type1 = pathinfo($path1, PATHINFO_EXTENSION);
+    $type2 = pathinfo($path2, PATHINFO_EXTENSION);
+    if ($type1 !== $type2) {
+        throw new \Exception('Files must be of the same type!');
+    }
+    return $type1;
+}
 function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
 {
-    $data1 = getData($path1);
-    $data2 = getData($path2);
+    $stringData1 = readFromFile($path1);
+    $stringData2 = readFromFile($path2);
+
+    $type = getFilesType($path1, $path2);
+    $data1 = parse($stringData1, $type);
+    $data2 = parse($stringData2, $type);
 
     $ast = compare($data1, $data2);
     return format($formatName, $ast);

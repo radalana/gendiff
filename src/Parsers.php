@@ -3,45 +3,12 @@
 namespace Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
-use Exception;
 use stdClass;
+use Exception;
 
-function readFromFile(string $pathTofile): string
+function parse(string $dumped, string $type): stdClass
 {
-    $file = fopen($pathTofile, "r");
-    if ($file === false) {
-        throw new Exception("Failed to open file!");
-    }
-
-    $fileSize = filesize($pathTofile);
-    if ($fileSize === 0) {
-        throw new Exception("{$pathTofile} is empty!");
-    }
-    if ($fileSize === false) {
-        throw new Exception("Failed to get file size!");
-    }
-    $data = fread($file, $fileSize);
-    if ($data === false) {
-        throw new Exception("Failed to read file!");
-    }
-
-    if (fclose($file) === false) {
-        throw new Exception("Failed to close file!");
-    };
-    return $data;
-}
-
-function getData(string $pathToFile): stdClass
-{
-    $dumped = readFromFile($pathToFile);//строковое представление
-    $pathExtension = pathinfo($pathToFile, PATHINFO_EXTENSION);
-    if ($pathExtension === 'json') {
-        return json_decode($dumped);
-    }
-    if (($pathExtension === 'yml') || ($pathExtension === 'yaml')) {
-        return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
-    }
-    switch ($pathExtension) {
+    switch ($type) {
         case 'json':
             return json_decode($dumped);
         case 'yml':
@@ -49,6 +16,6 @@ function getData(string $pathToFile): stdClass
         case 'yaml':
             return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
         default:
-            throw new Exception('The file format is Invalid!');
+            throw new Exception('The type is Invalid!');
     }
 }
