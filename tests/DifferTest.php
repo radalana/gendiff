@@ -9,6 +9,31 @@ use function Differ\Differ\gendiff;
 class DifferTest extends TestCase
 {
     private const PATH = './tests/fixtures/test';
+    private const PATH2 = './tests/fixtures/';
+    private const EXPECTED_STYLISH = 'expected.json';
+
+    /**
+    * @return array<array<string>>
+    */
+    public static function gendiffProvider(): array
+    {
+        return [
+            ['test1', 'json'],
+            ['test1', 'yml'],
+
+            ['test2', 'json'],
+            ['test2', 'yml'],
+
+            ['test3', 'json'],
+            ['test3', 'yml'],
+
+            ['test4', 'json'],
+            ['test4', 'yml'],
+
+            ['test5', 'json'],
+            ['test5', 'yml'],
+        ];
+    }
     private function getFixturePath(int $testNumber, string $fixtureName): string
     {
            $directory = self::PATH;
@@ -20,17 +45,22 @@ class DifferTest extends TestCase
         }
             return "{$directory}{$testNumber}/{$subDir}/{$fixtureName}";
     }
+
+    private function getFixturePath2(string $fixtureName): string
+    {
+        $directory = self::PATH2;
+        return "{$directory}{$fixtureName}/";
+    }
+
     /**
      * @dataProvider gendiffStylishProvider
      */
-    public function testGendiffStylish(int $testNumber, string $file1, string $file2, string $expectedFile): void
+    public function testGendiffStylish(string $testDirectory, string $format): void
     {
-        $path1 = $this->getFixturePath($testNumber, $file1);
-        $path2 = $this->getFixturePath($testNumber, $file2);
+        $path1 = "{$this->getFixturePath2($testDirectory)}{$format}/file1.{$format}";
+        $path2 = "{$this->getFixturePath2($testDirectory)}{$format}/file2.{$format}";
 
-        $expectedFile = $this->getFixturePath($testNumber, $expectedFile);
-        #$content = file_get_contents($expectedFile);
-        #file_put_contents($expectedFile, trim($content));
+        $expectedFile = $this->getFixturePath2($testDirectory) . self::EXPECTED_STYLISH;
 
         $result = gendiff($path1, $path2, "stylish");
         $expected = file_get_contents($expectedFile);
@@ -44,16 +74,21 @@ class DifferTest extends TestCase
     */
     public static function gendiffStylishProvider(): array
     {
-        return [[1, "file1.json", "file2.json", "expected.json"],
-                [1, "file1.yml", "file2.yml", "expected.json"],
-                [2, "file1.json", "file2.json", "expected.json"],
-                [2, "file1.yml", "file2.yml", "expected.json"],
-                [3, "file1.json", "file2.json", "expected.json"],
-                [3, "file1.yml", "file2.yml", "expected.json"],
-                [4, "file1.json", "file2.json", "expected.json"],
-                [4, "file1.yml", "file2.yml", "expected.json"],
-                [5, "file1.json", "file2.json", "expected.json"],
-                [5, "file1.yml", "file2.yml", "expected.json"]
+        return [
+            ['test1', 'json'],
+            ['test1', 'yml'],
+
+            ['test2', 'json'],
+            ['test2', 'yml'],
+
+            ['test3', 'json'],
+            ['test3', 'yml'],
+
+            ['test4', 'json'],
+            ['test4', 'yml'],
+
+            ['test5', 'json'],
+            ['test5', 'yml'],
         ];
     }
     /**
