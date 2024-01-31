@@ -142,7 +142,7 @@ function stringify(array $data): string
  * @param array<int|string, mixed> $ast
  * @return string
  */
-function style(array $ast): string
+function format(array $ast): string
 {
     $arrayWithSigns = addSign($ast);
     return stringify(array_merge(...$arrayWithSigns));

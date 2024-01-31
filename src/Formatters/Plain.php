@@ -26,7 +26,7 @@ function formatString(mixed $value): mixed
  * @param array<int|string, mixed> $data
  * @return string
  */
-function toPlain(array $data): string
+function format(array $data): string
 {
     $iter = function ($data, $ancestry) use (&$iter) {
         $name = $data['key'];

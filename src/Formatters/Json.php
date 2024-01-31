@@ -8,7 +8,7 @@ use function Differ\Formatters\Stylish\addSign;
  * @param array<int|string, mixed> $ast
  * @return string|false
  */
-function toJson(array $ast): string|false
+function format(array $ast): string|false
 {
     return json_encode(array_merge(...addSign($ast)));
 }

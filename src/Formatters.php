@@ -2,9 +2,9 @@
 
 namespace Differ\Formatters;
 
-use function Differ\Formatters\Plain\toPlain;
-use function Differ\Formatters\Stylish\style;
-use function Differ\Formatters\Json\toJson;
+use function Differ\Formatters\Plain\format as toPlain;
+use function Differ\Formatters\Stylish\format as toStylish;
+use function Differ\Formatters\Json\format as toJson;
 
 /**
  * @param string $format
@@ -19,7 +19,7 @@ function format(string $format, array $ast): string
         case 'json':
             return toJson($ast);
         case 'stylish':
-            return style($ast);
+            return toStylish($ast);
         default:
             throw new \Exception("Undefinde formatter");
     }
