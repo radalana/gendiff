@@ -12,7 +12,6 @@ function parse(string $dumped, string $type): stdClass
         case 'json':
             return json_decode($dumped);
         case 'yml':
-            return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
         case 'yaml':
             return Yaml::parse($dumped, Yaml::PARSE_OBJECT_FOR_MAP);
         default:
