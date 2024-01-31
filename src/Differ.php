@@ -11,26 +11,10 @@ use function Differ\Formatters\Stylish\getChildren;
 
 function readFromFile(string $pathTofile): string
 {
-    $file = fopen($pathTofile, "r");
-    if ($file === false) {
-        throw new Exception("Failed to open file!");
-    }
-
-    $fileSize = filesize($pathTofile);
-    if ($fileSize === 0) {
-        throw new Exception("{$pathTofile} is empty!");
-    }
-    if ($fileSize === false) {
-        throw new Exception("Failed to get file size!");
-    }
-    $data = fread($file, $fileSize);
+    $data = file_get_contents($pathTofile);
     if ($data === false) {
-        throw new Exception("Failed to read file!");
+        throw new Exception('Failure to open/read file!');
     }
-
-    if (fclose($file) === false) {
-        throw new Exception("Failed to close file!");
-    };
     return $data;
 }
 /**
