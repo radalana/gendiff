@@ -4,27 +4,13 @@ namespace Differ\Formatters\Stylish;
 
 use function Differ\Differ\getValue;
 use function Differ\Differ\hasChildren;
+use function Differ\Differ\getChildren;
+use function Differ\Differ\isIndexedArray;
+use function Differ\Differ\isChanged;
+use function Differ\Differ\toString;
 
 const SPACES_COUNT = 4;
 const REPLACER = ' ';
-function toString(mixed $value): mixed
-{
-
-    if (is_bool($value) || is_null($value)) {
-        return strtolower(var_export($value, true));
-    }
-    return $value;
-}
-
-/**shows if current data if was added/deleted/changed */
-/**
- * @param array<string, mixed> $data
- * @return bool
- */
-function isChanged(array $data): bool
-{
-    return key_exists('status', $data);
-}
 
 function getSign(string $status): string
 {
@@ -36,15 +22,6 @@ function getSign(string $status): string
         default:
             return '';
     }
-}
-
-/**
- * @param array<string, mixed> $data
- * @return array<mixed>
- */
-function getChildren(array $data): array
-{
-    return $data['children'];
 }
 
 function objectTAarray(mixed $data): mixed
@@ -93,13 +70,7 @@ function addSign(array $diff): array
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
-function isIndexedArray(mixed $value): bool
-{
-    if (is_array($value)) {
-        return array_values($value) === $value;
-    }
-        return false;
-}
+
 
 /**
  * @param array<string, mixed> $data

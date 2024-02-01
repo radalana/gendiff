@@ -2,11 +2,11 @@
 
 namespace Differ\Formatters\Plain;
 
-use function Differ\Formatters\Stylish\getChildren;
+use function Differ\Differ\getChildren;
 use function Differ\Differ\hasChildren;
-use function Differ\Formatters\Stylish\isChanged;
-use function Differ\Formatters\Stylish\isIndexedArray;
-use function Differ\Formatters\Stylish\toString;
+use function Differ\Differ\isChanged;
+use function Differ\Differ\isIndexedArray;
+use function Differ\Differ\toString;
 use function Differ\Differ\getValue;
 
 //In plain text the data of the string type is enclosed in quotation marks.

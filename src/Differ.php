@@ -7,7 +7,42 @@ use Exception;
 use function Functional\sort as funcSort;
 use function Differ\Parsers\parse;
 use function Differ\Formatters\format;
-use function Differ\Formatters\Stylish\getChildren;
+
+/**
+ * @param array<string, mixed> $data
+ * @return array<mixed>
+ */
+function getChildren(array $data): array
+{
+    return $data['children'];
+}
+
+function isIndexedArray(mixed $value): bool
+{
+    if (is_array($value)) {
+        return array_values($value) === $value;
+    }
+        return false;
+}
+
+/**shows if current data if was added/deleted/changed */
+/**
+ * @param array<string, mixed> $data
+ * @return bool
+ */
+function isChanged(array $data): bool
+{
+    return key_exists('status', $data);
+}
+
+function toString(mixed $value): mixed
+{
+
+    if (is_bool($value) || is_null($value)) {
+        return strtolower(var_export($value, true));
+    }
+    return $value;
+}
 
 function readFromFile(string $pathTofile): string
 {
