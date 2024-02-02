@@ -10,5 +10,5 @@ use function Differ\Formatters\Stylish\addSign;
  */
 function format(array $ast): string|false
 {
-    return json_encode(array_merge(...addSign($ast)));
+    return json_encode($ast, JSON_PRETTY_PRINT);
 }
