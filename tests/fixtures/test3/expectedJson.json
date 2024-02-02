@@ -1,27 +1,94 @@
-{
-    "preferences": {
-        "notifications": {
-            "- email": true,
-            "+ email": false,
-            "- push": false,
-            "+ sms": true
-        },
-        "- theme": "dark",
-        "+ theme": "light"
+[
+    {
+        "key": "preferences",
+        "children": [
+            {
+                "key": "notifications",
+                "children": [
+                    {
+                        "key": "email",
+                        "value": {
+                            "oldValue": true,
+                            "newValue": false
+                        },
+                        "status": "changed"
+                    },
+                    {
+                        "key": "push",
+                        "value": false,
+                        "status": "deleted"
+                    },
+                    {
+                        "key": "sms",
+                        "value": true,
+                        "status": "added"
+                    }
+                ]
+            },
+            {
+                "key": "theme",
+                "value": {
+                    "oldValue": "dark",
+                    "newValue": "light"
+                },
+                "status": "changed"
+            }
+        ]
     },
-    "settings": {
-        "address": {
-            "- city": "New York",
-            "+ city": "San Francisco",
-            "- zipcode": 10001,
-            "+ zipcode": 94105
-        },
-        "- age": 30,
-        "+ age": 32,
-        "- languages": ["English", "French"],
-        "+ languages": ["English", "Spanish"],
-        "- name": "John Doe",
-        "+ name": "Jane Doe"
+    {
+        "key": "settings",
+        "children": [
+            {
+                "key": "address",
+                "children": [
+                    {
+                        "key": "city",
+                        "value": {
+                            "oldValue": "New York",
+                            "newValue": "San Francisco"
+                        },
+                        "status": "changed"
+                    },
+                    {
+                        "key": "zipcode",
+                        "value": {
+                            "oldValue": 10001,
+                            "newValue": 94105
+                        },
+                        "status": "changed"
+                    }
+                ]
+            },
+            {
+                "key": "age",
+                "value": {
+                    "oldValue": 30,
+                    "newValue": 32
+                },
+                "status": "changed"
+            },
+            {
+                "key": "languages",
+                "value": {
+                    "oldValue": [
+                        "English",
+                        "French"
+                    ],
+                    "newValue": [
+                        "English",
+                        "Spanish"
+                    ]
+                },
+                "status": "changed"
+            },
+            {
+                "key": "name",
+                "value": {
+                    "oldValue": "John Doe",
+                    "newValue": "Jane Doe"
+                },
+                "status": "changed"
+            }
+        ]
     }
-}
-
+]

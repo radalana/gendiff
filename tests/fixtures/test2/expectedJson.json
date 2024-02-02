@@ -1,2 +1,85 @@
-{"config": {"- colors": ["red", "green", "blue"], "+ colors": ["red", "blue", "yellow"], "- debug": true, "+ debug": false, "- timeout": 5000, "+ timeout": 8000},"database": {"host": "localhost", "- password": "password123", "+ password": "newPassword", "port": 3306, "- username": "user1", "+ username": "user2"},
-"logging": {"- level": "info", "+ level": "debug", "path": "/var/log/app.log"}}
+[
+    {
+        "key": "config",
+        "children": [
+            {
+                "key": "colors",
+                "value": {
+                    "oldValue": [
+                        "red",
+                        "green",
+                        "blue"
+                    ],
+                    "newValue": [
+                        "red",
+                        "blue",
+                        "yellow"
+                    ]
+                },
+                "status": "changed"
+            },
+            {
+                "key": "debug",
+                "value": {
+                    "oldValue": true,
+                    "newValue": false
+                },
+                "status": "changed"
+            },
+            {
+                "key": "timeout",
+                "value": {
+                    "oldValue": 5000,
+                    "newValue": 8000
+                },
+                "status": "changed"
+            }
+        ]
+    },
+    {
+        "key": "database",
+        "children": [
+            {
+                "key": "host",
+                "value": "localhost"
+            },
+            {
+                "key": "password",
+                "value": {
+                    "oldValue": "password123",
+                    "newValue": "newPassword"
+                },
+                "status": "changed"
+            },
+            {
+                "key": "port",
+                "value": 3306
+            },
+            {
+                "key": "username",
+                "value": {
+                    "oldValue": "user1",
+                    "newValue": "user2"
+                },
+                "status": "changed"
+            }
+        ]
+    },
+    {
+        "key": "logging",
+        "children": [
+            {
+                "key": "level",
+                "value": {
+                    "oldValue": "info",
+                    "newValue": "debug"
+                },
+                "status": "changed"
+            },
+            {
+                "key": "path",
+                "value": "\/var\/log\/app.log"
+            }
+        ]
+    }
+]
