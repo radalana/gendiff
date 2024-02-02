@@ -52,34 +52,16 @@ function readFromFile(string $pathTofile): string
     }
     return $data;
 }
-/**
- * @param array<int|string, mixed> $ast
- * @return array<string, mixed>
- */
-function sortAst(array $ast): array
-{
-    $iter = function (array $node) use (&$iter): array {
-        if (!hasChildren($node)) {
-            return $node;
-        }
-        $children = getChildren($node);
-        $sortedChildren = funcSort($children, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-        return ['key' => $node['key'], 'children' => array_map(fn($child) => $iter($child), $sortedChildren)];
-    };
-    return array_map(fn($node) => $iter($node), $ast);
-}
 
 /**
- * @param  array<int|string, mixed>$data
- * @return array<string, mixed>
+ * @param array<string> $keys
+ * @return array<string>
  */
-function sortData(array $data): array
+function sortKeys(array $keys): array
 {
-    $dataWithSortedNodes = sortAst($data);
-    #var_dump($dataWithSortedNodes);
-    $sortedData = funcSort($dataWithSortedNodes, fn($a, $b) => strcmp($a['key'], $b['key']), true);
-    return $sortedData;
+    return funcSort($keys, fn($a, $b) => strcmp($a, $b));
 }
+
 /**
 * @param mixed $a
 * @param mixed $b
@@ -96,32 +78,26 @@ function compare(mixed $a, mixed $b): mixed
     }
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
-    $commonProperties = (array_intersect_key($properiesOfa, $properiesOfb));//общие свойства объектов
-    $commonData = array_map(
-        function (string $commonProperty) use ($properiesOfa, $properiesOfb): array {
-            $iter = compare($properiesOfa[$commonProperty], $properiesOfb[$commonProperty]);
-            if (is_object($properiesOfa[$commonProperty]) && is_object($properiesOfb[$commonProperty])) {
-                return ['key' => $commonProperty, 'children' => $iter];
+    $unionOfProperties = array_unique(array_merge(array_keys($properiesOfa), array_keys($properiesOfb)));
+    $sortedAllKeys = sortKeys($unionOfProperties);
+    $data = array_map(
+        function (string $key) use ($properiesOfa, $properiesOfb): array {
+            if (in_array($key, array_keys($properiesOfa)) && in_array($key, array_keys($properiesOfb))) {
+                $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
+                if (is_object($properiesOfa[$key]) && is_object($properiesOfb[$key])) {
+                    return ['key' => $key, 'children' => $iter];
+                } else {
+                    return ['key' => $key, ...$iter];
+                }
+            } elseif (in_array($key, array_keys($properiesOfa))) {
+                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'status' => 'deleted'];
             } else {
-                return ['key' => $commonProperty, ...$iter];
+                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'status' => 'added'];
             }
         },
-        array_keys($commonProperties)
+        $sortedAllKeys
     );
-
-    $deletedKeys = array_keys(array_diff_key($properiesOfa, $commonProperties));
-    $deletedData = array_map(
-        fn($deletedKey) => ['key' => $deletedKey, 'value' => ($properiesOfa[$deletedKey]), 'status' => 'deleted'],
-        $deletedKeys
-    );
-
-    $addedKeys = array_keys(array_diff_key($properiesOfb, $commonProperties));
-
-    $addedData = array_map(
-        fn($addedKey) => ['key' => $addedKey, 'value' => ($properiesOfb[$addedKey]), 'status' => 'added'],
-        $addedKeys
-    );
-    return sortData(array_merge($addedData, $commonData, $deletedData));//просто сортировать здесь?....
+    return $data;
 }
 /**
  * @param array<string, mixed> $data
