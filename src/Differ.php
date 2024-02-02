@@ -82,14 +82,14 @@ function compare(mixed $a, mixed $b): mixed
     $sortedAllKeys = sortKeys($unionOfProperties);
     $data = array_map(
         function (string $key) use ($properiesOfa, $properiesOfb): array {
-            if (in_array($key, array_keys($properiesOfa)) && in_array($key, array_keys($properiesOfb))) {
+            if (in_array($key, array_keys($properiesOfa), true) && in_array($key, array_keys($properiesOfb), true)) {
                 $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
                 if (is_object($properiesOfa[$key]) && is_object($properiesOfb[$key])) {
                     return ['key' => $key, 'children' => $iter];
                 } else {
                     return ['key' => $key, ...$iter];
                 }
-            } elseif (in_array($key, array_keys($properiesOfa))) {
+            } elseif (in_array($key, array_keys($properiesOfa), true)) {
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'status' => 'deleted'];
             } else {
                 return ['key' => $key, 'value' => ($properiesOfb[$key]), 'status' => 'added'];
