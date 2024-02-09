@@ -2,6 +2,8 @@
 
 namespace Differ\Formatters\Stylish;
 
+use Exception;
+
 use function Differ\Differ\getValue;
 use function Differ\Differ\hasChildren;
 use function Differ\Differ\getChildren;
@@ -14,14 +16,12 @@ const REPLACER = ' ';
 
 function getSign(string $status): string
 {
-    switch ($status) {
-        case 'added':
-            return '+';
-        case 'deleted':
-            return '-';
-        default:
-            return '';
-    }
+    $sign =  match ($status) {
+        'added' => '+',
+        'deleted' => '-',
+        default => '',
+    };
+    return $sign;
 }
 
 function objectTAarray(mixed $data): mixed
