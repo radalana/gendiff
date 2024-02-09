@@ -7,6 +7,8 @@
 ## Описание
 "Вычислитель отличий" это пакет, который вычисляет разницу между структурами данных. Поддерживает форматы: json и yaml. Генерирует отчет в виде stylish, json, plain text. 
 
+## Требования
+- PHP >= 8.1.2
 ## Демонстрация
 ##### Сравнение плоский файлов json
 [![asciicast](https://asciinema.org/a/QJOpdPd9cUB6vv9ljtOziQNVJ.svg)](https://asciinema.org/a/QJOpdPd9cUB6vv9ljtOziQNVJ)
