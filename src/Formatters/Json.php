@@ -1,6 +1,7 @@
 <?php
 
 namespace Differ\Formatters\Json;
+
 /**
  * @param array<int|string, mixed> $ast
  * @return string|false
