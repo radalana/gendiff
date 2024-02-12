@@ -5,34 +5,34 @@
             {
                 "key": "colors",
                 "value": {
-                    "oldValue": [
+                    "firstFile": [
                         "red",
                         "green",
                         "blue"
                     ],
-                    "newValue": [
+                    "secondFile": [
                         "red",
                         "blue",
                         "yellow"
                     ]
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "debug",
                 "value": {
-                    "oldValue": true,
-                    "newValue": false
+                    "firstFile": true,
+                    "secondFile": false
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "timeout",
                 "value": {
-                    "oldValue": 5000,
-                    "newValue": 8000
+                    "firstFile": 5000,
+                    "secondFile": 8000
                 },
-                "status": "changed"
+                "differ": "changed"
             }
         ]
     },
@@ -46,10 +46,10 @@
             {
                 "key": "password",
                 "value": {
-                    "oldValue": "password123",
-                    "newValue": "newPassword"
+                    "firstFile": "password123",
+                    "secondFile": "newPassword"
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "port",
@@ -58,10 +58,10 @@
             {
                 "key": "username",
                 "value": {
-                    "oldValue": "user1",
-                    "newValue": "user2"
+                    "firstFile": "user1",
+                    "secondFile": "user2"
                 },
-                "status": "changed"
+                "differ": "changed"
             }
         ]
     },
@@ -71,10 +71,10 @@
             {
                 "key": "level",
                 "value": {
-                    "oldValue": "info",
-                    "newValue": "debug"
+                    "firstFile": "info",
+                    "secondFile": "debug"
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "path",

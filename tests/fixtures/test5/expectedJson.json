@@ -5,7 +5,7 @@
             {
                 "key": "follow",
                 "value": false,
-                "status": "added"
+                "differ": "added"
             },
             {
                 "key": "setting1",
@@ -14,27 +14,27 @@
             {
                 "key": "setting2",
                 "value": 200,
-                "status": "deleted"
+                "differ": "deleted"
             },
             {
                 "key": "setting3",
                 "value": {
-                    "oldValue": true,
-                    "newValue": null
+                    "firstFile": true,
+                    "secondFile": null
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "setting4",
                 "value": "blah blah",
-                "status": "added"
+                "differ": "added"
             },
             {
                 "key": "setting5",
                 "value": {
                     "key5": "value5"
                 },
-                "status": "added"
+                "differ": "added"
             },
             {
                 "key": "setting6",
@@ -46,7 +46,7 @@
                             "b",
                             "c"
                         ],
-                        "status": "deleted"
+                        "differ": "deleted"
                     },
                     {
                         "key": "doge",
@@ -54,10 +54,10 @@
                             {
                                 "key": "wow",
                                 "value": {
-                                    "oldValue": "",
-                                    "newValue": "so much"
+                                    "firstFile": "",
+                                    "secondFile": "so much"
                                 },
-                                "status": "changed"
+                                "differ": "changed"
                             }
                         ]
                     },
@@ -68,7 +68,7 @@
                     {
                         "key": "ops",
                         "value": "vops",
-                        "status": "added"
+                        "differ": "added"
                     }
                 ]
             }
@@ -80,10 +80,10 @@
             {
                 "key": "baz",
                 "value": {
-                    "oldValue": "bas",
-                    "newValue": "bars"
+                    "firstFile": "bas",
+                    "secondFile": "bars"
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "foo",
@@ -92,15 +92,15 @@
             {
                 "key": "nest",
                 "value": {
-                    "oldValue": {
+                    "firstFile": {
                         "key": [
                             "value1",
                             "value2"
                         ]
                     },
-                    "newValue": "str"
+                    "secondFile": "str"
                 },
-                "status": "changed"
+                "differ": "changed"
             }
         ]
     },
@@ -112,7 +112,7 @@
                 "id": 45
             }
         },
-        "status": "deleted"
+        "differ": "deleted"
     },
     {
         "key": "group3",
@@ -124,6 +124,6 @@
             },
             "fee": 100500
         },
-        "status": "added"
+        "differ": "added"
     }
 ]

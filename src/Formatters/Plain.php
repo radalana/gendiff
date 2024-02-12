@@ -34,11 +34,11 @@ function format(array $data): string
         if (!hasChildren($data)) {
             if (isChanged($data)) {
                 $value = getValue($data);
-                if ($data['action'] === 'added') {
+                if ($data['differ'] === 'added') {
                     $strValue = (is_object($value) || isIndexedArray($value)) ?
                     '[complex value]' : formatString(toString($value));
                     return "Property '{$newAncestry}' was added with value: {$strValue}";
-                } elseif ($data['action'] === 'deleted') {
+                } elseif ($data['differ'] === 'deleted') {
                     return "Property '{$newAncestry}' was removed";
                 } else {
                     $firstFileVal = getValue($data, 'old');

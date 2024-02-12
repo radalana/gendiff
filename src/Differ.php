@@ -32,7 +32,7 @@ function isIndexedArray(mixed $value): bool
  */
 function isChanged(array $data): bool
 {
-    return key_exists('action', $data);
+    return key_exists('differ', $data);
 }
 
 function toString(mixed $value): mixed
@@ -73,7 +73,7 @@ function compare(mixed $a, mixed $b): mixed
         if ($a === $b) {
             return ['value'  => $a];
         } else {
-            return ['value' => ['firstFile'  => $a, 'secondFile'  => $b], 'action' => 'changed'];
+            return ['value' => ['firstFile'  => $a, 'secondFile'  => $b], 'differ' => 'changed'];
         }
     }
     $properiesOfa = get_object_vars($a);
@@ -90,9 +90,9 @@ function compare(mixed $a, mixed $b): mixed
                     return ['key' => $key, ...$iter];
                 }
             } elseif (in_array($key, array_keys($properiesOfa), true)) {
-                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'action' => 'deleted'];
+                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
             } else {
-                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'action' => 'added'];
+                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
             }
         },
         $sortedAllKeys

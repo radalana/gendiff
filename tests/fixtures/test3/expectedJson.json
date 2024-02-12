@@ -8,30 +8,30 @@
                     {
                         "key": "email",
                         "value": {
-                            "oldValue": true,
-                            "newValue": false
+                            "firstFile": true,
+                            "secondFile": false
                         },
-                        "status": "changed"
+                        "differ": "changed"
                     },
                     {
                         "key": "push",
                         "value": false,
-                        "status": "deleted"
+                        "differ": "deleted"
                     },
                     {
                         "key": "sms",
                         "value": true,
-                        "status": "added"
+                        "differ": "added"
                     }
                 ]
             },
             {
                 "key": "theme",
                 "value": {
-                    "oldValue": "dark",
-                    "newValue": "light"
+                    "firstFile": "dark",
+                    "secondFile": "light"
                 },
-                "status": "changed"
+                "differ": "changed"
             }
         ]
     },
@@ -44,50 +44,50 @@
                     {
                         "key": "city",
                         "value": {
-                            "oldValue": "New York",
-                            "newValue": "San Francisco"
+                            "firstFile": "New York",
+                            "secondFile": "San Francisco"
                         },
-                        "status": "changed"
+                        "differ": "changed"
                     },
                     {
                         "key": "zipcode",
                         "value": {
-                            "oldValue": 10001,
-                            "newValue": 94105
+                            "firstFile": 10001,
+                            "secondFile": 94105
                         },
-                        "status": "changed"
+                        "differ": "changed"
                     }
                 ]
             },
             {
                 "key": "age",
                 "value": {
-                    "oldValue": 30,
-                    "newValue": 32
+                    "firstFile": 30,
+                    "secondFile": 32
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "languages",
                 "value": {
-                    "oldValue": [
+                    "firstFile": [
                         "English",
                         "French"
                     ],
-                    "newValue": [
+                    "secondFile": [
                         "English",
                         "Spanish"
                     ]
                 },
-                "status": "changed"
+                "differ": "changed"
             },
             {
                 "key": "name",
                 "value": {
-                    "oldValue": "John Doe",
-                    "newValue": "Jane Doe"
+                    "firstFile": "John Doe",
+                    "secondFile": "Jane Doe"
                 },
-                "status": "changed"
+                "differ": "changed"
             }
         ]
     }

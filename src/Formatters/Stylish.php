@@ -52,7 +52,7 @@ function addSign(array $diff): array
     $iter = function ($data) use (&$iter) {
         if (!hasChildren($data)) {
             $val = getValue($data);
-            $status = isChanged($data) ? $data['action'] : '';
+            $status = isChanged($data) ? $data['differ'] : '';
             $arrayVal = objectTAarray($val);
 
             if ($status === 'changed') {
