@@ -52,19 +52,24 @@ function addSign(array $diff): array
     $iter = function ($data) use (&$iter) {
         if (!hasChildren($data)) {
             $val = getValue($data);
-            $status = isChanged($data) ? $data['differ'] : '';
+            $diff = isChanged($data) ? $data['differ'] : '';
             $arrayVal = objectTAarray($val);
 
-            if ($status === 'changed') {
-                $firtsFileVal = getValue($data, 'old');
-                $secondFileVal = getValue($data, 'new');
-                return ["- {$data['key']}" => objectTAarray($firtsFileVal), "+ {$data['key']}" => objectTAarray($secondFileVal)];
+            if ($diff === 'changed') {
+                $file1Val = getValue($data, 'old');
+                $file2Val = getValue($data, 'new');
+                return ["- {$data['key']}" => objectTAarray($file1Val), "+ {$data['key']}" => objectTAarray($file2Val)];
+            } elseif ($diff === 'added') {
+                return ["+ {$data['key']}" => $arrayVal];
+            } elseif ($diff === 'deleted') {
+                return ["- {$data['key']}" => $arrayVal];
+            } else {
+                return ["{$data['key']}" => $arrayVal];
             }
-            $sign = getSign($status);
-            $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";
-            return [$key => $arrayVal];
         }
+
         $children = getChildren($data);
+        #var_dump($children);
         $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
         return [$data['key'] => $newChildren];
     };
