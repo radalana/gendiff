@@ -14,16 +14,6 @@ use function Differ\Differ\toString;
 const SPACES_COUNT = 4;
 const REPLACER = ' ';
 
-function getSign(string $status): string
-{
-    $sign =  match ($status) {
-        'added' => '+',
-        'deleted' => '-',
-        default => '',
-    };
-    return $sign;
-}
-
 function objectTAarray(mixed $data): mixed
 {
     //if data is a primitive data
