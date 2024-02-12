@@ -32,7 +32,7 @@ function objectTAarray(mixed $data): mixed
     }
     //if data is an array
     if (is_array($data)) {
-        if (key_exists('oldValue', $data) && key_exists('newValue', $data)) {
+        if (key_exists('firstFile', $data) && key_exists('secondFile', $data)) {
             return array_map(fn($value) =>objectTAarray($value), $data);
         }
             return $data;
@@ -52,13 +52,13 @@ function addSign(array $diff): array
     $iter = function ($data) use (&$iter) {
         if (!hasChildren($data)) {
             $val = getValue($data);
-            $status = isChanged($data) ? $data['status'] : '';
+            $status = isChanged($data) ? $data['action'] : '';
             $arrayVal = objectTAarray($val);
 
             if ($status === 'changed') {
-                $oldVal = getValue($data, 'old');
-                $newVal = getValue($data, 'new');
-                return ["- {$data['key']}" => objectTAarray($oldVal), "+ {$data['key']}" => objectTAarray($newVal)];
+                $firtsFileVal = getValue($data, 'old');
+                $secondFileVal = getValue($data, 'new');
+                return ["- {$data['key']}" => objectTAarray($firtsFileVal), "+ {$data['key']}" => objectTAarray($secondFileVal)];
             }
             $sign = getSign($status);
             $key = $sign !== '' ? "{$sign} {$data['key']}" : "{$data['key']}";

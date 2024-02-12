@@ -32,7 +32,7 @@ function isIndexedArray(mixed $value): bool
  */
 function isChanged(array $data): bool
 {
-    return key_exists('status', $data);
+    return key_exists('action', $data);
 }
 
 function toString(mixed $value): mixed
@@ -73,7 +73,7 @@ function compare(mixed $a, mixed $b): mixed
         if ($a === $b) {
             return ['value'  => $a];
         } else {
-            return ['value' => ['oldValue'  => $a, 'newValue'  => $b], 'status' => 'changed'];
+            return ['value' => ['firstFile'  => $a, 'secondFile'  => $b], 'action' => 'changed'];
         }
     }
     $properiesOfa = get_object_vars($a);
@@ -90,9 +90,9 @@ function compare(mixed $a, mixed $b): mixed
                     return ['key' => $key, ...$iter];
                 }
             } elseif (in_array($key, array_keys($properiesOfa), true)) {
-                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'status' => 'deleted'];
+                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'action' => 'deleted'];
             } else {
-                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'status' => 'added'];
+                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'action' => 'added'];
             }
         },
         $sortedAllKeys
@@ -117,7 +117,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     if ($oldNew === '') {
         return $data['value'];
     }
-    return $oldNew === 'old' ? $data['value']['oldValue'] : $data['value']['newValue'];
+    return $oldNew === 'old' ? $data['value']['firstFile'] : $data['value']['secondFile'];
 }
 
 function getFilesType(string $path1, string $path2): string

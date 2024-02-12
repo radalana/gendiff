@@ -34,20 +34,20 @@ function format(array $data): string
         if (!hasChildren($data)) {
             if (isChanged($data)) {
                 $value = getValue($data);
-                if ($data['status'] === 'added') {
+                if ($data['action'] === 'added') {
                     $strValue = (is_object($value) || isIndexedArray($value)) ?
                     '[complex value]' : formatString(toString($value));
                     return "Property '{$newAncestry}' was added with value: {$strValue}";
-                } elseif ($data['status'] === 'deleted') {
+                } elseif ($data['action'] === 'deleted') {
                     return "Property '{$newAncestry}' was removed";
                 } else {
-                    $oldVal = getValue($data, 'old');
-                    $newVal = getValue($data, 'new');
-                    $oldValueStr = (is_object($oldVal) || isIndexedArray($oldVal)) ?
-                    "[complex value]" : formatString(toString($oldVal));
-                    $newValueStr = (is_object($newVal) || isIndexedArray($newVal)) ?
-                    "[complex value]" : formatString(toString($newVal));
-                    return "Property '{$newAncestry}' was updated. From {$oldValueStr} to {$newValueStr}";
+                    $firstFileVal = getValue($data, 'old');
+                    $secondFileVal = getValue($data, 'new');
+                    $firstFileValueStr = (is_object($firstFileVal) || isIndexedArray($firstFileVal)) ?
+                    "[complex value]" : formatString(toString($firstFileVal));
+                    $secondFileValueStr = (is_object($secondFileVal) || isIndexedArray($secondFileVal)) ?
+                    "[complex value]" : formatString(toString($secondFileVal));
+                    return "Property '{$newAncestry}' was updated. From {$firstFileValueStr} to {$secondFileValueStr}";
                 }
             }
             return;
