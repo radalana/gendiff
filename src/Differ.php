@@ -69,13 +69,6 @@ function sortKeys(array $keys): array
 */
 function compare(mixed $a, mixed $b): mixed
 {
-    if (!is_object($a) || !is_object($b)) {
-        if ($a === $b) {
-            return ['value'  => $a];
-        } else {
-            return ['value' => ['firstFile'  => $a, 'secondFile'  => $b], 'differ' => 'changed'];
-        }
-    }
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $unionOfProperties = array_unique(array_merge(array_keys($properiesOfa), array_keys($properiesOfb)));
@@ -83,11 +76,20 @@ function compare(mixed $a, mixed $b): mixed
     $data = array_map(
         function (string $key) use ($properiesOfa, $properiesOfb): array {
             if (in_array($key, array_keys($properiesOfa), true) && in_array($key, array_keys($properiesOfb), true)) {
-                $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
-                if (is_object($properiesOfa[$key]) && is_object($properiesOfb[$key])) {
-                    return ['key' => $key, 'children' => $iter];
+                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
+                    $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
+                    if (is_object($properiesOfa[$key]) && is_object($properiesOfb[$key])) {
+                        return ['key' => $key, 'children' => $iter];
+                    } else {
+                        return ['key' => $key, ...$iter];
+                    }
                 } else {
-                    return ['key' => $key, ...$iter];
+                    if ($properiesOfa[$key] === $properiesOfb[$key]) {
+                        return ['key' => $key, 'value'  => $properiesOfa[$key]];
+                    } else {
+                        return ['key' => $key,'value' => ['firstFile'  => $properiesOfa[$key],
+                        'secondFile'  => $properiesOfb[$key]], 'differ' => 'changed'];
+                    }
                 }
             } elseif (in_array($key, array_keys($properiesOfa), true)) {
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
