@@ -75,15 +75,17 @@ function compare(mixed $a, mixed $b): mixed
     $sortedAllKeys = sortKeys($unionOfProperties);
     $data = array_map(
         function (string $key) use ($properiesOfa, $properiesOfb): array {
+            //in intersection
             if (in_array($key, array_keys($properiesOfa), true) && in_array($key, array_keys($properiesOfb), true)) {
-                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
+                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {//both have complex values
                     $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
-                    if (is_object($properiesOfa[$key]) && is_object($properiesOfb[$key])) {
+                    //с is_object не проходит phpstan
+                    if ($properiesOfa[$key] instanceof \stdClass && $properiesOfb[$key] instanceof \stdClass) {
                         return ['key' => $key, 'children' => $iter];
                     } else {
                         return ['key' => $key, ...$iter];
                     }
-                } else {
+                } else {//one of value is simple
                     if ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key]];
                     } else {
@@ -91,9 +93,9 @@ function compare(mixed $a, mixed $b): mixed
                         'secondFile'  => $properiesOfb[$key]], 'differ' => 'changed'];
                     }
                 }
-            } elseif (in_array($key, array_keys($properiesOfa), true)) {
+            } elseif (in_array($key, array_keys($properiesOfa), true)) {//only in first filr
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
-            } else {
+            } else {//only in second file
                 return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
             }
         },
