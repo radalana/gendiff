@@ -117,7 +117,7 @@ function getValue(array $data, string $oldNew = ''): mixed
     if ($oldNew === '') {
         return $data['value'];
     }
-    return $oldNew === 'old' ? $data['value']['firstFile'] : $data['value']['secondFile'];
+    return $oldNew === 'old' ? $data['value']['value1'] : $data['value']['value2'];
 }
 
 function getFilesType(string $path1, string $path2): string

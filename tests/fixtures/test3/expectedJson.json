@@ -8,8 +8,8 @@
                     {
                         "key": "email",
                         "value": {
-                            "firstFile": true,
-                            "secondFile": false
+                            "value1": true,
+                            "value2": false
                         },
                         "differ": "changed"
                     },
@@ -28,8 +28,8 @@
             {
                 "key": "theme",
                 "value": {
-                    "firstFile": "dark",
-                    "secondFile": "light"
+                    "value1": "dark",
+                    "value2": "light"
                 },
                 "differ": "changed"
             }
@@ -44,16 +44,16 @@
                     {
                         "key": "city",
                         "value": {
-                            "firstFile": "New York",
-                            "secondFile": "San Francisco"
+                            "value1": "New York",
+                            "value2": "San Francisco"
                         },
                         "differ": "changed"
                     },
                     {
                         "key": "zipcode",
                         "value": {
-                            "firstFile": 10001,
-                            "secondFile": 94105
+                            "value1": 10001,
+                            "value2": 94105
                         },
                         "differ": "changed"
                     }
@@ -62,19 +62,19 @@
             {
                 "key": "age",
                 "value": {
-                    "firstFile": 30,
-                    "secondFile": 32
+                    "value1": 30,
+                    "value2": 32
                 },
                 "differ": "changed"
             },
             {
                 "key": "languages",
                 "value": {
-                    "firstFile": [
+                    "value1": [
                         "English",
                         "French"
                     ],
-                    "secondFile": [
+                    "value2": [
                         "English",
                         "Spanish"
                     ]
@@ -84,8 +84,8 @@
             {
                 "key": "name",
                 "value": {
-                    "firstFile": "John Doe",
-                    "secondFile": "Jane Doe"
+                    "value1": "John Doe",
+                    "value2": "Jane Doe"
                 },
                 "differ": "changed"
             }

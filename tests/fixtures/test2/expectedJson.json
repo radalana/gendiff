@@ -5,12 +5,12 @@
             {
                 "key": "colors",
                 "value": {
-                    "firstFile": [
+                    "value1": [
                         "red",
                         "green",
                         "blue"
                     ],
-                    "secondFile": [
+                    "value2": [
                         "red",
                         "blue",
                         "yellow"
@@ -21,16 +21,16 @@
             {
                 "key": "debug",
                 "value": {
-                    "firstFile": true,
-                    "secondFile": false
+                    "value1": true,
+                    "value2": false
                 },
                 "differ": "changed"
             },
             {
                 "key": "timeout",
                 "value": {
-                    "firstFile": 5000,
-                    "secondFile": 8000
+                    "value1": 5000,
+                    "value2": 8000
                 },
                 "differ": "changed"
             }
@@ -46,8 +46,8 @@
             {
                 "key": "password",
                 "value": {
-                    "firstFile": "password123",
-                    "secondFile": "newPassword"
+                    "value1": "password123",
+                    "value2": "newPassword"
                 },
                 "differ": "changed"
             },
@@ -58,8 +58,8 @@
             {
                 "key": "username",
                 "value": {
-                    "firstFile": "user1",
-                    "secondFile": "user2"
+                    "value1": "user1",
+                    "value2": "user2"
                 },
                 "differ": "changed"
             }
@@ -71,8 +71,8 @@
             {
                 "key": "level",
                 "value": {
-                    "firstFile": "info",
-                    "secondFile": "debug"
+                    "value1": "info",
+                    "value2": "debug"
                 },
                 "differ": "changed"
             },

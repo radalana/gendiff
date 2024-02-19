@@ -22,7 +22,7 @@ function objectTAarray(mixed $data): mixed
     }
     //if data is an array
     if (is_array($data)) {
-        if (key_exists('firstFile', $data) && key_exists('secondFile', $data)) {
+        if (key_exists('value1', $data) && key_exists('value2', $data)) {
             return array_map(fn($value) =>objectTAarray($value), $data);
         }
             return $data;
@@ -46,9 +46,9 @@ function addSign(array $diff): array
             $arrayVal = objectTAarray($val);
 
             if ($diff === 'changed') {
-                $file1Val = getValue($data, 'old');
-                $file2Val = getValue($data, 'new');
-                return ["- {$data['key']}" => objectTAarray($file1Val), "+ {$data['key']}" => objectTAarray($file2Val)];
+                $val1 = getValue($data, 'old');
+                $val2 = getValue($data, 'new');
+                return ["- {$data['key']}" => objectTAarray($val1), "+ {$data['key']}" => objectTAarray($val2)];
             } elseif ($diff === 'added') {
                 return ["+ {$data['key']}" => $arrayVal];
             } elseif ($diff === 'deleted') {

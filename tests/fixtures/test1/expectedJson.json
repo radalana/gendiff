@@ -19,8 +19,8 @@
             {
                 "key": "setting3",
                 "value": {
-                    "firstFile": true,
-                    "secondFile": null
+                    "value1": true,
+                    "value2": null
                 },
                 "differ": "changed"
             },
@@ -45,8 +45,8 @@
                             {
                                 "key": "wow",
                                 "value": {
-                                    "firstFile": "",
-                                    "secondFile": "so much"
+                                    "value1": "",
+                                    "value2": "so much"
                                 },
                                 "differ": "changed"
                             }
@@ -71,8 +71,8 @@
             {
                 "key": "baz",
                 "value": {
-                    "firstFile": "bas",
-                    "secondFile": "bars"
+                    "value1": "bas",
+                    "value2": "bars"
                 },
                 "differ": "changed"
             },
@@ -83,10 +83,10 @@
             {
                 "key": "nest",
                 "value": {
-                    "firstFile": {
+                    "value1": {
                         "key": "value"
                     },
-                    "secondFile": "str"
+                    "value2": "str"
                 },
                 "differ": "changed"
             }
