@@ -89,8 +89,8 @@ function compare(mixed $a, mixed $b): mixed
                     if ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key]];
                     } else {
-                        return ['key' => $key,'value' => ['firstFile'  => $properiesOfa[$key],
-                        'secondFile'  => $properiesOfb[$key]], 'differ' => 'changed'];
+                        return ['key' => $key,'value' => ['value1'  => $properiesOfa[$key],
+                        'value2'  => $properiesOfb[$key]], 'differ' => 'changed'];
                     }
                 }
             }
