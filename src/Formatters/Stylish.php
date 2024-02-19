@@ -40,8 +40,12 @@ function objectTAarray(mixed $data): mixed
 function addSign(array $diff): array
 {
     $iter = function ($data) use (&$iter) {
-        if (!hasChildren($data)) {
-            $val = getValue($data);
+        if (hasChildren($data)) {
+            $children = getChildren($data);
+            $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
+            return [$data['key'] => $newChildren];
+        }
+        $val = getValue($data);
             $diff = isChanged($data) ? $data['differ'] : '';
             $arrayVal = objectTAarray($val);
 
@@ -56,12 +60,7 @@ function addSign(array $diff): array
             } else {
                 return ["{$data['key']}" => $arrayVal];
             }
-        }
-
-        $children = getChildren($data);
-        #var_dump($children);
-        $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
-        return [$data['key'] => $newChildren];
+        
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
