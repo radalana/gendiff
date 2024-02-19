@@ -72,20 +72,20 @@ function compare(mixed $a, mixed $b): mixed
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $unionOfProperties = array_unique(array_merge(array_keys($properiesOfa), array_keys($properiesOfb)));
+    $deletedProperties = array_diff(array_keys($properiesOfa), array_keys($properiesOfb));
+    $addedProperties = array_diff(array_keys($properiesOfb), array_keys($properiesOfa));
     $sortedAllKeys = sortKeys($unionOfProperties);
     $data = array_map(
-        function (string $key) use ($properiesOfa, $properiesOfb): array {
-            //in intersection
-            if (in_array($key, array_keys($properiesOfa), true) && in_array($key, array_keys($properiesOfb), true)) {
-                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {//both have complex values
+        function (string $key) use ($properiesOfa, $properiesOfb, $addedProperties, $deletedProperties): array {
+            if (in_array($key, $addedProperties)) { //не добавлен, значит удален(от обратного)
+                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
+            } elseif (in_array($key, $deletedProperties)) {
+                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
+            } else {
+                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
                     $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
-                    //с is_object не проходит phpstan
-                    if ($properiesOfa[$key] instanceof \stdClass && $properiesOfb[$key] instanceof \stdClass) {
-                        return ['key' => $key, 'children' => $iter];
-                    } else {
-                        return ['key' => $key, ...$iter];
-                    }
-                } else {//one of value is simple
+                    return ['key' => $key, 'children' => $iter];
+                } else {
                     if ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key]];
                     } else {
@@ -93,10 +93,6 @@ function compare(mixed $a, mixed $b): mixed
                         'secondFile'  => $properiesOfb[$key]], 'differ' => 'changed'];
                     }
                 }
-            } elseif (in_array($key, array_keys($properiesOfa), true)) {//only in first filr
-                return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
-            } else {//only in second file
-                return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
             }
         },
         $sortedAllKeys
