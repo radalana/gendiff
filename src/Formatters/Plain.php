@@ -51,8 +51,7 @@ function format(array $data): string
                 }
             }
             return;
-        }
-
+        };
         $children = getChildren($data);
         $newChildren = array_filter(array_map(fn($child) => $iter($child, $newAncestry), $children));
         return implode("\n", $newChildren);

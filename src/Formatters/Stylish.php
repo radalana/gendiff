@@ -49,18 +49,17 @@ function addSign(array $diff): array
             $diff = isChanged($data) ? $data['differ'] : '';
             $arrayVal = objectTAarray($val);
 
-            if ($diff === 'changed') {
-                $val1 = getValue($data, 'old');
-                $val2 = getValue($data, 'new');
-                return ["- {$data['key']}" => objectTAarray($val1), "+ {$data['key']}" => objectTAarray($val2)];
-            } elseif ($diff === 'added') {
-                return ["+ {$data['key']}" => $arrayVal];
-            } elseif ($diff === 'deleted') {
-                return ["- {$data['key']}" => $arrayVal];
-            } else {
-                return ["{$data['key']}" => $arrayVal];
-            }
-        
+        if ($diff === 'changed') {
+            $val1 = getValue($data, 'old');
+            $val2 = getValue($data, 'new');
+            return ["- {$data['key']}" => objectTAarray($val1), "+ {$data['key']}" => objectTAarray($val2)];
+        } elseif ($diff === 'added') {
+            return ["+ {$data['key']}" => $arrayVal];
+        } elseif ($diff === 'deleted') {
+            return ["- {$data['key']}" => $arrayVal];
+        } else {
+            return ["{$data['key']}" => $arrayVal];
+        }
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }

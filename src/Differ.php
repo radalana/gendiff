@@ -72,12 +72,15 @@ function compare(mixed $a, mixed $b): mixed
     $properiesOfa = get_object_vars($a);
     $properiesOfb = get_object_vars($b);
     $unionOfProperties = array_unique(array_merge(array_keys($properiesOfa), array_keys($properiesOfb)));
+
     $deletedProperties = array_diff(array_keys($properiesOfa), array_keys($properiesOfb));
     $addedProperties = array_diff(array_keys($properiesOfb), array_keys($properiesOfa));
+
     $sortedAllKeys = sortKeys($unionOfProperties);
     $data = array_map(
         function (string $key) use ($properiesOfa, $properiesOfb, $addedProperties, $deletedProperties): array {
-            if (in_array($key, $addedProperties)) { //не добавлен, значит удален(от обратного)
+            if (in_array($key, $addedProperties)) {
+                //$type = is_object($properiesOfb[$key]) ? 'nested' : 'simple'; //for plain format
                 return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
             } elseif (in_array($key, $deletedProperties)) {
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
@@ -86,6 +89,8 @@ function compare(mixed $a, mixed $b): mixed
                     $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
                     return ['key' => $key, 'children' => $iter];
                 } else {
+                    //$typeA = is_object($properiesOfa[$key]) ? 'nested':'simple';
+                    //$typeB = is_object($properiesOfb[$key]) ? 'nested' : 'simple';
                     if ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key]];
                     } else {
