@@ -1,6 +1,7 @@
 [
     {
         "key": "config",
+        "differ": "nested",
         "children": [
             {
                 "key": "colors",
@@ -38,10 +39,12 @@
     },
     {
         "key": "database",
+        "differ": "nested",
         "children": [
             {
                 "key": "host",
-                "value": "localhost"
+                "value": "localhost",
+                "differ": "unchanged"
             },
             {
                 "key": "password",
@@ -53,7 +56,8 @@
             },
             {
                 "key": "port",
-                "value": 3306
+                "value": 3306,
+                "differ": "unchanged"
             },
             {
                 "key": "username",
@@ -67,6 +71,7 @@
     },
     {
         "key": "logging",
+        "differ": "nested",
         "children": [
             {
                 "key": "level",
@@ -78,7 +83,8 @@
             },
             {
                 "key": "path",
-                "value": "\/var\/log\/app.log"
+                "value": "\/var\/log\/app.log",
+                "differ":"unchanged"
             }
         ]
     }

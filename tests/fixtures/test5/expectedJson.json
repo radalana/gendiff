@@ -1,6 +1,7 @@
 [
     {
         "key": "common",
+        "differ": "nested",
         "children": [
             {
                 "key": "follow",
@@ -9,7 +10,8 @@
             },
             {
                 "key": "setting1",
-                "value": "Value 1"
+                "value": "Value 1",
+                "differ": "unchanged"
             },
             {
                 "key": "setting2",
@@ -38,6 +40,7 @@
             },
             {
                 "key": "setting6",
+                "differ":"nested",
                 "children": [
                     {
                         "key": "cats",
@@ -50,6 +53,7 @@
                     },
                     {
                         "key": "doge",
+                        "differ":"nested",
                         "children": [
                             {
                                 "key": "wow",
@@ -63,7 +67,8 @@
                     },
                     {
                         "key": "key",
-                        "value": "value"
+                        "value": "value",
+                        "differ":"unchanged"
                     },
                     {
                         "key": "ops",
@@ -76,6 +81,7 @@
     },
     {
         "key": "group1",
+        "differ":"nested",
         "children": [
             {
                 "key": "baz",
@@ -87,7 +93,8 @@
             },
             {
                 "key": "foo",
-                "value": "bar"
+                "value": "bar",
+                "differ":"unchanged"
             },
             {
                 "key": "nest",

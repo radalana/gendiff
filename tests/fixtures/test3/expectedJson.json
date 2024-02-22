@@ -1,9 +1,11 @@
 [
     {
         "key": "preferences",
+        "differ": "nested",
         "children": [
             {
                 "key": "notifications",
+                "differ": "nested",
                 "children": [
                     {
                         "key": "email",
@@ -37,9 +39,11 @@
     },
     {
         "key": "settings",
+        "differ": "nested",
         "children": [
             {
                 "key": "address",
+                "differ": "nested",
                 "children": [
                     {
                         "key": "city",
