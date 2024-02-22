@@ -3,8 +3,6 @@
 namespace Differ\Formatters\Plain;
 
 use function Differ\Differ\getChildren;
-use function Differ\Differ\hasChildren;
-use function Differ\Differ\isChanged;
 use function Differ\Differ\isIndexedArray;
 use function Differ\Differ\toString;
 use function Differ\Differ\getValue;
@@ -31,30 +29,33 @@ function format(array $data): string
     $iter = function ($data, $ancestry) use (&$iter) {
         $name = $data['key'];
         $newAncestry = ($ancestry === '') ? "{$name}" : "{$ancestry}.{$name}";
-        if (!hasChildren($data)) {
-            if (isChanged($data)) {
-                $value = getValue($data);
-                if ($data['differ'] === 'added') {
-                    $strValue = (is_object($value) || isIndexedArray($value)) ?
-                    '[complex value]' : formatString(toString($value));
-                    return "Property '{$newAncestry}' was added with value: {$strValue}";
-                } elseif ($data['differ'] === 'deleted') {
-                    return "Property '{$newAncestry}' was removed";
-                } else {
-                    $firstFileVal = getValue($data, 'old');
-                    $secondFileVal = getValue($data, 'new');
-                    $firstFileValueStr = (is_object($firstFileVal) || isIndexedArray($firstFileVal)) ?
-                    "[complex value]" : formatString(toString($firstFileVal));
-                    $secondFileValueStr = (is_object($secondFileVal) || isIndexedArray($secondFileVal)) ?
-                    "[complex value]" : formatString(toString($secondFileVal));
-                    return "Property '{$newAncestry}' was updated. From {$firstFileValueStr} to {$secondFileValueStr}";
-                }
-            }
-            return;
-        };
-        $children = getChildren($data);
-        $newChildren = array_filter(array_map(fn($child) => $iter($child, $newAncestry), $children));
-        return implode("\n", $newChildren);
+        $differ = $data['differ'];
+        $value = getValue($data);
+        $cplxVal = "[complex value]";
+        switch ($differ) {
+            case 'added':
+                $strValue = (is_object($value) || isIndexedArray($value)) ?
+                $cplxVal : formatString(toString($value));
+                return "Property '{$newAncestry}' was added with value: {$strValue}";
+            case 'deleted':
+                return "Property '{$newAncestry}' was removed";
+            case 'changed':
+                $val1 = getValue($data, 'old');
+                    $val2 = getValue($data, 'new');
+                    $valStr1 = (is_object($val1) || isIndexedArray($val1)) ?
+                    $cplxVal : formatString(toString($val1));
+                    $valStr2 = (is_object($val2) || isIndexedArray($val2)) ?
+                    $cplxVal : formatString(toString($val2));
+                return "Property '{$newAncestry}' was updated. From {$valStr1} to {$valStr2}";
+            case 'unchanged':
+                return;
+            case 'nested':
+                $children = getChildren($data);
+                $newChildren = array_filter(array_map(fn($child) => $iter($child, $newAncestry), $children));
+                return implode("\n", $newChildren);
+            default:
+                throw new \Exception('Not valid differ of node!');
+        }
     };
     return implode("\n", array_map(fn($value) => $iter($value, ''), $data));
 }
