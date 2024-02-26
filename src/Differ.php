@@ -80,24 +80,17 @@ function compare(mixed $a, mixed $b): mixed
     $data = array_map(
         function (string $key) use ($properiesOfa, $properiesOfb, $addedProperties, $deletedProperties): array {
             if (in_array($key, $addedProperties, true)) {
-                //$type = is_object($properiesOfb[$key]) ? 'nested' : 'simple'; //for plain format
                 return ['key' => $key, 'value' => ($properiesOfb[$key]), 'differ' => 'added'];
             } elseif (in_array($key, $deletedProperties, true)) {
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
-            } else {
-                if (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
+            } elseif (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
                     $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
                     return ['key' => $key, 'differ' => 'nested', 'children' => $iter, ];
-                } else {
-                    //$typeA = is_object($properiesOfa[$key]) ? 'nested':'simple';
-                    //$typeB = is_object($properiesOfb[$key]) ? 'nested' : 'simple';
-                    if ($properiesOfa[$key] === $properiesOfb[$key]) {
+            } elseif ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key], 'differ' => 'unchanged'];
-                    } else {
+            } else {
                         return ['key' => $key,'value' => ['value1'  => $properiesOfa[$key],
                         'value2'  => $properiesOfb[$key]], 'differ' => 'changed'];
-                    }
-                }
             }
         },
         $sortedAllKeys
