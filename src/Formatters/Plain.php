@@ -7,7 +7,7 @@ use function Differ\Differ\isIndexedArray;
 use function Differ\Differ\toString;
 use function Differ\Differ\getValue;
 
-function isComplex(mixed $value): mixed
+function isComplex(mixed $value): bool
 {
     return (is_object($value)  || isIndexedArray($value));
 }
@@ -18,15 +18,15 @@ function formatString(mixed $value): mixed
     if (isComplex($value)) {
         return '[complex value]';
     }
-    $value = toString($value);
+    $strValue = toString($value);
     if (
-        ($value === 'true') || ($value === 'null') || ($value === 'false')
-        || (!is_string($value)) || ($value === '[complex value]')
+        ($strValue === 'true') || ($strValue === 'null') || ($strValue === 'false')
+        || (!is_string($strValue)) || ($strValue === '[complex value]')
     ) {
-        return $value;
+        return $strValue;
     }
 
-    return "'{$value}'";
+    return "'{$strValue}'";
 }
 
 
