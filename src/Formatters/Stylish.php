@@ -5,16 +5,14 @@ namespace Differ\Formatters\Stylish;
 use Exception;
 
 use function Differ\Differ\getValue;
-use function Differ\Differ\hasChildren;
 use function Differ\Differ\getChildren;
 use function Differ\Differ\isIndexedArray;
-use function Differ\Differ\isChanged;
 use function Differ\Differ\toString;
 
 const SPACES_COUNT = 4;
 const REPLACER = ' ';
 
-function objectTAarray(mixed $data): mixed
+function objectToArray(mixed $data): mixed
 {
     //if data is a primitive data
     if (!is_object($data) && !is_array($data)) {
@@ -23,13 +21,12 @@ function objectTAarray(mixed $data): mixed
     //if data is an array
     if (is_array($data)) {
         if (key_exists('value1', $data) && key_exists('value2', $data)) {
-            return array_map(fn($value) =>objectTAarray($value), $data);
+            return array_map(fn($value) =>objectToArray($value), $data);
         }
             return $data;
     }
-
     $arrayOfProperties = get_object_vars($data);
-    $result = array_map(fn($value) => objectTAarray($value), $arrayOfProperties);
+    $result = array_map(fn($value) => objectToArray($value), $arrayOfProperties);
     return $result;
 }
 
@@ -40,30 +37,30 @@ function objectTAarray(mixed $data): mixed
 function addSign(array $diff): array
 {
     $iter = function ($data) use (&$iter) {
-        if (hasChildren($data)) {
-            $children = getChildren($data);
-            $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
-            return [$data['key'] => $newChildren];
-        }
+        $differ = $data['differ'];
         $val = getValue($data);
-            $diff = isChanged($data) ? $data['differ'] : '';
-            $arrayVal = objectTAarray($val);
-
-        if ($diff === 'changed') {
-            $val1 = getValue($data, 'old');
-            $val2 = getValue($data, 'new');
-            return ["- {$data['key']}" => objectTAarray($val1), "+ {$data['key']}" => objectTAarray($val2)];
-        } elseif ($diff === 'added') {
-            return ["+ {$data['key']}" => $arrayVal];
-        } elseif ($diff === 'deleted') {
-            return ["- {$data['key']}" => $arrayVal];
-        } else {
-            return ["{$data['key']}" => $arrayVal];
+        $arrayVal = objectToArray($val);
+        switch ($differ) {
+            case 'nested':
+                $children = getChildren($data);
+                $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
+                return [$data['key'] => $newChildren];
+            case 'added':
+                return ["+ {$data['key']}" => $arrayVal];
+            case 'deleted':
+                return ["- {$data['key']}" => $arrayVal];
+            case 'changed':
+                $val1 = getValue($data, 'old');
+                $val2 = getValue($data, 'new');
+                return ["- {$data['key']}" => objectToArray($val1), "+ {$data['key']}" => objectToArray($val2)];
+            case 'unchanged':
+                return ["{$data['key']}" => $arrayVal];
+            default:
+                throw new \Exception('Not valid differ of node!');
         }
     };
     return [array_merge(...(array_map(fn($data) => $iter($data), $diff)))];
 }
-
 
 /**
  * @param array<string, mixed> $data
