@@ -89,8 +89,8 @@ function compare(mixed $a, mixed $b): mixed
             } elseif ($properiesOfa[$key] === $properiesOfb[$key]) {
                         return ['key' => $key, 'value'  => $properiesOfa[$key], 'differ' => 'unchanged'];
             } else {
-                        return ['key' => $key,'value' => ['value1'  => $properiesOfa[$key],
-                        'value2'  => $properiesOfb[$key]], 'differ' => 'changed'];
+                        return ['key' => $key, 'value1'  => $properiesOfa[$key],
+                        'value2'  => $properiesOfb[$key], 'differ' => 'changed'];
             }
         },
         $sortedAllKeys
@@ -110,15 +110,15 @@ function hasChildren(array $data): bool
  * @param string $oldNew
  * @return mixed
  */
-function getValue(array $data, string $oldNew = ''): mixed
+function getValue(array $data): mixed
 {
     if ($data['differ'] === 'nested') {
         return null;
     }
-    if ($oldNew === '') {
-        return $data['value'];
+    if ($data['differ'] === 'changed') {
+        return null;
     }
-    return $oldNew === 'old' ? $data['value']['value1'] : $data['value']['value2'];
+    return $data['value'];
 }
 
 function getFilesType(string $path1, string $path2): string
