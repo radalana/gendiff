@@ -13,22 +13,23 @@ function isComplex(mixed $value): bool
 }
 
 //In plain text the data of the string type is enclosed in quotation marks.
+
 function formatString(mixed $value): mixed
 {
     if (isComplex($value)) {
         return '[complex value]';
     }
-    $strValue = toString($value);
-    if (
-        ($strValue === 'true') || ($strValue === 'null') || ($strValue === 'false')
-        || (!is_string($strValue)) || ($strValue === '[complex value]')
-    ) {
-        return $strValue;
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
     }
-
-    return "'{$strValue}'";
+    if (is_null($value)) {
+        return 'null';
+    }
+    if (is_numeric($value)) {
+        return $value;
+    }
+    return "'{$value}'";
 }
-
 
 /**
  * @param array<int|string, mixed> $data
