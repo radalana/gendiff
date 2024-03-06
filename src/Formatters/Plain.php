@@ -4,8 +4,6 @@ namespace Differ\Formatters\Plain;
 
 use function Differ\Differ\getChildren;
 use function Differ\Differ\isIndexedArray;
-use function Differ\Differ\toString;
-use function Differ\Differ\getValue;
 
 function isComplex(mixed $value): bool
 {
@@ -41,18 +39,17 @@ function format(array $data): string
         $name = $data['key'];
         $newAncestry = ($ancestry === '') ? "{$name}" : "{$ancestry}.{$name}";
         $differ = $data['differ'];
-        $value = getValue($data);
         switch ($differ) {
             case 'added':
-                $strValue = formatString($value);
+                $strValue = formatString($data['value']);
                 return "Property '{$newAncestry}' was added with value: {$strValue}";
             case 'deleted':
                 return "Property '{$newAncestry}' was removed";
             case 'changed':
-                $val1 = getValue($data, 'old');
-                    $val2 = getValue($data, 'new');
-                    $valStr1 = formatString($val1);
-                    $valStr2 = formatString($val2);
+                $val1 = $data['value1'];
+                $val2 = $data['value2'];
+                $valStr1 = formatString($val1);
+                $valStr2 = formatString($val2);
                 return "Property '{$newAncestry}' was updated. From {$valStr1} to {$valStr2}";
             case 'unchanged':
                 return;

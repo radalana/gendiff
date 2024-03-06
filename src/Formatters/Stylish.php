@@ -4,7 +4,6 @@ namespace Differ\Formatters\Stylish;
 
 use Exception;
 
-use function Differ\Differ\getValue;
 use function Differ\Differ\getChildren;
 use function Differ\Differ\isIndexedArray;
 use function Differ\Differ\toString;
@@ -38,23 +37,21 @@ function addSign(array $diff): array
 {
     $iter = function ($data) use (&$iter) {
         $differ = $data['differ'];
-        $val = getValue($data);
-        $arrayVal = objectToArray($val);
         switch ($differ) {
             case 'nested':
                 $children = getChildren($data);
                 $newChildren = array_merge(...array_map(fn($child) => $iter($child), $children));
                 return [$data['key'] => $newChildren];
             case 'added':
-                return ["+ {$data['key']}" => $arrayVal];
+                return ["+ {$data['key']}" => objectToArray($data['value'])];
             case 'deleted':
-                return ["- {$data['key']}" => $arrayVal];
+                return ["- {$data['key']}" => objectToArray($data['value'])];
             case 'changed':
-                $val1 = getValue($data, 'old');
-                $val2 = getValue($data, 'new');
+                $val1 = $data['value1'];
+                $val2 = $data['value2'];
                 return ["- {$data['key']}" => objectToArray($val1), "+ {$data['key']}" => objectToArray($val2)];
             case 'unchanged':
-                return ["{$data['key']}" => $arrayVal];
+                return ["{$data['key']}" => objectToArray($data['value'])];
             default:
                 throw new \Exception('Not valid differ of node!');
         }
@@ -68,6 +65,7 @@ function addSign(array $diff): array
  */
 function stringify(array $data): string
 {
+    print_r($data);
     {
         $iter = function (mixed $currentValue, int $depth) use (&$iter) {
             if (!is_array($currentValue)) {
@@ -98,7 +96,6 @@ function stringify(array $data): string
         return $iter($data, 1);
     }
 }
-
 /**
  * @param array<int|string, mixed> $ast
  * @return string
@@ -107,4 +104,19 @@ function format(array $ast): string
 {
     $arrayWithSigns = addSign($ast);
     return stringify(array_merge(...$arrayWithSigns));
+}
+
+function format1(array $ast)
+{
+    print_r($ast);
+    $iter = function ($currentValue, int $depth) use (&$iter) {
+        $indentSize = $depth * SPACES_COUNT;
+            $currentIndent = str_repeat(REPLACER, $indentSize);
+            $signIndent = str_repeat(REPLACER, ($indentSize - 2));
+            $bracketIndent = str_repeat(REPLACER, $indentSize - SPACES_COUNT);
+
+            $lines = array_map(function ($key, $value) use ($currentIndent, $signIndent, &$iter, &$depth) {
+            }, array_keys($currentValue), $currentValue);
+    };
+    return '';
 }

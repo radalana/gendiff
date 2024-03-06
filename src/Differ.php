@@ -105,21 +105,6 @@ function hasChildren(array $data): bool
 {
     return key_exists('children', $data);
 }
-/**
- * @param array<string, mixed> $data
- * @param string $oldNew
- * @return mixed
- */
-function getValue(array $data): mixed
-{
-    if ($data['differ'] === 'nested') {
-        return null;
-    }
-    if ($data['differ'] === 'changed') {
-        return null;
-    }
-    return $data['value'];
-}
 
 function getFilesType(string $path1, string $path2): string
 {
