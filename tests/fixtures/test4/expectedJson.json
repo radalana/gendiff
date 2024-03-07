@@ -20,10 +20,8 @@
             },
             {
                 "key": "setting3",
-                "value": {
-                    "value1": true,
-                    "value2": null
-                },
+                "value1": true,
+                "value2": null,
                 "differ": "changed"
             },
             {
@@ -48,10 +46,8 @@
                         "children": [
                             {
                                 "key": "wow",
-                                "value": {
-                                    "value1": "",
-                                    "value2": "so much"
-                                },
+                                "value1": "",
+                                "value2": "so much",
                                 "differ": "changed"
                             }
                         ]
@@ -59,7 +55,7 @@
                     {
                         "key": "key",
                         "value": "value",
-                        "differ":"unchanged"
+                        "differ": "unchanged"
                     },
                     {
                         "key": "ops",
@@ -76,10 +72,8 @@
         "children": [
             {
                 "key": "baz",
-                "value": {
-                    "value1": "bas",
-                    "value2": "bars"
-                },
+                "value1": "bas",
+                "value2": "bars",
                 "differ": "changed"
             },
             {
@@ -89,15 +83,13 @@
             },
             {
                 "key": "nest",
-                "value": {
-                    "value1": {
-                        "key": [
-                            "value1",
-                            "value2"
-                        ]
-                    },
-                    "value2": "str"
+                "value1": {
+                    "key": [
+                        "value1",
+                        "value2"
+                    ]
                 },
+                "value2": "str",
                 "differ": "changed"
             }
         ]

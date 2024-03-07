@@ -9,10 +9,8 @@
                 "children": [
                     {
                         "key": "email",
-                        "value": {
-                            "value1": true,
-                            "value2": false
-                        },
+                        "value1": true,
+                        "value2": false,
                         "differ": "changed"
                     },
                     {
@@ -29,10 +27,8 @@
             },
             {
                 "key": "theme",
-                "value": {
-                    "value1": "dark",
-                    "value2": "light"
-                },
+                "value1": "dark",
+                "value2": "light",
                 "differ": "changed"
             }
         ]
@@ -47,50 +43,40 @@
                 "children": [
                     {
                         "key": "city",
-                        "value": {
-                            "value1": "New York",
-                            "value2": "San Francisco"
-                        },
+                        "value1": "New York",
+                        "value2": "San Francisco",
                         "differ": "changed"
                     },
                     {
                         "key": "zipcode",
-                        "value": {
-                            "value1": 10001,
-                            "value2": 94105
-                        },
+                        "value1": 10001,
+                        "value2": 94105,
                         "differ": "changed"
                     }
                 ]
             },
             {
                 "key": "age",
-                "value": {
-                    "value1": 30,
-                    "value2": 32
-                },
+                "value1": 30,
+                "value2": 32,
                 "differ": "changed"
             },
             {
                 "key": "languages",
-                "value": {
-                    "value1": [
-                        "English",
-                        "French"
-                    ],
-                    "value2": [
-                        "English",
-                        "Spanish"
-                    ]
-                },
+                "value1": [
+                    "English",
+                    "French"
+                ],
+                "value2": [
+                    "English",
+                    "Spanish"
+                ],
                 "differ": "changed"
             },
             {
                 "key": "name",
-                "value": {
-                    "value1": "John Doe",
-                    "value2": "Jane Doe"
-                },
+                "value1": "John Doe",
+                "value2": "Jane Doe",
                 "differ": "changed"
             }
         ]

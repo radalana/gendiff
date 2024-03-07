@@ -5,34 +5,28 @@
         "children": [
             {
                 "key": "colors",
-                "value": {
-                    "value1": [
-                        "red",
-                        "green",
-                        "blue"
-                    ],
-                    "value2": [
-                        "red",
-                        "blue",
-                        "yellow"
-                    ]
-                },
+                "value1": [
+                    "red",
+                    "green",
+                    "blue"
+                ],
+                "value2": [
+                    "red",
+                    "blue",
+                    "yellow"
+                ],
                 "differ": "changed"
             },
             {
                 "key": "debug",
-                "value": {
-                    "value1": true,
-                    "value2": false
-                },
+                "value1": true,
+                "value2": false,
                 "differ": "changed"
             },
             {
                 "key": "timeout",
-                "value": {
-                    "value1": 5000,
-                    "value2": 8000
-                },
+                "value1": 5000,
+                "value2": 8000,
                 "differ": "changed"
             }
         ]
@@ -48,10 +42,8 @@
             },
             {
                 "key": "password",
-                "value": {
-                    "value1": "password123",
-                    "value2": "newPassword"
-                },
+                "value1": "password123",
+                "value2": "newPassword",
                 "differ": "changed"
             },
             {
@@ -61,10 +53,8 @@
             },
             {
                 "key": "username",
-                "value": {
-                    "value1": "user1",
-                    "value2": "user2"
-                },
+                "value1": "user1",
+                "value2": "user2",
                 "differ": "changed"
             }
         ]
@@ -75,16 +65,14 @@
         "children": [
             {
                 "key": "level",
-                "value": {
-                    "value1": "info",
-                    "value2": "debug"
-                },
+                "value1": "info",
+                "value2": "debug",
                 "differ": "changed"
             },
             {
                 "key": "path",
                 "value": "\/var\/log\/app.log",
-                "differ":"unchanged"
+                "differ": "unchanged"
             }
         ]
     }
