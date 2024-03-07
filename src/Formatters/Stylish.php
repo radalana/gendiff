@@ -30,11 +30,11 @@ function objectToArray(mixed $data): mixed
 }
 
 /**
- * @param array<string, mixed> $data
+ * @param array<string, mixed>|scalar $data
  * @param int $depth
  * @return string
  */
-function stringify(array $data, int $depth): string
+function stringify(mixed $data, int $depth): string
 {
     if (!is_array($data)) {
         return toString($data);
