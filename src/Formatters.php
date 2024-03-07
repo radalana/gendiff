@@ -10,6 +10,7 @@ use function Differ\Formatters\Json\format as toJson;
  * @param string $format
  * @param array<int|string, mixed> $ast
  * @return string
+ * @throws \Exception
  */
 function format(string $format, array $ast): string
 {
@@ -21,6 +22,6 @@ function format(string $format, array $ast): string
         case 'stylish':
             return toStylish($ast);
         default:
-            throw new \Exception("Undefinde formatter");
+            throw new \Exception("Undefined formatter");
     }
 }
