@@ -47,8 +47,8 @@ function stringify(mixed $data, int $depth): string
         return "[{$string}]";
     }
     $lines = array_map(function ($key, $value) use ($currentIndent, &$depth) {
-        $value = stringify($value, $depth + 1);
-        return "{$currentIndent}{$key}: {$value}";
+        $formattedValue = stringify($value, $depth + 1);
+        return "{$currentIndent}{$key}: {$formattedValue}";
     }, array_keys($data), $data);
     $result = ['{', ...$lines, "{$bracketIndent}}"];
     return implode("\n", $result);
