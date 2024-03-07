@@ -9,7 +9,7 @@ use function Differ\Parsers\parse;
 use function Differ\Formatters\format;
 
 /**
- * @param array<string, mixed> $data
+ * @param  array<string, mixed> $data
  * @return array<mixed>
  */
 function getChildren(array $data): array
@@ -22,12 +22,14 @@ function isIndexedArray(mixed $value): bool
     if (is_array($value)) {
         return array_values($value) === $value;
     }
-        return false;
+    return false;
 }
 
-/**shows if current data if was added/deleted/changed */
 /**
- * @param array<string, mixed> $data
+ * shows if current data if was added/deleted/changed
+ */
+/**
+ * @param  array<string, mixed> $data
  * @return bool
  */
 function isChanged(array $data): bool
@@ -37,7 +39,6 @@ function isChanged(array $data): bool
 
 function toString(mixed $value): mixed
 {
-
     if (is_bool($value) || is_null($value)) {
         return strtolower(var_export($value, true));
     }
@@ -54,7 +55,7 @@ function readFromFile(string $pathTofile): string
 }
 
 /**
- * @param array<string> $keys
+ * @param  array<string> $keys
  * @return array<string>
  */
 function sortKeys(array $keys): array
@@ -63,10 +64,10 @@ function sortKeys(array $keys): array
 }
 
 /**
-* @param mixed $a
-* @param mixed $b
-* @return array<int|string, mixed>
-*/
+ * @param  mixed $a
+ * @param  mixed $b
+ * @return array<int|string, mixed>
+ */
 function compare(mixed $a, mixed $b): mixed
 {
     $properiesOfa = get_object_vars($a);
@@ -84,21 +85,22 @@ function compare(mixed $a, mixed $b): mixed
             } elseif (in_array($key, $deletedProperties, true)) {
                 return ['key' => $key, 'value' => ($properiesOfa[$key]), 'differ' => 'deleted'];
             } elseif (is_object($properiesOfa[$key]) && (is_object($properiesOfb[$key]))) {
-                    $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
-                    return ['key' => $key, 'differ' => 'nested', 'children' => $iter, ];
+                $iter = compare($properiesOfa[$key], $properiesOfb[$key]);
+                return ['key' => $key, 'differ' => 'nested', 'children' => $iter, ];
             } elseif ($properiesOfa[$key] === $properiesOfb[$key]) {
-                        return ['key' => $key, 'value'  => $properiesOfa[$key], 'differ' => 'unchanged'];
+                return ['key' => $key, 'value'  => $properiesOfa[$key], 'differ' => 'unchanged'];
             } else {
-                        return ['key' => $key, 'value1'  => $properiesOfa[$key],
-                        'value2'  => $properiesOfb[$key], 'differ' => 'changed'];
+                return ['key' => $key, 'value1'  => $properiesOfa[$key],
+                'value2'  => $properiesOfb[$key], 'differ' => 'changed'];
             }
         },
         $sortedAllKeys
     );
     return $data;
 }
+
 /**
- * @param array<string, mixed> $data
+ * @param  array<string, mixed> $data
  * @return bool
  */
 function hasChildren(array $data): bool
@@ -115,6 +117,7 @@ function getFilesType(string $path1, string $path2): string
     }
     return $type1;
 }
+
 function gendiff(string $path1, string $path2, string $formatName = 'stylish'): string
 {
     $stringData1 = readFromFile($path1);

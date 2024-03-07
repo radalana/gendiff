@@ -22,7 +22,7 @@ function objectToArray(mixed $data): mixed
         if (key_exists('value1', $data) && key_exists('value2', $data)) {
             return array_map(fn($value) => objectToArray($value), $data);
         }
-            return $data;
+        return $data;
     }
     $arrayOfProperties = get_object_vars($data);
     $result = array_map(fn($value) => objectToArray($value), $arrayOfProperties);
@@ -60,43 +60,43 @@ function stringify(mixed $data, int $depth): string
  */
 function format(array $data): string
 {
-        $iter = function (mixed $currentData, int $depth) use (&$iter) {
-            if (!is_array($currentData)) {
-                return toString($currentData);
-            }
+    $iter = function (mixed $currentData, int $depth) use (&$iter) {
+        if (!is_array($currentData)) {
+            return toString($currentData);
+        }
 
-            $indentSize = $depth * SPACES_COUNT;
-            $currentIndent = str_repeat(REPLACER, $indentSize);
-            $signIndent = str_repeat(REPLACER, ($indentSize - 2));
-            $differ = $currentData['differ'];
-            switch ($differ) {
-                case 'added':
-                    $valAsArray = objectToArray($currentData['value']);
-                    $stringVal = stringify($valAsArray, $depth + 1);
-                    return "{$signIndent}+ {$currentData['key']}: {$stringVal}";
-                case 'deleted':
-                    $valAsArray = objectToArray($currentData['value']);
-                    $stringVal = stringify($valAsArray, $depth + 1);
-                    return "{$signIndent}- {$currentData['key']}: {$stringVal}";
-                case 'unchanged':
-                    $valAsArray = objectToArray($currentData['value']);
-                    $stringVal = stringify($valAsArray, $depth);
-                    return "{$currentIndent}{$currentData['key']}: {$stringVal}";
-                case 'changed':
-                    $val1 = stringify(objectToArray($currentData['value1']), $depth + 1);
-                    $val2 = stringify(objectToArray($currentData['value2']), $depth + 1);
-                    $keyVal1 = "{$signIndent}- {$currentData['key']}: {$val1}";
-                    $keyVal2 = "{$signIndent}+ {$currentData['key']}: {$val2}";
-                    return "{$keyVal1}\n{$keyVal2}";
-                case 'nested':
-                    $formattedChildren = array_map(fn($child) => $iter($child, $depth + 1), getChildren($currentData));
-                    $formattedLines =  ['{', ...$formattedChildren, "{$currentIndent}}"];
-                    $string =  implode("\n", $formattedLines);
-                    return "{$currentIndent}{$currentData['key']}: {$string}";
-                default:
-                    throw new \Exception('Not valid differ of node!');
-            }
-        };
-        $result =  implode("\n", array_map(fn($node) => $iter($node, 1), $data));
-        return "{\n{$result}\n}";
+        $indentSize = $depth * SPACES_COUNT;
+        $currentIndent = str_repeat(REPLACER, $indentSize);
+        $signIndent = str_repeat(REPLACER, ($indentSize - 2));
+        $differ = $currentData['differ'];
+        switch ($differ) {
+            case 'added':
+                $valAsArray = objectToArray($currentData['value']);
+                $stringVal = stringify($valAsArray, $depth + 1);
+                return "{$signIndent}+ {$currentData['key']}: {$stringVal}";
+            case 'deleted':
+                $valAsArray = objectToArray($currentData['value']);
+                $stringVal = stringify($valAsArray, $depth + 1);
+                return "{$signIndent}- {$currentData['key']}: {$stringVal}";
+            case 'unchanged':
+                $valAsArray = objectToArray($currentData['value']);
+                $stringVal = stringify($valAsArray, $depth);
+                return "{$currentIndent}{$currentData['key']}: {$stringVal}";
+            case 'changed':
+                $val1 = stringify(objectToArray($currentData['value1']), $depth + 1);
+                $val2 = stringify(objectToArray($currentData['value2']), $depth + 1);
+                $keyVal1 = "{$signIndent}- {$currentData['key']}: {$val1}";
+                $keyVal2 = "{$signIndent}+ {$currentData['key']}: {$val2}";
+                return "{$keyVal1}\n{$keyVal2}";
+            case 'nested':
+                $formattedChildren = array_map(fn ($child) => $iter($child, $depth + 1), getChildren($currentData));
+                $formattedLines =  ['{', ...$formattedChildren, "{$currentIndent}}"];
+                $string =  implode("\n", $formattedLines);
+                return "{$currentIndent}{$currentData['key']}: {$string}";
+            default:
+                throw new \Exception('Not valid differ of node!');
+        }
+    };
+    $result =  implode("\n", array_map(fn ($node) => $iter($node, 1), $data));
+    return "{\n{$result}\n}";
 }
